@@ -300,6 +300,151 @@
     .prose p{font-size:16px;}
     .entry.ooc{margin-left:.8em;}
   }
+
+  /* ---------- appendix: investigator dossier ---------- */
+  .appendix{
+    border-top:1px solid var(--ink);
+    padding:64px 56px 72px;
+    position:relative;
+  }
+  .appendix::before{
+    content:"";position:absolute;left:56px;right:56px;top:20px;height:1px;
+    background:var(--ink-soft);opacity:.35;
+  }
+  .app-head{text-align:center;margin-bottom:42px;}
+  .app-head .app-num{
+    font-family:"Libre Caslon Display",serif;font-size:14px;
+    letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .app-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:900;font-size:30px;
+    letter-spacing:.3em;margin:10px 0 0 .3em;
+  }
+  .app-head .app-sub{
+    font-family:"Libre Caslon Text",serif;font-style:italic;
+    font-size:14px;color:var(--ink-soft);margin-top:8px;
+  }
+
+  /* plate + identity */
+  .dossier{display:flex;gap:26px;align-items:flex-start;margin-bottom:34px;}
+  .plate{
+    flex:0 0 152px;width:152px;
+    background:#e6dcc4;
+    border:1px solid var(--buff-edge);
+    padding:9px 9px 7px;
+    box-shadow:0 1px 0 rgba(0,0,0,.08),0 8px 16px -10px rgba(0,0,0,.45);
+    position:relative;
+  }
+  .plate img{
+    display:block;width:100%;height:auto;
+    /* 印成单色棕褐，像旧档案里的剪影贴片 */
+    filter:sepia(1) saturate(.55) brightness(.42) contrast(1.25);
+    mix-blend-mode:multiply;
+  }
+  .plate::after{ /* photo corners */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(135deg,var(--leaf-edge) 0 11px,transparent 11px) top left/22px 22px no-repeat,
+      linear-gradient(225deg,var(--leaf-edge) 0 11px,transparent 11px) top right/22px 22px no-repeat,
+      linear-gradient(45deg,var(--leaf-edge) 0 11px,transparent 11px) bottom left/22px 22px no-repeat,
+      linear-gradient(315deg,var(--leaf-edge) 0 11px,transparent 11px) bottom right/22px 22px no-repeat;
+  }
+  .plate-cap{
+    text-align:center;font-family:"Special Elite","Libre Caslon Text",serif;
+    font-size:10.5px;letter-spacing:.16em;color:#7a6834;
+    margin-top:7px;padding-top:5px;border-top:1px solid var(--buff-edge);
+  }
+  .ident{flex:1;min-width:0;}
+  .ident .nm{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:30px;
+    letter-spacing:.12em;margin:0 0 2px;
+  }
+  .ident .nm-en{
+    font-family:"Libre Caslon Display",serif;font-size:17px;
+    color:var(--ink-soft);margin-bottom:14px;
+  }
+  .ident dl{
+    display:grid;grid-template-columns:auto 1fr auto 1fr;
+    gap:7px 12px;margin:0;font-size:14px;line-height:1.5;
+  }
+  .ident dt{color:var(--graphite);font-size:12.5px;letter-spacing:.12em;white-space:nowrap;}
+  .ident dd{margin:0;}
+  .ident dd.wide{grid-column:2 / -1;}
+
+  /* section rules */
+  .app-sec{margin-top:36px;}
+  .app-sec > h3{
+    font-family:"Libre Caslon Display",serif;font-weight:400;font-size:13px;
+    letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);
+    margin:0 0 16px;padding-bottom:7px;border-bottom:.5px solid var(--ink-soft);
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .app-sec > h3 em{font-family:"Noto Serif SC",serif;font-style:normal;font-size:14px;letter-spacing:.16em;color:var(--ink);}
+
+  /* attributes */
+  .attrs{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--leaf-edge);border:1px solid var(--leaf-edge);}
+  .attrs > div{background:var(--leaf);padding:11px 8px 9px;text-align:center;}
+  .attrs .k{font-family:"Libre Caslon Display",serif;font-size:11.5px;letter-spacing:.2em;color:var(--graphite);}
+  .attrs .k b{font-family:"Noto Serif SC",serif;font-weight:400;letter-spacing:.05em;}
+  .attrs .v{font-family:"Libre Caslon Text",serif;font-size:27px;line-height:1.15;margin-top:3px;}
+  .attrs .h{font-size:11px;color:var(--graphite);letter-spacing:.08em;}
+
+  .derived{
+    display:flex;flex-wrap:wrap;gap:0 28px;margin-top:14px;
+    font-size:13.5px;color:var(--ink-soft);
+  }
+  .derived span b{color:var(--ink);font-weight:400;font-family:"Libre Caslon Text",serif;font-size:15px;}
+
+  /* skills */
+  .skills{display:grid;grid-template-columns:1fr 1fr;gap:0 30px;}
+  .sk{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-bottom:.5px dotted var(--leaf-edge);font-size:14px;}
+  .sk .n{white-space:nowrap;}
+  .sk .dots{flex:1;border-bottom:1px dotted #c8bd9f;transform:translateY(-3px);min-width:10px;}
+  .sk .v{font-family:"Libre Caslon Text",serif;font-size:15px;white-space:nowrap;}
+  .sk .v i{font-style:normal;color:var(--graphite);font-size:12px;}
+  .sk.hi .n{font-weight:600;}
+  .sk.hi .v{color:var(--oxblood);}
+  .sk-note{margin-top:12px;font-size:12.5px;font-style:italic;color:var(--graphite);}
+
+  /* background prose */
+  .bio p{margin:0 0 12px;font-size:15px;line-height:1.95;text-indent:2em;}
+  .bio p:last-child{margin:0;}
+  .traits{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:14px;line-height:1.6;}
+  .traits dt{color:var(--graphite);font-size:12.5px;letter-spacing:.12em;white-space:nowrap;padding-top:2px;}
+  .traits dd{margin:0;}
+
+  /* kit list */
+  .kit{display:flex;flex-wrap:wrap;gap:7px;}
+  .kit li{
+    list-style:none;border:.5px solid var(--buff-edge);background:rgba(232,217,174,.4);
+    padding:4px 11px;font-size:13.5px;letter-spacing:.04em;
+  }
+  .kit{padding:0;margin:0;}
+
+  .ledger{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;font-size:13.5px;}
+  .ledger div{border-top:1px solid var(--leaf-edge);padding-top:7px;}
+  .ledger i{font-style:normal;color:var(--graphite);font-size:12px;}
+  .ledger .k{display:block;color:var(--graphite);font-size:12px;letter-spacing:.12em;margin-bottom:2px;}
+
+  .app-close a{color:var(--prussian);}
+  .app-close{
+    margin-top:46px;text-align:center;
+    font-family:"Libre Caslon Text",serif;font-style:italic;
+    font-size:13px;line-height:1.9;color:var(--ink-soft);
+  }
+
+  @media (max-width:620px){
+    .appendix{padding:44px 22px 52px;}
+    .appendix::before{left:22px;right:22px;}
+    .app-head h2{font-size:24px;}
+    .dossier{flex-direction:column;align-items:center;text-align:center;gap:18px;}
+    .plate{flex:0 0 auto;width:150px;}
+    .ident dl{grid-template-columns:auto 1fr;text-align:left;}
+    .attrs{grid-template-columns:repeat(2,1fr);}
+    .skills{grid-template-columns:1fr;gap:0;}
+    .ledger{grid-template-columns:repeat(2,1fr);}
+    .derived{justify-content:center;gap:0 18px;}
+  }
 </style>
 </head>
 <body>
@@ -2069,6 +2214,144 @@
       <div>FINIS</div>
     </div>
   </article>
+
+  <section class="appendix">
+    <div class="app-head">
+      <div class="app-num">Appendix</div>
+      <h2>调查员档案</h2>
+      <div class="app-sub">Investigator's Dossier &mdash; as filed, October 1925</div>
+    </div>
+
+    <div class="dossier">
+      <figure class="plate">
+        <img src="assets/silhouette.svg" alt="一名戴帽男子的黑色剪影，无面部细节">
+        <figcaption class="plate-cap">档案无存照</figcaption>
+      </figure>
+      <div class="ident">
+        <p class="nm">邓恩﹒琼斯</p>
+        <p class="nm-en">Dunn Jones</p>
+        <dl>
+          <dt>职　业</dt><dd>作家（私家侦探）</dd>
+          <dt>年　龄</dt><dd>30</dd>
+          <dt>性　别</dt><dd>男</dd>
+          <dt>时　代</dt><dd>1920s</dd>
+          <dt>住　地</dt><dd>密歇根州</dd>
+          <dt>故　乡</dt><dd>美国 · 波士顿</dd>
+          <dt>玩　家</dt><dd>冰</dd>
+          <dt>守秘人</dt><dd>K.265</dd>
+          <dt>外　貌</dt><dd class="wide">个子很高，棕色短发，蓝色眼睛，蓝黑色西装，黑色风衣，软呢帽</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="app-sec">
+      <h3>Characteristics <em>属性</em></h3>
+      <div class="attrs">
+        <div><div class="k">STR <b>力量</b></div><div class="v">65</div><div class="h">32 / 13</div></div>
+        <div><div class="k">CON <b>体质</b></div><div class="v">80</div><div class="h">40 / 16</div></div>
+        <div><div class="k">SIZ <b>体型</b></div><div class="v">85</div><div class="h">42 / 17</div></div>
+        <div><div class="k">DEX <b>敏捷</b></div><div class="v">45</div><div class="h">22 / 9</div></div>
+        <div><div class="k">APP <b>外貌</b></div><div class="v">55</div><div class="h">27 / 11</div></div>
+        <div><div class="k">INT <b>智力</b></div><div class="v">80</div><div class="h">40 / 16</div></div>
+        <div><div class="k">POW <b>意志</b></div><div class="v">50</div><div class="h">25 / 10</div></div>
+        <div><div class="k">EDU <b>教育</b></div><div class="v">75</div><div class="h">37 / 15</div></div>
+      </div>
+      <div class="derived">
+        <span>HP 体力 <b>16</b></span>
+        <span>SAN 理智 <b>50</b>／99</span>
+        <span>MP 魔法 <b>10</b></span>
+        <span>LUCK 幸运 <b>60</b></span>
+        <span>MOV <b>7</b></span>
+        <span>DB 伤害加值 <b>+1D4</b></span>
+        <span>体格 <b>1</b></span>
+        <span>护甲 <b>—</b></span>
+      </div>
+    </div>
+
+    <div class="app-sec">
+      <h3>Skills <em>技能</em></h3>
+      <div class="skills">
+        <div class="sk hi"><span class="n">侦查</span><span class="dots"></span><span class="v">75 <i>/37/15</i></span></div>
+        <div class="sk hi"><span class="n">母语（英语）</span><span class="dots"></span><span class="v">75 <i>/37/15</i></span></div>
+        <div class="sk hi"><span class="n">说服</span><span class="dots"></span><span class="v">70 <i>/35/14</i></span></div>
+        <div class="sk hi"><span class="n">心理学</span><span class="dots"></span><span class="v">60 <i>/30/12</i></span></div>
+        <div class="sk hi"><span class="n">神秘学</span><span class="dots"></span><span class="v">55 <i>/27/11</i></span></div>
+        <div class="sk hi"><span class="n">手枪</span><span class="dots"></span><span class="v">55 <i>/27/11</i></span></div>
+        <div class="sk"><span class="n">图书馆使用</span><span class="dots"></span><span class="v">50 <i>/25/10</i></span></div>
+        <div class="sk"><span class="n">聆听</span><span class="dots"></span><span class="v">50 <i>/25/10</i></span></div>
+        <div class="sk"><span class="n">斗殴</span><span class="dots"></span><span class="v">45 <i>/22/9</i></span></div>
+        <div class="sk"><span class="n">闪避</span><span class="dots"></span><span class="v">42 <i>/21/8</i></span></div>
+        <div class="sk"><span class="n">急救</span><span class="dots"></span><span class="v">40 <i>/20/8</i></span></div>
+        <div class="sk"><span class="n">乔装</span><span class="dots"></span><span class="v">35 <i>/17/7</i></span></div>
+        <div class="sk"><span class="n">信用评级</span><span class="dots"></span><span class="v">30 <i>/15/6</i></span></div>
+        <div class="sk"><span class="n">攀爬 · 跳跃 · 潜行</span><span class="dots"></span><span class="v">20</span></div>
+        <div class="sk"><span class="n">汽车驾驶 · 游泳 · 投掷</span><span class="dots"></span><span class="v">20</span></div>
+        <div class="sk"><span class="n">恐吓 · 取悦</span><span class="dots"></span><span class="v">15</span></div>
+        <div class="sk"><span class="n">妙手 · 博物学 · 导航</span><span class="dots"></span><span class="v">10</span></div>
+        <div class="sk"><span class="n">电气维修 · 机械维修 · 追踪 · 生存</span><span class="dots"></span><span class="v">10</span></div>
+        <div class="sk"><span class="n">克苏鲁神话</span><span class="dots"></span><span class="v">00</span></div>
+      </div>
+      <p class="sk-note">数值依次为 常规 / 困难 / 极难。未列出者均为初始值。</p>
+    </div>
+
+    <div class="app-sec">
+      <h3>Background <em>背景</em></h3>
+      <dl class="traits">
+        <dt>信　仰</dt><dd>无</dd>
+        <dt>重要之人</dt><dd>家人</dd>
+        <dt>重要之地</dt><dd>故乡</dd>
+        <dt>宝　物</dt><dd>哥哥送的怀表</dd>
+        <dt>特　质</dt><dd>战争创伤后的亲密接触回避，和家人好友的情感隔离</dd>
+        <dt>伤　疤</dt><dd>左臂有被碎片割伤的疤痕</dd>
+      </dl>
+    </div>
+
+    <div class="app-sec">
+      <h3>The Life So Far <em>履历</em></h3>
+      <div class="bio">
+        <p>一八九五年，邓恩出生于波士顿的普通工人阶级家庭，家中有四个孩子，他是家里的老二。孩童时期他总有种狡黠的气质，他很明确地知道自己在做什么，知道自己能在什么范围内折腾。他总是想着，就算天塌下来也有哥哥顶着——像是在小孩的眼里，仿佛只要有了可以依赖的对象，就能安然入睡。</p>
+        <p>上学时期他也经常帮家人干活跑腿、照顾弟弟妹妹，偶尔去教会帮忙。身体健康，充满活力，也有眼力见。闲暇时他对一些有神秘色彩的书籍很感兴趣，喜欢在侦探故事里猜凶手，也喜欢沉浸在奇幻的故事里体验不一样的视角。后来哥哥毕业后当了警察，也成为了他向往的目标。</p>
+        <p>一九一七年，他被选中参军。当时警局有部分警察能争取到豁免，哥哥还是和他一起参军了。在军队中，邓恩因为射击技术和侦查能力达标而成为了狙击手。</p>
+        <p>战争结束，只有邓恩回来。他将存下的资金和部分抚恤金交给家人后，带着不多的钱换了城市生活，靠着自己在军队里练出来的侦查眼力挂上了私家侦探的名头赚取生活费。他看起来依旧乐观、健康、充满活力——他想，只要沉浸在别人的案件中，就能忘记自己是谁。他时常能梦见家人。没有案子的时候，他会研究一些「通灵」「灵媒」的书籍，并把这些和自己的侦查能力结合。战争和流感爆发之后，此时的人们比起真实，也许更需要的是心理上的慰藉；至于真实与否，似乎不太重要。</p>
+        <p>一九二五年，邓恩收到一位名为托马斯·金博尔的年轻人的委托，希望他能帮忙找回失窃的藏书。</p>
+      </div>
+    </div>
+
+    <div class="app-sec">
+      <h3>Effects &amp; Estate <em>随身物品与资产</em></h3>
+      <ul class="kit">
+        <li>一包烟</li><li>打火机</li><li>笔记本和笔</li><li>钱包</li>
+        <li>手枪</li><li>怀表</li><li>手电筒</li>
+        <li>名片</li><li>5 张 5 美元</li><li>一些硬币</li>
+      </ul>
+      <div class="ledger">
+        <div><span class="k">信用评级</span>30% <i>/15/6</i></div>
+        <div><span class="k">生活水平</span>标准</div>
+        <div><span class="k">现金</span>$60</div>
+        <div><span class="k">其他资产</span>$1,500</div>
+      </div>
+    </div>
+
+    <div class="app-sec">
+      <h3>After the Case <em>结案后</em></h3>
+      <div class="entry wire" style="margin:0;">
+        <div class="slip" style="max-width:100%;">
+          <div class="slip-head"><span>结算</span><span>追书人 · 1925</span></div>
+          <div class="slip-body">
+            <p>理智 SAN　50 → 53</p>
+            <p>体力 HP　16 → 15 / 16</p>
+            <p>报酬　$10，路费另计</p>
+            <p>本场共 18 次检定。其中：侦查 2、说服 3、心理学 2、幸运 2，另有信用、追踪、灵感、力量、体质、体型各 1 及理智检定 1。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="app-close">
+      档案至此。<br>
+      剪影取自维基共享资源 <a href="https://commons.wikimedia.org/wiki/File:Mistery_stub.svg">Mistery stub.svg</a>（Rumensz，CC0），非本人肖像。
+    </p>
+  </section>
 
 </main>
 </body>
