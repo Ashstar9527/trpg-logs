@@ -457,6 +457,54 @@
     .ledger{grid-template-columns:repeat(2,1fr);}
     .derived{justify-content:center;gap:0 18px;}
   }
+
+  /* ---------- 戏内文件：书页、碑文、信件、地址等被引述的文本 ---------- */
+  .doc{
+    margin:1.15em 1.6em 1.25em 2.6em;
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;
+    font-style:italic;
+    font-size:15.5px;
+    line-height:1.95;
+    color:var(--ink);
+    letter-spacing:.02em;
+  }
+  .doc p{
+    margin:0 0 .5em;
+    text-indent:0;
+    text-align:left;
+    font-family:inherit;
+    font-size:inherit;
+    line-height:inherit;
+    font-style:inherit;
+  }
+  .doc p:last-child{margin-bottom:0;}
+  /* 地址：第二行为原文拉丁文，排得更疏 */
+  .doc.addr p + p{
+    font-family:"Libre Caslon Text",serif;
+    font-size:14px;
+    letter-spacing:.06em;
+    color:var(--ink-soft);
+  }
+  /* 信件：落款右对齐 */
+  .doc.letter p:last-child{
+    text-align:right;
+    margin-top:.7em;
+  }
+  /* 碑文：居中，字距拉开，像凿在石头上 */
+  .doc.epitaph{
+    text-align:center;
+    margin-left:2.6em;margin-right:2.6em;
+    font-style:normal;
+    letter-spacing:.22em;
+    font-size:15px;
+    color:var(--ink-soft);
+  }
+  .doc.epitaph p{text-align:center;}
+
+  @media (max-width:620px){
+    .doc{margin-left:1.2em;margin-right:.4em;font-size:15px;}
+    .doc.epitaph{margin-left:.6em;margin-right:.6em;letter-spacing:.14em;}
+  }
 </style>
 </head>
 <body>
@@ -477,6 +525,7 @@
       <p>正文以宋体排印，为戏内叙事与对白。</p>
       <p class="k-pencil">页边铅笔批注，为场外闲谈（OOC），不入正文。</p>
       <p class="k-wire">电报纸条，为骰子判定与属性记录。</p>
+      <p style="font-style:italic;">缩进斜体处，为戏内出现的文件：书页、碑文、信件、地址。</p>
     </div>
   </header>
 
@@ -637,7 +686,9 @@
 </div>
 <div class="entry ic cont">
   
-  <div class="prose"><p>说罢，他又报了一串地址：<br>密歇根州阿诺兹堡市艾尔斯伯里大街218号<br>218 Aylesbury Street, Arnoldsburg, Michigan</p></div>
+  <div class="prose"><p>说罢，他又报了一串地址：</p>
+<div class="doc addr"><p>密歇根州阿诺兹堡市艾尔斯伯里大街218号</p>
+<p>218 Aylesbury Street, Arnoldsburg, Michigan</p></div></div>
 </div>
 <div class="entry ic cont">
   
@@ -1147,7 +1198,9 @@
 </div>
 <div class="entry ic cont">
   
-  <div class="prose"><p>“我的朋友们又来拜访我了。“他的字迹格外放松。”我当追随他们去了。“</p></div>
+  <div class="prose"><div class="doc"><p>“我的朋友们又来拜访我了。”</p></div>
+<p>他的字迹格外放松。</p>
+<div class="doc"><p>“我当追随他们去了。”</p></div></div>
 </div>
 <div class="entry ic">
   <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
@@ -1243,7 +1296,9 @@
 </div>
 <div class="entry ic cont">
   
-  <div class="prose"><p>餐盘边的刀叉下压着两张纸。最上面是一张纸条：“琼斯先生，抱歉我得先赶去学院了，祝您调查顺利。”下面则是一份地图。虽然你是本地人，但他似乎担心你在这偏远的地方迷路，还是给你准备了一份。</p></div>
+  <div class="prose"><p>餐盘边的刀叉下压着两张纸。最上面是一张纸条：</p>
+<div class="doc"><p>“琼斯先生，抱歉我得先赶去学院了，祝您调查顺利。”</p></div>
+<p>下面则是一份地图。虽然你是本地人，但他似乎担心你在这偏远的地方迷路，还是给你准备了一份。</p></div>
 </div>
 <div class="entry ooc">
   <div class="pencil"><span class="pencil-who">K.265</span><p>稍等，图发不出来</p></div>
@@ -1820,7 +1875,9 @@
 <div class="entry ic">
   <div class="who kp"><span class="name">K.265</span></div>
   <div class="prose"><p>杰弗逊还是没有理会你，只是加快了脚步。或许是因为你打断了他的回忆有些不悦？你们沉闷地往前走，不多时便来到了一块空地。</p>
-<p>你面前是一块洁白如新的大理石墓碑，上面细细镌刻着：玛格丽特·金博尔，杰出的学者与敬爱的妻子。这块墓碑打理的十分整洁，旁边还放着几束干花束。</p>
+<p>你面前是一块洁白如新的大理石墓碑，上面细细镌刻着：</p>
+<div class="doc epitaph"><p>玛格丽特·金博尔<br>杰出的学者与敬爱的妻子</p></div>
+<p>这块墓碑打理的十分整洁，旁边还放着几束干花束。</p>
 <p>在你身侧的另一块墓碑就没那么干净了——它看起来伤痕累累，面板上的字迹已经模糊，旁边也有不少杂草。</p></div>
 </div>
 <div class="entry ic cont">
@@ -2154,9 +2211,9 @@
 <div class="entry ic">
   <div class="who kp"><span class="name">K.265</span></div>
   <div class="prose"><p>“噢，托马斯。”道格拉斯的眼神软了下来。“他是个好孩子。我确实对他心怀愧疚——他很爱我与玛格丽特。”他崎岖的手指接过你的纸笔，轻柔的在纸上写下了一串留言。</p>
-<p>“亲爱的托马斯，</p>
+<div class="doc letter"><p>亲爱的托马斯，</p>
 <p>我为我的不辞而别感到抱歉。玛格丽特离世后，我一度觉得我失去了目标；我觉得我应该换一个地方，去看看新的世界与天地。你是个热心而温暖的好孩子，我毫不怀疑你有远大前程；希望你能照顾好这座房子与里面的书籍，也希望你不被它所累。</p>
-<p>爱你的叔叔，<br>道格拉斯”</p></div>
+<p>爱你的叔叔，道格拉斯</p></div></div>
 </div>
 <div class="entry ic cont">
   
