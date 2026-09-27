@@ -25,7 +25,7 @@
 
 ## 阅读
 
-- 排版版本：浏览器打开 [`追书人.html`](追书人.html)
+- 排版版本：浏览器打开 [`index.html`](index.html)
 - 原始记录：[`原始log.md`](原始log.md)（未经排版的完整聊天 log）
 
 *FINIS*

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跑团记录 · TRPG Logs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@0;1&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root{--baize:#1d2b22;--baize-deep:#121b15;--leaf:#f1ead9;--leaf-edge:#e4d9bf;--ink:#1b1916;--ink-soft:#4a443b;--oxblood:#6b1d1d;}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:radial-gradient(ellipse at 50% -10%,#2a3d30 0%,var(--baize) 45%,var(--baize-deep) 100%);
+    min-height:100vh;padding:64px 16px 120px;
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .book{max-width:700px;margin:0 auto;background:var(--leaf);position:relative;
+    box-shadow:-6px 0 0 -2px var(--leaf-edge),-10px 0 0 -4px #d8cbaa,0 40px 70px rgba(0,0,0,.55);}
+  .book::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(circle at 92% 6%,rgba(140,100,40,.10),transparent 18%),
+               radial-gradient(circle at 6% 97%,rgba(140,100,40,.09),transparent 22%);}
+  .title-page{padding:84px 56px 56px;text-align:center;border-bottom:1px solid var(--ink);
+    outline:1px solid var(--ink);outline-offset:-22px;position:relative;}
+  .title-page::before{content:"";position:absolute;inset:27px;border:.5px solid var(--ink-soft);pointer-events:none;}
+  .imprint-top{font-style:italic;font-size:15px;color:var(--ink-soft);margin-bottom:34px;}
+  h1{font-family:"Noto Serif SC",serif;font-weight:900;font-size:52px;letter-spacing:.32em;margin:0 0 0 .32em;line-height:1.1;}
+  .en-title{font-family:"Libre Caslon Display",serif;font-size:26px;margin:14px 0 26px;}
+  .rule-double{width:120px;height:4px;margin:30px auto;border-top:1.5px solid var(--ink);border-bottom:.5px solid var(--ink);}
+  .being{font-style:italic;font-size:15px;line-height:1.75;color:var(--ink-soft);max-width:420px;margin:0 auto;}
+  .contents{padding:52px 56px 64px;}
+  .contents h2{font-family:"Libre Caslon Display",serif;font-weight:400;font-size:22px;
+    text-align:center;letter-spacing:.14em;text-transform:uppercase;margin:0 0 34px;}
+  .entry{display:block;text-decoration:none;color:inherit;border-top:.5px solid var(--ink-soft);padding:20px 4px;}
+  .entry:last-of-type{border-bottom:.5px solid var(--ink-soft);}
+  .entry:hover .entry-title{color:var(--oxblood);}
+  .entry-date{font-family:"Libre Caslon Text",serif;font-style:italic;font-size:13px;color:var(--ink-soft);}
+  .entry-title{font-family:"Noto Serif SC",serif;font-weight:600;font-size:23px;letter-spacing:.1em;margin:4px 0 2px;}
+  .entry-en{font-family:"Libre Caslon Display",serif;font-size:15px;color:var(--ink-soft);}
+  .entry-meta{font-size:13.5px;color:var(--ink-soft);margin-top:9px;line-height:1.7;}
+  .colophon{margin-top:44px;font-style:italic;font-size:13px;line-height:1.8;color:var(--ink-soft);text-align:center;}
+  @media(max-width:560px){
+    body{padding:32px 10px 70px}
+    h1{font-size:34px}.en-title{font-size:19px}
+    .title-page{padding:54px 26px 36px}.contents{padding:36px 26px 44px}
+  }
+</style>
+</head>
+<body>
+<div class="book">
+  <div class="title-page">
+    <div class="imprint-top">A Shelf of Casebooks</div>
+    <h1>跑团记录</h1>
+    <div class="en-title">TRPG Logs</div>
+    <div class="rule-double"></div>
+    <p class="being">Being a Collection of Accounts Kept by the Keeper,<br>of Investigations Undertaken and Concluded</p>
+  </div>
+  <div class="contents">
+    <h2>Contents</h2>
+
+    <a class="entry" href="2026-09-13-%E8%BF%BD%E4%B9%A6%E4%BA%BA/">
+      <div class="entry-date">2026 · September 13</div>
+      <div class="entry-title">追书人</div>
+      <div class="entry-en">The Book-Chaser</div>
+      <div class="entry-meta">
+        克苏鲁的呼唤 · 守秘人 K.265 · 调查员 邓恩·琼斯<br>
+        密歇根州阿诺兹堡市 — 三章，已完结
+      </div>
+    </a>
+
+    <p class="colophon">
+      正文为戏内叙事与对白；页边铅笔批注为场外闲谈，不入正文；<br>
+      电报纸条为骰子判定与属性记录。
+    </p>
+  </div>
+</div>
+</body>
+</html>
