@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>追书人 · The Book-Chaser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Special+Elite&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --baize:#1d2b22;
+    --baize-deep:#121b15;
+    --leaf:#f1ead9;
+    --leaf-edge:#e4d9bf;
+    --ink:#1b1916;
+    --ink-soft:#4a443b;
+    --prussian:#1f3a5a;
+    --oxblood:#6b1d1d;
+    --graphite:#6d6a64;
+    --buff:#e8d9ae;
+    --buff-edge:#c9b47c;
+    --wire-ink:#23324a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 50% -10%, #2a3d30 0%, var(--baize) 45%, var(--baize-deep) 100%);
+    min-height:100vh;
+    padding:64px 16px 120px;
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .book{
+    max-width:700px;
+    margin:0 auto;
+    background:var(--leaf);
+    box-shadow:
+      -6px 0 0 -2px var(--leaf-edge),
+      -10px 0 0 -4px #d8cbaa,
+      0 40px 70px rgba(0,0,0,.55);
+    position:relative;
+  }
+  .book::after{ /* faint foxing */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(circle at 92% 6%, rgba(140,100,40,.10), transparent 18%),
+      radial-gradient(circle at 6% 97%, rgba(140,100,40,.09), transparent 22%),
+      radial-gradient(circle at 70% 55%, rgba(140,100,40,.035), transparent 30%);
+  }
+
+  /* ---------- title page ---------- */
+  .title-page{
+    padding:84px 56px 64px;
+    text-align:center;
+    border-bottom:1px solid var(--ink);
+    outline:1px solid var(--ink);
+    outline-offset:-22px;
+    position:relative;
+  }
+  .title-page::before{
+    content:"";position:absolute;inset:27px;border:0.5px solid var(--ink-soft);pointer-events:none;
+  }
+  .imprint-top{
+    font-family:"Libre Caslon Text",serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--ink-soft);
+    margin-bottom:34px;
+  }
+  .title-page h1{
+    font-family:"Noto Serif SC",serif;
+    font-weight:900;
+    font-size:64px;
+    letter-spacing:.32em;
+    margin:0 0 0 .32em;
+    line-height:1.1;
+  }
+  .en-title{
+    font-family:"Libre Caslon Display",serif;
+    font-size:30px;
+    margin:14px 0 26px;
+    letter-spacing:.02em;
+  }
+  .being{
+    font-family:"Libre Caslon Text",serif;
+    font-style:italic;
+    font-size:16px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    max-width:380px;
+    margin:0 auto;
+  }
+  .rule-double{
+    width:120px;height:4px;margin:30px auto;
+    border-top:1.5px solid var(--ink);border-bottom:.5px solid var(--ink);
+  }
+  .cast{
+    font-size:15px;line-height:2.1;color:var(--ink);
+  }
+  .cast .role{ color:var(--ink-soft); margin-right:.8em; font-size:13.5px;}
+  .cast .pc{color:var(--oxblood);font-weight:700;}
+  .cast .kp{color:var(--prussian);font-weight:700;}
+
+  .key{
+    margin:36px auto 0;
+    max-width:430px;
+    text-align:left;
+    font-size:13px;
+    line-height:1.85;
+    color:var(--ink-soft);
+    border-top:.5px solid var(--ink-soft);
+    padding-top:16px;
+  }
+  .key p{margin:0 0 6px;}
+  .key .k-pencil{font-style:italic;color:var(--graphite);}
+  .key .k-wire{font-family:"Special Elite","Noto Serif SC",monospace;color:var(--wire-ink);font-size:12.5px;}
+
+  /* ---------- body ---------- */
+  .text{ padding:10px 64px 40px; }
+
+  .chapter-head{
+    text-align:center;
+    padding:72px 0 30px;
+  }
+  .chap-num{
+    font-family:"Libre Caslon Text",serif;
+    font-style:italic;
+    font-size:17px;
+    color:var(--ink-soft);
+  }
+  .chapter-head h2{
+    font-family:"Noto Serif SC",serif;
+    font-weight:700;
+    font-size:28px;
+    letter-spacing:.18em;
+    margin:10px 0 8px;
+  }
+  .chap-date{ font-size:12.5px; letter-spacing:.2em; color:var(--graphite); }
+  .fleuron{ font-size:22px; color:var(--oxblood); margin-top:18px; line-height:1; }
+
+  .entry{ margin:22px 0; }
+  .entry.ic.cont{ margin-top:-10px; }
+
+  .who{ margin-bottom:4px; line-height:1.4; }
+  .who .name{
+    font-family:"Noto Serif SC",serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.12em;
+  }
+  .who.kp .name{color:var(--prussian);}
+  .who.pc .name{color:var(--oxblood);}
+  .who .status{
+    font-family:"Libre Caslon Text",serif;
+    font-size:12.5px;
+    color:var(--graphite);
+    margin-left:.7em;
+    letter-spacing:.04em;
+  }
+
+  .prose p{
+    margin:0 0 .7em;
+    font-family:"Noto Serif SC",serif;
+    font-size:17px;
+    line-height:2;
+    text-align:justify;
+    text-indent:2em;
+    hyphens:auto;
+  }
+  .prose p:last-child{margin-bottom:0;}
+  .prose p.has-drop{ text-indent:0; }
+  .dropcap{
+    float:left;
+    font-family:"Noto Serif SC",serif;
+    font-weight:900;
+    font-size:58px;
+    line-height:1;
+    margin:6px 10px 0 0;
+    padding:4px 8px 6px;
+    border:1.5px solid var(--ink);
+    color:var(--oxblood);
+  }
+
+  /* OOC: pencilled marginalia */
+  .entry.ooc{ margin:12px 0 12px 2.2em; }
+  .pencil{
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;
+    font-style:italic;
+    font-size:14px;
+    line-height:1.75;
+    color:var(--graphite);
+    border-left:1px solid #a8a49c;
+    padding:1px 0 1px 14px;
+  }
+  .pencil p{margin:0;}
+  .pencil-who{
+    font-style:normal;
+    font-size:11.5px;
+    letter-spacing:.1em;
+    color:#8b877f;
+    margin-right:.8em;
+    float:left;
+    line-height:24.5px;
+  }
+
+  /* player commands */
+  .entry.cmd{ margin:14px 0 6px; }
+  .cmd-line{
+    font-family:"Special Elite","Noto Serif SC",monospace;
+    font-size:12.5px;
+    color:var(--wire-ink);
+    opacity:.8;
+  }
+  .cmd-who{ margin-right:1em; }
+
+  /* telegram slip for dice results */
+  .entry.wire{ margin:8px 0 26px; }
+  .slip{
+    background:var(--buff);
+    border:1px solid var(--buff-edge);
+    box-shadow:0 1px 0 rgba(0,0,0,.08), 0 6px 12px -8px rgba(0,0,0,.35);
+    max-width:520px;
+    position:relative;
+  }
+  .slip-head{
+    display:flex;justify-content:space-between;
+    padding:6px 14px;
+    border-bottom:1px solid var(--buff-edge);
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;
+    font-size:11px;
+    letter-spacing:.14em;
+    color:#7a6834;
+  }
+  .slip-head span:first-child{font-weight:700;letter-spacing:.3em;}
+  .slip-body{
+    padding:10px 14px 12px;
+    font-family:"Special Elite","Noto Serif SC",monospace;
+    font-size:13.5px;
+    line-height:1.8;
+    color:var(--wire-ink);
+    word-break:break-all;
+  }
+  .slip-body p{margin:0 0 6px;}
+  .slip-body p:last-child{margin:0; color:#5e5a4c; font-size:12.5px;}
+  .slip-body p:only-child{color:var(--wire-ink); font-size:13.5px;}
+
+  /* epigraph */
+  .entry.epigraph{
+    max-width:400px;
+    margin:10px auto 40px;
+    text-align:center;
+  }
+  .entry.epigraph p{
+    font-family:"Noto Serif SC",serif;
+    font-size:15px;
+    line-height:1.9;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .attrib{
+    margin-top:8px;
+    font-family:"Libre Caslon Text",serif;
+    font-style:italic;
+    font-size:13px;
+    color:var(--graphite);
+  }
+
+  .asterism{
+    text-align:center;
+    margin:56px 0 0;
+    color:var(--ink-soft);
+  }
+  .asterism span{font-size:24px;}
+  .asterism div{
+    font-style:italic;font-size:13px;color:var(--graphite);margin-top:4px;letter-spacing:.1em;
+  }
+
+  .finis{
+    text-align:center;
+    padding:48px 0 72px;
+  }
+  .finis .rule-double{margin:0 auto 18px;}
+  .finis div{
+    font-family:"Libre Caslon Display",serif;
+    font-size:26px;
+    letter-spacing:.3em;
+  }
+
+  @media (max-width:620px){
+    body{padding:0;}
+    .book{box-shadow:none;}
+    .title-page{padding:64px 30px 48px;}
+    .title-page h1{font-size:46px;}
+    .en-title{font-size:24px;}
+    .text{padding:4px 22px 30px;}
+    .prose p{font-size:16px;}
+    .entry.ooc{margin-left:.8em;}
+  }
+</style>
+</head>
+<body>
+<main class="book">
+
+  <header class="title-page">
+    <div class="imprint-top">A Casebook of Private Enquiry</div>
+    <h1>追书人</h1>
+    <div class="en-title">The Book-Chaser</div>
+    <div class="being">Being an Account of the Disappearance of Professor Douglas Kimball, and of the Volumes that Went with Him</div>
+    <div class="rule-double"></div>
+    <div class="cast">
+      <div><span class="role">调查员</span><span class="pc">邓恩·琼斯</span></div>
+      <div><span class="role">守秘人</span><span class="kp">K.265</span></div>
+      <div><span class="role">案发地</span>阿诺兹堡</div>
+    </div>
+    <div class="key">
+      <p>正文以宋体排印，为戏内叙事与对白。</p>
+      <p class="k-pencil">页边铅笔批注，为场外闲谈（OOC），不入正文。</p>
+      <p class="k-wire">电报纸条，为骰子判定与属性记录。</p>
+    </div>
+  </header>
+
+  <article class="text">
+<section class="chapter-head">
+  <div class="chap-num">Chapter I</div>
+  <h2>第一章　委托</h2>
+  <div class="chap-date">二〇二六年九月十三日　记</div>
+  <div class="fleuron">❦</div>
+</section>
+<div class="entry epigraph"><p>愿我如同虚空和大地，永远支持一切无边众生的生命。<br>记录已经开启</p><div class="attrib">—— 隐德来希</div></div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p class="has-drop"><span class="dropcap">这</span>是一个不错的清晨。<br>与你的故乡相比，这里的风还是过分干燥了；但与阿诺兹堡市平时的天气相比，今日的阳光要暖和几分，连带路上的行人也多了不少。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你踩着金红的落叶，走在公园绿地的红砖路上，许多孩子在两侧的草坪上玩耍。不多时，你走到了事务所楼下。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>这座四层排屋已经有些年头，里面的楼梯只能说身经百战。好在它地处市中心，租金合理，风景尚佳。每当你坐在四楼的办公室里眺望绿地时，总是十分惬意。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>四层楼梯对你而言易如反掌，只是楼梯间略显狭窄。你步伐轻快，健步如飞，不多时便打开了事务所的大门，一股墨水和松木的气味迎接了你。这是你的自留地，每一处都由你亲自布置...你最喜欢的沙发上放着几个抱枕，办公桌上的每一份文件都在你所规划的位置。清晨的光从百叶窗斜进来，洒在你的办公桌一隅。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>如此，你今日便开张了。每个人都有些清晨的小仪式。你的清晨从哪件事做起？</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我径直走到窗前，拉上了百叶窗，阳光下细小的灰尘扬起，一如往日，我看了看天光：“今天好像也没什么特别的。”接着转身走到桌前拿起桌上的水杯去倒了点水，最后落座，打开了桌上的案件记录簿，先写下今天的日期。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>那个年代有饮水机吗，我在想</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>很巧的是，刚好那年发明了家用饮水机</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我去科技改变生活，拯救文盲</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>一时间，事务所里只有你写字的声音。九点也确实不是侦探繁忙的时候。忽然，一阵清脆铃声响起。看来你今天马上就要开张了...又或者是催缴水费的公寓楼办？这也不会是第一次。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>过去几年里，这台电话座机一直是你的好帮手。不知今天来电的又是哪位苦恼的人。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我放下手中的笔，心中疑惑，早上九点会是谁给我打电话呢，接起了电话：“喂，你好，这里是邓恩 琼斯侦探事务所。”等待对方的回音。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>线路另一头先是传来一阵轻微的杂音，随后才响起一个年轻男人略显紧张的声音。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“您好，琼斯先生，我叫托马斯·金博尔，有一份寻物委托想请您帮忙。就在阿诺兹堡市....不知您是否方便？”他局促地补充道，“我可以承担您来往的路费。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>寻物？虽然我知道这再正常不过了，但我不免有些失落，毕竟我原本…但生活也是要过的，我掩盖住自己的情绪先礼貌的问好：“你好，金博尔先生，不知道是怎样的物品呢？它是否有些特殊？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“可能听起来有点不值一提...“金博尔似乎有些不好意思，“大约前天，我发现我叔叔道格拉斯·金博尔的书房失窃了。书架上缺了一格子的书，大概六七本左右。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我们要约一个什么暗号区分正在rp和已经rp完了么</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>还是表情包</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>就用表情包吧</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>如果我没发表情包就是可以随时打断的</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>什么，不是没发表情包就是不能打断么</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>？我之前朋友们当kp好像是反的</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>ah我的意思是这个</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>自由RP时间那个是hold结束的提示</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>哦哦哦</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯叹了口气。“我尝试报警，但警察局甚至懒得敷衍我，因为那些书甚至没有什么特别的收藏价值，只有我叔叔那么看重它们。”他听起来十分沮丧，“我叔叔一年前就失踪了，之后这房子一直都是我在打理。但我大学生活也很忙，没法时时注意。前天我去打扫书房时，注意到书架上多了一片空档，这才知道有书被偷了。“</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>有什么想问的吗，没有就让小伙继续说下去了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>失踪？这引起了我的兴趣，停顿一会：“托马斯先生，恕我冒味…请问你叔叔失踪你报警或者委托其他侦探调查过吗？毕竟，在我看来亲人失踪好像比书籍失踪更严重一些。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“噢，当然，我该和您解释清楚。”托马斯对你的问题毫不意外，“一年前，我叔叔邻居向警察局报案，说多日没看他出门。警察上门查看。却发现屋子里空无一人，至今都没能找到他的下落。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“当时警察联系到我，让我用叔叔给的备用钥匙开门，但房屋里就是正常的生活痕迹，没什么意外的情况。”托马斯说，“由于我是他现在在世的唯一亲人，而且我读的大学也离他家比较近，这幢房屋现在就姑且在我的打理之下了。搬离大学宿舍后，我就暂住在这里。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“但这些都是陈年旧事了。“他叹了口气，”当时我费劲找了很久，但只能说一无所获。如果一个人某天忽然决定去纽约，只需要一个行李箱，一张车票...你怎么能找得到他？我希望叔叔只是出了趟远门。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“总之，这次我想拜托您的是书籍失窃的事。我的叔叔是一位爱书人，如果有天他回来了，我想他会很高兴书房还是原来的样子。当然，如果您能找到他去向的线索，我也一定重金感谢。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>房屋正常，说明无打斗痕迹，一瞬间我脑子浮现出几种常见可能，一，叔叔自行离开，书籍也是他拿走的，二，叔叔在外面被迫离开，书籍有特殊价值被他人偷走。短暂想了一下可能性：“我了解了，这不仅仅是几本书籍消失的事情，这还有您对家人的感情因素，所以对您来说很重要。”但出于对生计的考虑，我还是不留情面的事先说明：“毕竟如您所说很难找到叔叔，我不能保证在这个世界上找到几本在警察眼里不重要的书籍，我会尽我所能，刚刚有听您说会报销路费，不知道如果能找到，那么报酬是多少呢？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“十美金，这是我作为学生能拿出的最多了。“托马斯说的很爽快。“路费另算。您住宿期间，饮食直接从厨房拿就好。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我在心中简单计算着调查应该会花费多长时间，这段时间我的租金和生活刚需等等因素，我应不应该接下这份委托，值不值得呢…如果是命案我也许会毫不犹豫吧。我听着想着，出了一瞬间的神。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>非常专业的琼斯侦探啊</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>如果是你，你也许会吧。你不会像我这样瞻前顾后。你…我心想着。马上回过神来：“这太好了，既然基础的吃住行您都负担了许多，还有报酬，那我一定尽力而为。”我一边用头和肩膀夹着电话，一边拿着记事本准备记录：“那么，您需要跟我约定时间地点见面吗，还是我直接去当地调查，不管如何，我一定准时赴约。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>其实我是超级轻rp选手，但是你写的好认真也写的很好</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>老大你的角色理解也非常细腻，看得很有沉浸感</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>中途商业互夸一下</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“太好了，谢谢您！” 托马斯听起来如释重负，“其实我马上得去学院上课，大概晚上五点多才能回来。“在秋天的密歇根，五点也确实算晚上了。“那之后我都在家，您敲门就可以。路费我们结案的时候一起算。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>说罢，他又报了一串地址：<br>密歇根州阿诺兹堡市艾尔斯伯里大街218号<br>218 Aylesbury Street, Arnoldsburg, Michigan</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“那么琼斯先生，我真得走了。”托马斯叹了口气，“我们经济教授脾气可算不得好。您如果还有问题，我们晚上再聊吧，我会给您准备好热茶。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我一边写下地址和时间一边回答到：“好的，我记下了，那么今晚我会准时到达与您细聊，到时候见。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>说罢，我挂断了电话，扯下记事本上那页纸，收拾一下随身物品，但现在还早，计算一下车程时间，我在思考要不要吃中饭再动身。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>去他那要多久啊？还是随便</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>不知道中午吃啥之人</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>哈哈随便吧，这里自由RP</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>如果没什么特别想写的可以跳时间，有想写的小东西还可以继续</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我rp一点</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>空着肚子去似乎不太好，思索片刻，我带好随身物品，拿了几份最近的报纸，一边翻看着一边下楼，最近好像没有什么特别的案件，有什么案件能和几本书有关呢，奇怪，每年失踪案其实也不少，我也没法翻出一年前的报纸查看有什么特别的案件有关联，就这样想着来到速食店门口随意了点了份中餐，一边翻着报纸也全然不顾吃的味道好不好，反正老板娘的手艺不会太差，对付几口后，我出了门。准备驱车前往。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>gogogo</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>等等我要过汽车驾驶吗？我好像没点</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>不过了，怕你出师未捷</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>完全忘记点，那直接go到他家门口好了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你驾驶着不起眼的小车，在阿诺兹堡的斜阳里驶离市中心，窗外的街景也逐渐萧条了下去。过了不知多久，你终于眺到一块歪倒的路牌：艾尔斯伯里大街。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>天色渐暗，我风尘仆仆，在五点之前来到了记事本上的地点，算是准时。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>这里几乎称得上远离居民区，只是在边缘缀着，附近稍远处只有一户人家，里面隐约有灯火。而你的面前，是一座石质的独栋住宅，虽然才刚入秋，小道两侧的草坪已泛黄，略显颓靡，门口信箱上挂着一块木牌：金博尔宅。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我停好车，下车顺手锁上车门，将钥匙揣兜里，低头打开怀表看了一下时间，“嗯…没有迟到。”我走上前去，仔细对比木牌上的门牌号和纸上的地址，确认无误后，我轻拍了拍大衣外也许不存在的灰尘，正了正领带，最后将也许漏出来的发丝塞进帽子里，穿过小道，来到大门前，轻轻敲响了房门“你好，请问托马斯先生在家吗？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>起初，屋子没有丝毫回应。忽然——</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“嘎吱——”<br>一声木头不堪重负的声响，紧跟着凌乱物品掉落的声音，以重重的一声“砰！”告终。隐约间，你听到一声吃痛的人声。脚步声磕磕绊绊地往你面前的门跑近，最终：</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“实在抱歉！”木门一把朝里打开，站在你面前的是一个二十出头的年轻学生，一头凌乱的棕发在灯光下闪着金色的光芒，此时，他捂着右手，眼神慌乱，还带着点痛意。看到你的面孔时，他眼睛一下睁大了。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“噢，”他不好意思地整理了下头发。“您好，我就是托马斯，托马斯·金博尔...琼斯先生，谢谢您这么晚来这里。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“你好，我是邓恩 琼斯，按照约定时间前来。”我看向他捂着的右手，有点诧异，我们提前约好了时间，托马斯先生应该不会被我这声敲门声吓到才对，我挂上有点担忧的神情看向他，“怎么了托马斯先生，我刚刚有听到屋内声音很大，您是被我吓到不小心摔倒了吗？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“噢，没事，没事...“他挠了挠脸颊，耳尖泛红，”我刚从叔叔的书房里下来，但那个楼梯有点老，不知什么时候塌了一块。我下来时太急了，摔了一跤。”门外的冷风撩起你的衣摆，把他也扑了一激灵。“您待会儿也小心些...不说这个，您赶紧进来吧？”他忙不迭把你迎进门。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>金博尔的客厅温馨而古雅，被一股你所熟悉的油墨气味所浸润。沙发前的火炉里烧着明亮的火焰，茶几和周围柜子上随意地散落着一些生活物品和书籍。托马斯把你的行李接过放在门廊里，示意你在沙发坐下，转身去厨房给你泡茶。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“您想喝点什么？咖啡、大吉岭、热可可...”他的声音从厨房里传来，“时间不早了，但我想您会需要提提神。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我跟随他一起进门，放好行李，室内的暖光照在我们身上，我出于本能的环顾四周，几乎是条件反射般的打量房间内的布局和物品，然后慢慢走向沙发，闻言：“谢谢您，您什么最方便就给我来点什么吧，咖啡？白水都可以的。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我看向火炉里的火焰，偶尔会蹦出一两点火星，随即转开视线只感受它温暖，看向去厨房的托马斯，“时间确实不早了，如果托马斯先生方便，我们等会早点聊完，也许还能给我剩余一些时间去调查。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>金博尔的客厅就是普通人家的模样，比你儿时波士顿的家多了几分书卷气与精致，但里面的温暖气息别无二致。沙发被托马斯打扫的很干净，斗柜和架子上摆着各种小玩意，不知是托马斯还是他叔叔的收藏。托马斯听到你说的话，在厨房含糊应了一句，你听到烧水的咕噜声。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过一个调查</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>侦查么</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>yep</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra侦查</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的"侦查"检定结果为: D100=36/75 困难成功！</p>
+<p>世界新生伊始 ，许多事物还没有名字，提到的时候尚需用手指指点点。</p></div>
+  </div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你在客厅里四处打量。这些小物件和书架让你有些眼花缭乱，但你入微的观察力精准找到了几件有趣的东西。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>斗柜里有一整层都摆着各类石头...你能辨认出云母、电气石、紫水晶、火山石等等，不过除了这些漂亮的矿石，更多的还是形态各异的寻常卵石，在温暖的火光中闪着温润的光芒。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>而在斗柜旁的一张小方桌上，台灯边摆着一张二人合照。上面是一对男女，大约三十出头。男人相貌温和，穿着得体，带着一副黑款眼镜；他的手轻轻扶在女人肩上，二人脸上都挂着幸福的笑容。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>就在这时，你问到一股咖啡的苦香。托马斯端着一壶咖啡走出厨房，把杯子茶壶摆在茶几上。看到你在打量客厅的陈设，他微微一笑：“很不错吧？希望我打扫的还算干净。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我收回目光看向托马斯笑了笑，发自内心的赞叹：“是的，这里很温馨，至少比我那简单收拾房间要好许多。”转头又指向那合照，询问：“这位就是您的叔叔么？那些书的主人。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>叔叔好年轻啊，跟我一样大</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我也是年轻人</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯的目光随着你的手落在那张照片上，神情怀念。“啊，是的，这是我的叔叔道格拉斯。他走到方桌边，轻轻拿起相框。”旁边的是我婶婶，玛格丽特。这是他们结婚时拍的“</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>照片不代表现在年龄啊哈哈哈</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>忘记了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“他们看起来很幸福。”我看着那相片上的笑容，突然又问到：“那你的婶婶呢，她现在还好吗？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯的笑容沉寂了下去。”她...两年前去世了。“他低下头。”肺病。玛格丽特身体一直不好，他们也因此没生孩子。她离世后，叔叔就一直一个人。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>一阵沉默后，托马斯强打精神。”您先坐，喝点咖啡吧。休息好后我带您去书房。今天时间不早，户外您还是别去了，但房子里随意调查。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我有点抱歉的看着他：“抱歉，我不知道这个…我不是故意提起让你难过的话题，只是想也许与案件有关联。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>听完我又打起精神，端起咖啡，“谢谢您的咖啡，那不如我们直接去书房聊吧。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“没事，那我们走吧！”托马斯放下茶杯，起身把你领到楼梯间，一边叮嘱着：“上面有块台阶坏了，里面的中空有点腐朽，就是我摔倒的原因，您上去的时候要跨一下。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你跟着他走上去，那级台阶确实惨不忍睹，几乎中空塌陷了下去。如果不是下面有隔间支撑着，这基本算危楼。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>托马斯如面大敌，小心翼翼地先你一步跨了上去，三步做两步到达了二楼。回头带着期待地看着你。一瞬间，他有点像你和弟妹小时候在波士顿港口喂过的拉布拉多犬。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过个体型或敏捷</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我也学着点他的样子准备跨上去</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra体型</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的"体型"检定结果为: D100=99/85 失败！</p>
+<p>我开始明白我自己，我不存在。我是我想成为的那个人和别人把我塑造成的那个人之间的裂缝。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>？</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>！</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>没事</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">K.265</span><span class="cmd-text">.nn托马斯·金博尔</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;守夜人&gt;的昵称被设定为&lt;托马斯·金博尔&gt;</p></div>
+  </div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">K.265</span><span class="cmd-text">.ra敏捷60</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;托马斯·金博尔&gt;的"敏捷60"检定结果为: D100=93/60 失败！</p>
+<p>你抵抗什么，什么就会持续，你静观什么，什么就会消失。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>...</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">K.265</span><span class="cmd-text">.nn守夜人</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;托马斯·金博尔&gt;的昵称被设定为&lt;守夜人&gt;</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>咱们一起坠入爱河</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>或许是你的肩膀过于宽阔，体格过于健壮。你自信的跨步不仅没带你飞越腐朽的木板，反而一脚踩空了下去！好在托马斯眼疾手快，飞快抓住了你的手。然而你的吨位不可小觑，他反而被你拽了个趔趄。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>一番折腾后，你们好歹爬了上来，但你的脚踝也被磕了两块乌青。然而这个小插曲也打破了先前略有沉郁的氛围。你们坐在楼梯口面面相觑，托马斯忍不住笑了起来。“抱歉，抱歉，“他说，”明天我一定叫工人来修。“</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">.st 力量65str65敏捷45dex45意志50pow50体质80con80外貌55app55教育75edu75体型85siz85智力80灵感80int80san50san值50理智50理智值50幸运60运气60mp10魔法10hp16体力16会计5人类学1估价5考古学1取悦15魅惑15攀爬20计算机5计算机使用5电脑5信用30信誉30信用评级30克苏鲁0克苏鲁神话0cm0乔装35闪避42汽车20驾驶20汽车驾驶20电气维修10电子学1话术5斗殴45手枪55急救40历史5恐吓15跳跃20母语75法律5图书馆50图书馆使用50聆听50开锁1撬锁1锁匠1机械维修10医学1博物学10自然学10领航10导航10神秘学55重型操作1重型机械1操作重型机械1重型1说服70精神分析1心理学60骑术5妙手10侦查75潜行20生存10游泳20投掷20追踪10驯兽5潜水1爆破1读唇1催眠1炮术1</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的coc7属性录入完成，本次录入了42条数据</p>
+<p>自打从母亲腹中而出，我就有了罪，我被宣判定罪，而惩罚我的方式就是活着。</p></div>
+  </div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">.st show</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的个人属性为:<br>力量:65	敏捷:45	体质:80	体型:85<br>外貌:55	智力:80	意志:50	教育:75<br>幸运:60	DB:1d4	体格:1	移动力:7<br>理智:50/99	生命:16/16	魔法:10/10	护甲:0<br>乔装:35	侦查:75	信用评级:30	图书馆使用:50<br>射击:手枪:55	心理学:60	急救:40	斗殴:45<br>神秘学:55	聆听:50	说服:70	闪避:42</p></div>
+  </div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。st hp-1</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的属性变化:<br>生命值: 16 ➯ 15 (扣除-1=1)</p>
+<p>今夜我不关心人类，我只想你。<br>[√] 已绑卡</p>
+<p>全世界的水都会重逢，尼罗河炽热与北冰洋的寒冷会在湿云里交融。</p></div>
+  </div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">.st san+1d3</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的属性变化:<br>理智: 50 ➯ 53 (增加1d3=3)</p>
+<p>今夜我不关心人类，我只想你。<br>[√] 已绑卡</p>
+<p>全世界的水都会重逢，尼罗河炽热与北冰洋的寒冷会在湿云里交融。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>ok</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我跟着一起讪笑，一边说“没事没事，遇见案子多了难免会有很多意外。这才是常态。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯回以你一个笑容，起身推开木门——你们千辛万苦终于来到了书房。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>好难得啊</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>终于进了书房</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>这间书房的布置一如客厅，典雅而温馨，只是更加整洁。月光与窗外的灯火照亮了窗前的宽大书桌，一整墙的书籍整齐着排列着。托马斯摸索着把电灯点亮，示意你走到书架旁。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>千辛万苦走进书房</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。snCOC</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>已自动设置名片格式为COC：邓恩·琼斯 SAN53 HP15/16 DEX45<br>如有权限会在属性更新时自动更新名片。使用.sn off可关闭。</p>
+<p>进入此门者应当放弃一切希望。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我生命值还是16呢</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>它还不是管理员，稍等</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>机器人好像没法设管理员，之后再说吧</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我跟着他走到书架旁，开始观察，“那么请您描述一下您了解的情况，以及当时和最近有没有什么异常事件。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你看到道格拉斯的书房收藏量十分惊人，几乎每面墙上都做了书架。架上各色书籍整齐地排列着，也正因此，空缺显得突兀无比。你们身边的这排书架上大约空了六七本书的位置，几本小书失去了支撑，倒在空荡的空位上。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“就像我和您在电话里说的，书籍失窃的时候，我并不在场。”托马斯叹口气，“又或者我睡着了吧...总之，我把房子上下检查了一遍，但没发现任何撬锁或者闯入的痕迹，贵重物品也没有丢失，所有东西都在该在的地方。“他的目光也落在书架的空缺上，“除了这些书。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“很抱歉我没法给出什么有用的信息。”托马斯不好意思地挠挠头，“您可以在书房里看看，希望能有些线索。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“您的叔叔具体是做什么职业的呢？他这些书你有看过是写的什么内容吗？”我一边询问着一边在书房里观察，拿起靠近空缺的那几本小书翻动一下看看写的是什么内容。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“我叔叔是一位人类学教授，就在我就读的大学任职。”托马斯说道，“虽然我也是学生，但我并没怎么看过他书房里的藏书。”他神色略有羞赧，“我读的是工程学...“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你注意到书房的陈设非常整洁，除了立灯、书架，就是一张宽大的书桌。一扇三叶大窗正对着书桌，月光刚好洒在桌面上。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你手中的小书大小、装帧各有不同，题材也没什么相关。其中一本叫《巴比特》，看内容似乎是一篇辛辣的讽刺小说；另一本则是《赠礼论》，内容更晦涩一些，似乎是少数族裔的文化传统研究。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>托马斯也瞥了一眼你手中的书，终究觉得看不出什么名堂，苦恼地绕到窗边。“真是奇怪...应该也不是什么珍贵的古籍。他忧虑地望着窗外，”到底为什么？“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我开始按照以前的惯性，问托马斯一连串的问题企图一瞬间获取更多的信息：“你没有注意到有什么特别的事情吗，比如家里附近突然有陌生人徘徊，比如你叔叔失踪前有什么一反常态的的行为，还有他有没有得罪过什么人，如果没有他经常会去什么地方。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>他们是少数族裔吗，我看的出来吗，还是就是美国人在看少数族裔的书</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>他叔是人类学教授，研究材料</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>哦哦哦</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯神色为难。“抱歉，但我真没注意到有什么异常。我每天大部分时候都在学校，而这附近本身就人烟稀少，我们房子背后是墓地，旁边应该也只有一户人家。哪怕有飞贼，大概也不会来这吧。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“至于叔叔失踪前...“托马斯眉头皱在一起。”其实那时候，他已经不怎么和我联系了。“他移开目光，似乎有些难过。”他本来就不是健谈的性格。自从玛格丽特离世后，他就越发沉默寡言了，很少与他人交谈。到后来，我甚至在学校也见不到他了。那时候我还住在学校宿舍，有时候想拜访他，他也总不在家。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>”不过我能确定的一点是，叔叔他性格温和，不喜欢和人发生冲突，大概不会是仇人上门之类的。“托马斯补充道，”至于他常去什么地方...邻居家的奥黛尔女士或许更清楚一点。“他给了你一串地址，约莫在不远的地方。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>说着时，托马斯手上心不在焉地拨弄着窗户的锁扣。锁扣声音清脆，没什么异常。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“明白了，按理说失踪报警后是该第一时间询问邻居有没有发现异常的。”我也看向那锁扣，似乎没有什么破坏的或者换新的痕迹？</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“那么，在我去拜访那位女士前，我想了解一下，屋后这边墓地…您的婶婶也葬在此处吗？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“或者说，就是那位邻居太太报警的吧。”托马斯说，”墓地的话，是的。玛格丽特遗嘱里说，她希望能陪在叔叔身边。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你检查锁扣时，看到落地窗正对着幽深的树林。远处似乎是一片平地，大概就是托马斯所说的墓地。托马斯靠在窗边的书桌边，随你一同眺望远处。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“那么书房里您还有什么要调查的吗？”托马斯问你。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我思索着，一边在书房里走了几步，无撬锁痕迹，书自己消失，书桌窗户书架没有异常，我随即摇了摇头“书房暂时好像没有了，你的这栋房子，有地下室之类的地方么？”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过一个幸运</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra幸运</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的"幸运"检定结果为: D100=33/60 成功！</p>
+<p>如今，我从你沉默的诡计和残忍的谋略中，明白了你的爱有多么强烈。所以，你伤我越深，我不是越该爱你吗?</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>哦对我还要看一下地板脚印和书桌上有啥</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>因为我自己书桌上啥也没有我就觉得他的也没有了来着</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>我笑死了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你忽然意识到，你好像还没仔细看看书桌，好像也没检查地板！这真是天大的失误。你注意到道格拉斯的书桌是一款橱柜式书桌，桌面上摆着台灯和写满了数字的草稿，底下则有几层柜子，都上了锁。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“噢，请无视那些草稿。”托马斯在一旁说，神色忧愁，“那是我复习工程学考试用的...“</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>先过书桌再看地板</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>要侦查吗</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>不用，你幸运我当你过了，你现在在看上锁的柜子</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯也注意到你在打量书桌的柜子，”我一直没看过里面有什么。“他掏出一串钥匙，”您看看，也许会有能用的钥匙？“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我接过钥匙，伸手摸向那把锁，“谢谢您，我无意窥探他人隐私，只不过是想多一点线索。”说罢我尝试用钥匙打开锁。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你挨个试了过去——道格拉斯的钥匙可真多！几个抽屉都是空的，但最后，你用一把小小的黄铜钥匙打开了最底层的抽屉。一阵灰尘飞扬后，你看到一本羊皮封面的日记躺在里面。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“这是叔叔的日记...？“托马斯也十分惊讶，”您拿出来看吧，没事的。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我轻轻挥了一下灰尘，拿出来那本笔记。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>翻看一下。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你拿起日记，它的封皮厚实而柔软，拿在手里颇有分量。翻看时，你发现里面大多是一些日常碎语，偶尔夹杂着些研究感悟。然而随着时间线来到1914年，文字中有关战争的评论越来越多，文风也从最初的沉稳平静，逐渐演变成了消极而悲伤的字句。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>1920年后的文字里，有关玛格丽特病情的文字越来越多，却在1923年骤然终止。那之后的文字...你只能说像是自言自语。日记的主人似乎在一点点隔绝自己与世界的任何联系，直到彻底成为一个冷眼旁观、游荡在社会之外的幽灵。托马斯在里头的记录则停在了1923年的某个秋天。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>到结尾时，道格拉斯的每篇日记都只有寥寥数语，字迹潦草，内容也不过是一些抒感。但在最后一篇日记里，他用半干的钢笔，写下了一行幽幽的字迹：</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“我的朋友们又来拜访我了。“他的字迹格外放松。”我当追随他们去了。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我看完这些文字字迹，就像看着他一点点消散，情感上的支离破碎，理性告诉我也许该问托马斯他叔叔有哪些朋友，但感性却告诉我，那些朋友也许不是广义上的朋友。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我还是例行公事般询问一句：“看起来，他最后一句当追随朋友而去，他就像如您所说的出了趟远门。”一边我观察着窗边门边的地板有没有除我两之外的痕迹。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯看起来如释重负，但看到那行幽幽字句时，他眉间的忧虑难以减轻。“希望能够如此。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你看着地板。室内光线一般，但或许你能找到什么线索？</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过一个侦查</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra侦查</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的"侦查"检定结果为: D100=83/75 失败！</p>
+<p>世界在一点一点地与我们的理性背道而驰。</p></div>
+  </div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>距离事发日过去了太久，你仔细检查了门窗地板，却也看不出有什么特别的痕迹——老天，托马斯真是个勤快的人！他该不会把地板全打扫干净了吧！</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你们绕了一圈，一无所获。托马斯看了看你的神色，说：“既然如此，不如我们今天先休息吧？明天我还是要去学校，但您可以在附近都转一转，或许会有什么线索。”说到此处，他想起了什么，从桌上的草稿里分出一张纸。“这是我签名的委托书，如果您需要去警察局之类的地方，这能用得上。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我接过委托书：“多谢，今天确实太晚了，等明日我再去周围调查，今天就先休息吧，也多叨扰您了。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>剩下的明天再跑？或者你下次什么时候有空</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>我们看下下周吧，我这两天有点结膜炎...</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>我收个尾</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>okok</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯引着你往楼下走。你们又小心翼翼地跨过那级台阶，终于回到了安心的地板上。客厅里的炉火正旺，你们一时都有些疲惫。托马斯带你来到了客房，里面已经放好了生活用品与一壶水、一些零食。不多时他便向你告辞，回自己的房间去了。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我下意识将门反锁后，打量一下房间，确认无异常后，脱下外套挂起来，收拾收拾准备休息迎接明天。</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">K.265</span><span class="cmd-text">。log off</span></div>
+</div>
+<div class="asterism"><span>⁂</span><div>此后搁笔一周</div></div>
+<section class="chapter-head">
+  <div class="chap-num">Chapter II</div>
+  <h2>第二章　邻人与警署</h2>
+  <div class="chap-date">二〇二六年九月十八日　记</div>
+  <div class="fleuron">❦</div>
+</section>
+<div class="entry epigraph"><p>故事"追书人"的记录已经继续开启，当前已记录文本244</p>
+<p>我一口吞下苦涩的命运，抬头看天，生命一贫如洗，死亡却如此丰盈。</p><div class="attrib">—— 隐德来希</div></div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>上次应该跑到睡一晚</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p class="has-drop"><span class="dropcap">清</span>晨，你在迷蒙中听到客厅里一阵动静，不知过了多久，你听到拧开门把手的声音。金博尔家的大门发出吱呀轻响，不多时回归寂静。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>今日天气不好。你的房间里光线昏暗，空气微凉，然而培根与咖啡的香气从门缝里飘了进来，让这座宅子多了几分活人气息。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我揉了一下脸，让自己清醒一点，起身收拾自己的东西看看有没有落下的，穿好大衣打开房门看看主人是不是已经去上学了。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你来到客厅，发现托马斯已经离开了。餐桌上摆着一份简单的早餐：几条酥脆的培根，两根香肠，一个煎蛋，以及一杯咖啡，一如你昨晚喝的调配。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>餐盘边的刀叉下压着两张纸。最上面是一张纸条：“琼斯先生，抱歉我得先赶去学院了，祝您调查顺利。”下面则是一份地图。虽然你是本地人，但他似乎担心你在这偏远的地方迷路，还是给你准备了一份。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>稍等，图发不出来</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>确认主人已经离开，倒也省了一些见面闲谈的时间，借用一下盥洗室简单洗漱了一下后，一边吃着早餐一边查看托马斯给的地图，拿着手里昨天记下的邻居家地址对比一下，准备前去拜访。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你打开托马斯给的地图。这是你所熟悉的阿诺兹堡，尽管你还是没法像在波士顿一般记住它的每一条道路。你看到几个地点：警察局、图书馆、阿诺兹堡报社、墓地。如果要调查报案，警察局也许是不得不去的地方。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>在金博尔宅边，托马斯还贴心地标注出了邻居的地址。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>那么去邻居家了？</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我现在在3吗</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>哦哦不对我在墓地上面是吗</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>去邻居家吧先，感觉COC的警察都没用</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>笑死了好吧</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>gogogo</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我吃完饭，拿了些必备的随身物品，看着地图准备动身去拜访邻居。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>其实我更想去墓地，但是还是走一下邻居再去好了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你驱车离开金博尔宅，按着地图寻过去，不多时便来到了奥黛尔宅。这座宅子是灰石垒砌的，乍一看比金博尔宅还要冷清几分，门窗紧闭。然而，你能看到里面种了不少绿植，打理得十分精致。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>一个个来ww</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我停好车，确认好地址无误后，收起纸放进衣兜里，上前敲门询问“您好，请问奥黛尔夫人在吗？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>门那头一片寂静。你等待良久，它毫无征兆地拉开了一条小缝，防盗链也并未取下，紧紧地绷在门隙间。一双老妇人的眼睛在昏暗日光里闪烁，如鹰一般盯着你：“什么人？”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>不知是你身形高大的原因，还是她本身就有些神经质。奥黛尔夫人看起来并不信任你这位不速之客。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“您好，我叫邓恩·琼斯，是受您的邻居的侄子托马斯·金博尔先生的委托，帮忙调查他叔叔失踪一事，这是他的委托书。”我拿出我的名片和托马斯的委托书递上前。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过一个说服</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra说服</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的"说服"检定结果为: D100=48/70 成功！</p>
+<p>我生性自由散漫，不喜欢拘束。我谁也不爱，谁也不恨。我有自己的消遣。</p></div>
+  </div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“多有叨扰，因为听闻您与他叔叔的关系还不错，当时也是您报的警，所以前来拜访看看有没有什么遗漏的线索。”我露出礼貌性的微笑。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>听了你认真的解释，奥黛尔接过委托书和名片，仔细端详了一会儿，神色缓和下来。“噢，那孩子还没放弃么？”她摇摇头，“我恐怕知道的也不多，不过，您有什么问题，我一定尽力回答。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“太感谢了，女士，即便只是只言片语，也是能帮我大忙的。”我说道：“我想知道您当时为什么会报警呢？如果是不常走动的邻居几日不见可能不会察觉有什么异常，也不会去报警，当时有什么让你注意到异常的地方吗？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>奥黛尔夫人扬起眉毛。”首先，我是个热心的邻居，互相拜访是非常寻常的事，这是我们阿诺兹堡市民该有的美德。“她继续说道，”更何况，自从玛格丽特去世之后，道格拉斯的精神状态就一直不好，有时候我在路上遇到他，总觉得他神情恍惚，心不在焉。因此，我有空也会去他家送些饼干，或者叫他来喝喝茶。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“那天我在路上遇到他，只觉得他精神头更差了，便邀请他来我的花园派对聚餐。道格拉斯还是一副心不在焉的样子，但还是答应了。可是约好的那天，我们却没等到他。”奥黛尔摇摇头。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“道格拉斯从来不是一个会毁约的人。聚会结束后已经是深夜，我与几个朋友开车去他家查看，却怎么都没人应门。他是个生活简单的人，除了大学和家，我想不出他会去什么地方。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“又过了几天，其他在大学工作的邻居也说没见着他，我们觉得不对，便报了警。”奥黛尔神色有些怅然。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“原来如此，那在平时道格拉斯先生有说过他要去什么地方吗，或者向你们诉说烦心事之类的？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>"道格拉斯不是个健谈的人，除了玛格丽特的病，我没听他说过什么烦心事。“奥黛尔摇头，随后细细思索：”要说去哪的话...他有时会带着几本书往墓地走。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“您与警察说的也是这些吗？警察有没有告诉你们他们有什么调查进展呢？”我一边说着一边拿出身上带着的地图等待她的回复。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“是的，我把能说的和他们都说了。”奥黛尔说，“警方也找了许久，毕竟是一位大学教授。寻人启事甚至上了阿诺兹堡公报，但之后我就不清楚了。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“好的，我了解了，谢谢您，女士。”我微笑着点了点头，接着说：“托马斯先生待我很好，我也算作他们家的客人，想着既然来了，也应该拜访一下屋子的主人，我想去祭拜一下玛格丽特女士，不知道您有没有去祭拜过能知道大概位置吗？”我摊开手上的地图指着墓地的位置询问女士。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“您可有些为难我这样的老人家了。”奥黛尔说，“我记性不好，容易迷路，每次去那都是让守墓人帮忙，带着我找过去的。”不过，她还是给你指出了公墓大门入口。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我记下她指出的位置：“那么多谢您了，我想问的问完了，女士如果没有什么突然想起来的线索，那我就先去继续调查了，我之后如果能找到道格拉斯先生会来告诉您的。”我向她道谢。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>奥黛尔朝你点点头，“可怜的托马斯，希望他能找到道格拉斯。”门轻轻合上，你听到她给植物浇水的声音。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>来都来了，那我还是去一趟警局吧</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我改变原计划，准备去一趟警局，看好对应的地址，驱车前往。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你驾车前往警局，沿路楼房逐渐密集，行人也多了起来。半小时后，你来到了阿诺兹堡市中央警局。</p>
+<p>这里人流嘈杂，阿诺兹堡市并不是个太平的地方——不然你也吃不上这碗饭了。局里的值班警察们有的在打电话，有的在与市民交谈，尽管才刚到早晨，不少已经面露疲惫。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我上前向值班警察打招呼：“您好，我是邓恩·琼斯，受我的委托人托马斯先生的委托前来想询问一下之前报案情况，关于道格拉斯先生的失踪现在有什么新进展吗？”我一边说着一边将名片和委托书递上。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>值班警察不耐烦地看了你一眼，见你的身形与打扮，又收敛了表情，姑且接过名片与委托书扫了两眼。然而，当他看清委托书内容时，神色又不耐烦了。“这不是委托你调查丢失的书籍的吗？怎么又想起旧案子？“</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我就知道COC的警察不行</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>来个社交看看本事</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我沉默一秒，这人与我印象中的那位，穿着差不多的衣服，态度面相却截然不同，我说不清自己是什么感受，失望？随即又平静下来，人与人终归是不同，我也明白，我接回委托书不急不缓的说：“托马斯先生也担心着他的叔叔，这张亲笔委托书只是为了证明我确实是受他委托调查。”随即我又挂上社交微笑：“作为失踪人口的侄子关心案件进展我想这是再正常不过的事情，我明白的，警局案件多又杂，大伙忙不过来也是常有的事，我作为退伍军人也能理解，现在正是缺人的时候。”说着我掏出一根线烟递上前，手抬一下示意问他抽不抽。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我一边递着烟一边又说道：“我们也算是半个同行，你也知道，有的案件那就是毫无进展，被问来问去也烦，我也懂，但是职责所在也不得不去硬着头皮调查。我也和您一样，只想多一点线索对案件也好，也能对人民和国家有点贡献。您说是吧，也耽误不了几分钟的。只要一丝线索就不放弃，这就是当警察的伟大吧。”我继续笑着说。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>那么过一个说服，加奖励骰</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>奖励骰怎么加</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>.r技能 b</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。r说服b</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>由于说服b，&lt;邓恩·琼斯&gt;掷出了 d=80[D100]=80</p>
+<p>在梦里，我们以为那就是全部。</p></div>
+  </div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。rb说服</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>由于b说服，&lt;邓恩·琼斯&gt;掷出了 d=82[D100]=82</p>
+<p>在梦里，我们以为那就是全部。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>是这个吗</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>奇怪，这个不是海豹指令吗</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>算了你直接骰吧</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>失败了我捞你</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>.ra说服b试一下</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。rab说服</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　隐德来希</span></div>
+    <div class="slip-body"><p>&lt;邓恩·琼斯&gt;的"说服"检定结果为: b=7/70, (7[D100=27,奖励0]) 极难成功！</p>
+<p>我不要舒适。我要上帝，我要诗歌，我要真正的危险，我要自由，我要美好，我要罪恶。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>刚刚去小红书搜的</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>okok，太久没用了</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>你这个奖励竟然出0了...历史性的一幕</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>是啥意思，意思是奖励了个空气吗</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>不是，是极难成功</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>面团0有时候会不算数，这里就当极难了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>听了你的话，值班警察愣住了，似乎没预料到能在这样一个无聊的清晨听到如此美言。他接过烟，整理了一下臂章，冲你点点头。“您是一位值得尊敬的侦探，琼斯先生，请原谅我之前的失礼。”他放下手里的文书，“关于金博尔先生，您有什么需要的信息？”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你看到他眼中的亮光。你退伍军人的身份让他多了一份敬意，你的话语也让一位值班警察振作了起来——或许与你印象中的身影多了几分相似。现在他对你知无不言了。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“真是不好意思，那就耽误您几分钟了。”我稍微俯身询问：“关于金博尔先生失踪案，我想知道你们当时有调查到什么吗？比如他失踪时最近有没有通话记录，以及出行记录，我想这应该是调查失踪案时首先会调查有无异常的地方吧？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>说着我掏出打火机给他点上烟，自己也掏出一根点上。等待他的回忆。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>警察招呼你来到门口，缓缓呼出一口气，迷烟弥散在空中。“那起案子是我和安德烈经手的。说实话，与其说是失踪，更像是离家出走。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“我们自然调查了他的通话记录与书信来往。这位教授人际关系简单，没什么好调查的。他没有长途通话记录，有登记的转接电话也没什么特别，无非是一些广告和水电。至于本地电话，我们就不知道了。书信和人际关系上，不过是邻居与大学的学术工作来往，也没什么怪处。”警察陷入回忆，“硬要说的话，金博尔是个不爱交际的人。这点在他妻子离世后越发明显，他的书信和通信往来在他失踪前一年相当少。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“要我说，他大概是买了张火车票，决定去个别的地方换种生活吧。”警察耸耸肩，火光在他的指尖明灭。“当时寻人启事在公报挂了快两个月，也没什么消息。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>他沉默地抽着烟，注视来往的人群，等待你的下一个问题。这也是他难得的空闲时光。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>“嗯，与我猜测部分一致，我也认为金博尔先生比起被失踪更像是出门远行了一般，但他如果没有驱车离开，火车票这种我想应该也查不到，那么这一年你们也没有收到任何消息了吗？比如金博尔家附近有没有人看见像他的人之类的。我想出门远行也得偶尔回家拿点什么吧。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“没有。”警官摇头，“公墓那边本就地处偏僻，我们案子多的数都数不过来，哪有功夫天天去他家盯着？”他深呼一口气，“当时有段时间要求我们去公墓巡逻，我们还专门去他家看了一下，周围还是空荡荡的，就他侄子住在那。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>”要我说，住那地方，人心情好不了。“警官评论道，”背靠公墓前靠河的，瘆人得很。也不知道他侄子怎么还住在那。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>我听闻也表示理解：“毕竟人少不足案件又多，加上看起来金博尔先生人际关系简单到不会出现谋杀案的样子，也不好多浪费警力，我了解的差不多了，多谢了，警官您继续忙吧。麻烦您了。”我向他道谢和道别，准备前去墓地。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>你是不是快吃饭了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>警官拍拍你的肩膀，“虽然我觉得机会不大，但还是祝你调查顺利。”他思索了一下，“你也可以去公报问问，说不定当年他们有接到什么线索。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>是的，准备跑了</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>你rp咱们今天先到这？</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>那今天到这吧，然后你去吃饭</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>怎么还有公报</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我以为最后去完墓地就结团了</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>可以回顾一下之前提到过的地点</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>公报地理位置在哪</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你想起奥黛尔夫人也提到了，公报当年刊登了很久的寻人启事。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span><span class="status">SAN50 HP16/16 DEX45</span></div>
+  <div class="prose"><p>与警官道别后，我决定去看一眼公报然后最后去一下墓地。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>感觉没啥了好像</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">K.265</span><span class="cmd-text">.log off</span></div>
+</div>
+<section class="chapter-head">
+  <div class="chap-num">Chapter III</div>
+  <h2>第三章　公报与墓园</h2>
+  <div class="chap-date">二〇二六年九月二十七日　记</div>
+  <div class="fleuron">❦</div>
+</section>
+<div class="entry epigraph"><p>新的故事开始了，祝旅途愉快。<br>(记录已经开启)</p><div class="attrib">—— 尤金·克里斯</div></div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p class="has-drop"><span class="dropcap">你</span>驱车前往阿诺兹堡公报，没过多久便来到了一幢办公楼前。它约莫三层高，顶楼悬着一行漆黑镌金的招牌：“阿诺兹堡公报”。</p>
+<p>透过半开的窗户，你能看到里面的编辑们忙得热火朝天。电话铃声与纸张的翻动声交织，挑拨着每个人的神经。一位编辑正攥着几张稿纸，冲电话里大喊道：“下午四点前，赶紧给我把市政厅的照片送回来！不然明天你就等着下岗吧。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>我以为公报是粘贴栏上贴了个寻人启事那种</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>nono公报是城市报社</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我停好车，走进去观察一下有没有没有那么忙碌的职员，准备向她简单询问一下有没有新消息。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你环顾四周：大部分人都在与电话和稿件较劲，倒是有一位红发女士正端着咖啡坐在案前，目光疲惫。显然，她刚结束一轮艰苦的战斗，此时正在享受今日第一杯能尝出味道的咖啡。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我走上前，向她礼貌性问好：“您好，美丽的女士，我是邓恩·琼斯，有一些问题想要请教，请问您现在有时间能闲聊一小会吗，我知道您肯定很忙碌，我不需要太多时间，就几分钟。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>她上下打量了你一下。“这可稀奇了，一般都是我们问人问题。” 她推了推眼镜，”我是玛格丽特。在我的好记者打来下一个电话前，您有什么想聊的？“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>因为习惯了被人打量，我并不在意：“为了节约您的时间，那我就省去一点客套话了，玛格丽特女士，不知道你记不记得去年登报过的道格拉斯失踪案，我刚刚从警局回来，警长有提到当时有上过公报，也许会有线索，因此前来。”我如此说道</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>“那是他的亲人关心的案子，如果你有顾虑我可以给您看他给我的一部分委托书证实我确实是受他委托。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“啊，我记得。那张寻人启事我们六个月前才撤下来。”玛格丽特摘下阅读镜，疲惫地揉捏眉心。“我们把能给警局的信息都给了，实话和您说，没什么有用的线索。”她摇摇头，“剩下的都是些胡言乱语，甚至还有人说是墓地闹鬼，把他给吃了呢！”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>“那条关于墓地的消息有详细的说法吗？哪怕是胡言乱语我想也许也会有有用的信息。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“我们最后没把它登报。这种信息报道出来，实在有损我们公报的颜面。”玛格丽特皱眉，“详细的内容我也不记得了。不过大部分的采访材料我们都保存在报社资料室。只是...”</p>
+<p>她犹疑的目光再度落在你身上。“资料室可是报社最机密的地方，您并不是我们合作的对象...“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>让一位侦探走进报社的档案室？大部分编辑都不会赞成这个主意。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我表示理解她的犹豫：“我想也是，我作为外人并不适合直接进去，那么您能回忆起采访对象吗？我想直接去询问他也许也是一种办法。当然，如果回忆不起来也是正常的。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过个信用评级看看</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>是这个吗</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>怎么又没反应</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">.jrrp</span></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>你试试说服</p></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>您好奇今日的命运会是怎样吗？<br>那么，经我查看，在标有Mx.邓恩·琼斯名字的托盘上今天放置了重量为46克的砝码。<br>[图:data/images/检定.png]</p></div>
+  </div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra说服</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;说服&gt;检定结果为:<br>D100=92/70 失败<br>巧妇难为无米之炊。</p></div>
+  </div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra信用</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;信用&gt;检定结果为:<br>D100=65/30 失败<br>没事的，只是一次小小的失误而已。相信你可以做得更好。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>好吧！</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>没事</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“我恐怕那位女士未必还在人世。而且，原则上，我们报社不得透露受访人信息。”玛格丽特摇头道，随即沉思。“不过，我记得前几个月警方似乎还去过墓地巡逻，或许她所说的并非完全是胡言。类似的墓地报道....很多年前我们报道过。您可以去图书馆找找旧报纸。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>忽然，一阵电铃在你们之间的办公桌上炸响。玛格丽特无奈地看了一眼，向你仓促点点头，立马抓起话筒。她的表情也随之严厉起来，已然沉浸于与对面记者的交流中了。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我点头小声说一声“谢谢，那我先告辞了。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>说完我出门上车，看了一下时间，决定还是先去墓地一趟。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你驾车驶离市中心，两侧的建筑逐渐稀疏下来，太阳也渐渐坠了下去。秋天的阿诺兹堡日落比波士顿还要早上几分...待你停车时，只剩下一缕斜阳，照在墓地的正门上。</p>
+<p>这片旧公墓植被茂盛，但打理得还算不错。阿诺兹堡的新市立墓地在城市的另一侧，这里也就成了老一辈人的怀念之处。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你走进墓园。两侧的草坪整齐，颜色已经微黄，古老的树木从中拔起，在空中伸展交织，许多石质墓碑与灌木缀在空隙间。一位园林工与你擦肩而过——他正扛着工具包，与你挥挥手便走向了正门。</p>
+<p>你看到他来处有一座小木屋，门口放着一盏油灯、一根棍子，地上散落着几根烟头。这大概就是奥黛尔女士所说的守墓人的屋子了。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我走上去询问园林：“你好，我叫邓恩·琼斯，请问您是奥黛尔女士说的守墓人吗？我想向您询问一下玛格丽特女士的墓地在哪，我想前去祭拜一下。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>话说报社记者也叫玛格丽特吗，重名了么</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>这个地球上有很多个玛格丽特</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“我？”园林工笑了，“我可不是。你要找的是杰弗逊。”他大拇指一撇，指向那座小木屋。“我要是你，就趁太阳没落山赶紧去找他。过了工作时间的话，他脾气只会更坏。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>”哦，还有。“园林工朝你敬了个礼。”找墓碑记得连名带姓问他。他脾气差得很，上次还对一个老人家说：‘我这里有五个阿尔弗雷德，你在找哪个？’”话说完，他就哼着歌挎着工具包走远了。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我向他道谢去小木屋寻找一下守墓人</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你来到小木屋前。门半开着，里面坐着一个约莫五十岁的男人。他身穿厚重大衣，头戴皮帽，脸上留着一圈髯胡，身型与你不相上下。他抬眼看你，粗声粗气地说：“如果是要扫墓，我建议你明天再来。再晚些如果在这迷路，我可未必能找到你。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>他又仔细看了眼你的打扮与身型，眯眼道：“不过看你的样子...我猜你不是来看望去世的远房亲戚吧？“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>“您好，杰弗逊先生，我叫邓恩·琼斯，准确的说我是来给我委托人的婶婶扫墓，只是觉得出于礼貌想来这拜访一下，他的叔叔叫道格拉斯·金博尔，我想要找到是他的妻子玛格丽特的墓。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>“我想天色已晚，您大概给我指个方位和参照物，我尽量早去早回不给您添什么麻烦。”我继续说道。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>杰弗逊原本目光怀疑，听到你说道格拉斯的名字，却放松了下来。“啊，道格拉斯的侄子。”他站起身，咕哝一声走到门外拎起提灯，又回到房间里翻找灯油。“那小鬼去年来的挺勤快，今年却没怎么来了，他很忙么？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>“是的，他学业繁忙才会委托我来帮忙，今天他也是一大早就出门了。”我回复到。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>他点点头，终于找到了灯油，往提灯里灌满，一声轻响，灯便在你二人之间燃起暖黄的火光。“走吧，我带你去。”杰弗逊咕哝道。“路上记着点路，我只负责带你过去——我灶上还煮着牛肉呢。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你走出小木屋时，最后一缕阳光也沉了下去，两侧的树木融化成阴影，显得有些诡谲。</p>
+<p>杰弗逊拎着灯走在前面，一面说道：”道格拉斯是我多年的朋友了。“他咬着烟，”这人也有些古怪，总是喜欢来公墓看书。我第一次见到他的时候，他坐在一块老墓碑上，端着一本大部头。我本来想赶人，谁想到竟然顺着那本水鸟大全聊了下去。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>“说起这个，今天我在调查道格拉斯先生失踪的事情时，有听人说过公墓闹鬼什么的，最近公墓有什么异常吗？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>杰弗逊还在唠叨些怀念的事，听你这么一说，忽然间不说话了。只顾着往前大步走。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>老大，你如果有什么想过的检定，可以在rp里点一下</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>哦哦好</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我环顾四周有无异常，继续跟着他说：“无意冒犯您，想来您也是道格拉斯先生的熟人了，我也是因为想找到跟他有关的线索，报社记者有说那是一些胡言乱语，但我总想着万一呢，也许那些胡言乱语里有什么我没发现的线索呢。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过个心理学检定</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra心理学</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;心理学&gt;检定结果为:<br>D100=71/60 失败<br>没事的，只是一次小小的失误而已。相信你可以做得更好。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>这个机器人我就没成功过</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>流年不利啊。。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>今天能跑完么…</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>快结束了</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>你几点睡？</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>今天跑完就行，反正我每天都熬一会才睡</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>ok</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>杰弗逊还是没有理会你，只是加快了脚步。或许是因为你打断了他的回忆有些不悦？你们沉闷地往前走，不多时便来到了一块空地。</p>
+<p>你面前是一块洁白如新的大理石墓碑，上面细细镌刻着：玛格丽特·金博尔，杰出的学者与敬爱的妻子。这块墓碑打理的十分整洁，旁边还放着几束干花束。</p>
+<p>在你身侧的另一块墓碑就没那么干净了——它看起来伤痕累累，面板上的字迹已经模糊，旁边也有不少杂草。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>杰弗逊把提灯放下，粗声粗气地说：“十二点之前出来，之后我就锁门了。”他把手插进口袋里，似乎不愿意多留，准备走了。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过一个侦查</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra侦查</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;侦查&gt;检定结果为:<br>D100=30/75 困难成功<br>你的技艺足够精湛，这次考验对你而言尚有余力。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>wow命运的报偿</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我出声：“请等一下，您是不是知道道格拉斯先生现在在哪？”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>等下，信息还没给出来...</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>哦哦好</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>在杰弗逊把手插进口袋时，你忽然注意到那个口袋鼓的有点不正常...你作为侦探的好眼力瞟到了一截瓶口。</p>
+<p>哈，有意思。那个瓶口像极了老泰勒牌波本酒——至于在这个禁酒的年代，你自己怎么知道这个牌子的，又是另外一个好问题了。不知道阿诺兹堡的警方如果看到这个小瓶子，会怎么想？</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p> 另一边，杰弗逊听到你说的话，不耐烦地啧了一声：“我要是知道，还能不把他揪来墓前让玛格丽特看看？”他转身便要走。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我接着说：“这块墓碑看起来很新，很干净，墓前还有干花，但道格拉斯先生已经失踪一年，他的侄子也许偶尔会来，但学业繁忙，而其他扫墓人大概率是邻居，频率也很低，这块墓碑不至于那么干净。”我看了看他口袋的位置，但还是决定先说一点自己的想法。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>“我刚刚与您见面提到道格拉斯先生，您的反应也其他人不一样，其他人的第一反应是那位消失多久的先生，而您好像不太在意他失踪这件事情，我想您与他的熟络，大概率知道他在哪里吧。”我一边说着一边观察他的反应。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“上帝，“杰弗逊挥挥手臂，”你瞧，侦探先生，我没空陪你玩侦探游戏。”他指着你道：“这块墓碑为什么新？当然是因为我在帮忙打理。我难道能让我朋友妻子的墓碑荒废在这里吗？在他不知道跑去哪里鬼混的时候？”他越说越激动。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>再过一个心理学</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra心理学</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;心理学&gt;检定结果为:<br>D100=4/60 大成功!<br>Congratulazioni!</p></div>
+  </div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你忽然意识到，在他的恼怒、厌烦、粗暴底下藏着的...是恐惧。在你指出他知道道格拉斯去向时，这种恐惧爆发到了顶点。他知道道格拉斯在哪里，而且那一定是他的恐惧的源头。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>杰弗逊还在愤怒而慌乱地说些抱怨的话语，但你的双眼注意到，他的肢体动作一直朝着一侧，似乎在抗拒另一侧的某个东西...与此同时，他的眼神又不住的游移到那边，旋即又慌乱地挪回来。</p>
+<p>你意识到他在看旁边那块荒废的墓碑。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我顺着他的视线看过去，大脑里思考着一些可能性，我走上前拿出手电筒打开仔细看一下墓碑，一边说着：“您别生气，就算我说对了那也并不是指责您，我想也许他有什么难言之隐，也许您也有，而我只是因为他的家人担心在尽责调查，如果有什么我能帮上忙的地方那也不错不是吗？”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过一个侦查</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra侦查</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;侦查&gt;检定结果为:<br>D100=91/75 失败<br>是否倒下并不重要，重要的是你是否会重新站起。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>再过一个追踪</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra追踪</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;追踪&gt;检定结果为:<br>D100=19/10 失败<br>Every coins has two sides.</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>没点…</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p> 你没看出这块墓碑有什么异常。另一边，杰弗逊听到你说的话，反而平息了怒火，只是嗤笑一声，“你们这些侦探都这么傲慢吗？”他说，“能帮上忙也不错？先生，如果您继续这样说话，我恐怕与您没什么要说的了。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过个幸运</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra幸运</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;幸运&gt;检定结果为:<br>D100=84/60 失败<br>覆水难收。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>这个骰子不行</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过个灵感</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra灵感</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;灵感&gt;检定结果为:<br>D100=29/80 困难成功<br>天平已向理性倾斜。你的知识与经验助你通过了考验。</p></div>
+  </div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>上帝啊</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>杰弗逊丢下话头，转身便踏着沉重的脚步离去，仓促消失在夜色里，徒留你站在寂静的墓地中。寂静与夜风中，你忽然觉得有一种灵感在冥冥中召唤，风在私语。你循着私语与指引望去，只见月光从阴翳中探出，洒在那块陈旧墓碑前的泥泞地面。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>那块地面上有些未干的脚印。它们造型古怪，大约成年人大小，脚趾处却更类似偶蹄，像是山羊的脚趾。在这混杂的足迹中，你又成功分辨出了一双奇特的脚印：它介于人类的脚与偶蹄之间，像是个混血怪物。</p>
+<p>这些脚印一路延伸，伸进树林，落在远处一座立式的大理石陵墓，月光洒在墓门前，你看到那些脚印在墓前失去了踪迹。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我看着这些脚印，一边跟着脚印走着，在思考守墓人害怕的是什么，以他的反应和谈论内容来看能排除掉谋杀，如果只是藏一个朋友在墓地生活也不至于是一件让人害怕的事情，还是因为别的什么东西让他害怕到不敢提起。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你来到墓门前，这座陵墓十分古老，高大的大理石柱耸然立起，墓门前的雕像垂眸流泪，一手抬起，似乎在哀悼，又像是在迎接——仿佛下一秒这座墓门便会开启，将你引渡至另一个世界。</p>
+<p>那些脚印便消失在墓门前。你注意到墓门并非严丝合缝。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我轻轻推开墓门，用手电筒照一下里面看看有什么东西。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过一个力量检定</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra力量</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;力量&gt;检定结果为:<br>D100=41/65 成功<br>如果让我评价的话，已经达到及格水准了。</p></div>
+  </div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>陈旧的橡木墓门在你的力量下发出沉闷声响，缓缓向你敞开拥抱。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>未等你细看，一股强烈的可怕腐臭从门中伸出触手，笼住了你的所有感官。你的眼球发痛，眼泪不受控制地流了下来，你的鼻子几乎失灵，大脑无法处理这种浓重的死亡气息。你几乎要昏阙了。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>过一个体质检定</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。ra体质</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Il destino ha accettato il verdetto.<br>将您的命运放在天平一端进行裁量，结果会是如何呢？<br>那么，Mx.邓恩·琼斯的&lt;体质&gt;检定结果为:<br>D100=94/80 失败<br>尺有所短，寸有所长。这不是什么稀奇的事。</p></div>
+  </div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你的体质一直是人中出挑的...但饶是你，经过一天奔波与疲惫，也难以抵抗这股腐臭的气息。</p>
+<p>黑暗从你的眼眶边角爬进双眼。你感觉力气逐渐从四肢流失。你最后的意识停留在身体撞到草地的触感，以及头顶的一轮满月。疯狂，温柔的月亮。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你在梦里见到了某个人。</p>
+<p>你们似乎在一个帐篷里。你躺在垫子上。灯光昏暗，露水深重，地面有些硌人。这不是一个舒服的环境，你却觉得有一种安心感。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你身侧，有钢笔的沙沙声。你知道那是他在写寄回家的书信——从小到大，他的字总是比你要漂亮几分。你也乐见其成，每次都躺在床上，抱着手谈天说地，他也好脾气地一一记下，把你的碎语写进家书，一起寄给你们的父母和弟妹。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>”还有什么要加进去的？“朦胧的雾气里他如此问你。”说好了，就几句话。你再说下去，我要再去找阿尔弗雷德要几张纸了。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我只是怔怔的看着他，觉得有那里奇怪，但此时的安心感又让我无法出声打破它。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>今天真的能结团吗…</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>你这段过了再来点就结束了</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>那我就不扩展了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>安心的气息如同温柔的湖水，逐渐包裹上你的思绪。你面前的营帐融成了一片暖光，你的思绪慢慢地沉入湖水，融入大地...</p>
+<p>一股凉风拂上你的脸。你惊醒，只见月光冰冷，背上露水深重。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>你正躺在墓地的草坪上，月亮已经悬在了正头顶。余光中，你忽然看到一个古怪的身影。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我回忆刚刚发生了什么，似乎我在寻找什么，又好像做了个梦，被这个突然出现的身影打断思绪。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>那东西身型扭曲，耳朵尖锐，上肢发达而下肢纤长。那个人——或者说怪物——正坐在你身边的墓碑上，手中端着一个东西。它的手微动，你听到纸张的声音——他正拿着一本书，借着月光仔细翻阅着。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>它察觉到了你的转醒。一个温和，低沉，带着些大地般扭曲而深沉的男声从它嘴里吐了出来：</p>
+<p>“啊，侦探先生，您好，您感觉如何？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我从地上爬起来，有点警惕的看向他：“道格拉斯先生？”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“正是。”道格拉斯·金博尔对你的警惕毫不在意，仍然安然坐在墓碑上，温和地对你点点头。“希望您不要被惊吓到。这样问候您并非我的本意。”他说话时，一股腐败的气息又随风而来，这个面容狰狞的怪物竟然以如此温文尔雅的姿态与你对话，你在腥臭中感到一丝眩晕。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>san检定1d4</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">。st san53</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>这些就是您要为档案录入的数据吗?<br>好的，我记下来了。<br>—————————————<br>Mx.邓恩·琼斯的coc7属性录入完成，本次录入了1条数据。<br>[图:data/images/记录中.png]</p></div>
+  </div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">邓恩·琼斯</span><span class="cmd-text">.sc0/1d4</span></div>
+</div>
+<div class="entry wire">
+  <div class="slip">
+    <div class="slip-head"><span>TELEGRAM</span><span>发报　尤金·克里斯</span></div>
+    <div class="slip-body"><p>Controllare lo stato mentale.<br>Mx.邓恩·琼斯的理智检定:<br>d100=35/53 成功<br>如果让我评价的话，已经达到及格水准了。<br>理智变化: 53 ➯ 53 (扣除0=0点)<br>看来您目前状况还算稳定</p></div>
+  </div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>或许是刚才的梦境带来的温暖还未消退，你成功克服了那一瞬间的恐惧。</p>
+<p>另一边，道格拉斯见你平复了心情，温和地说：“我想我欠您一个解释。”他合上书籍，沉吟一会儿，缓缓开口：</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“我现在这副模样，已经几乎成为了食尸鬼的一员。”他的尖牙在月光下隐隐闪光，“自从我搬来这里，我便在墓园认识了这些朋友。他们并不凶恶，恰恰相反，他们的社会融洽非常——他们甚至欢迎我，这个人类，加入他们的生活。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“食尸鬼们的社会堪称理想。”他摊开手，“没有嫉恨、憎恶、没有统治阶层，没有强权与隐瞒，也没有送士兵进绞肉机当数字的喜好...我们的生活简单，和谐，清净。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>”那时候，除去与玛格丽特一起，以及与学生们讨论的午后，我最爱的放松便是来到这里读一会儿书，看看我的朋友们。“他说，“我这辈子没什么追求。除了陪伴我的家人，便是不受打扰的看我的书。直到..."他的目光飘远了</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>可以随时rp</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“您也知道的，我的妻子在一年前去世了。”他朝你点点头，“那之后，我越发觉得人类的世界与我的联系逐渐衰弱下去。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我企图消化他说的话语和接受他现在的模样…“但我不明白，我调查了一天，我最多认为您也许是因为太过悲伤，而选择与世隔绝的陪伴她，但我没想过您会选择变成这样。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“噢，那是因为您不曾遇到我的朋友们。”他的目光里带着真切的喜爱。“我并非一个完全喜爱孤独的人。玛格丽特去世后那几个月，我独自在家。后来，我又忍不住想要一些陪伴。可那些人类看我的目光总是怜悯的——一个可怜的丈夫，刚刚失去了他的妻子！他们甚至还没有子嗣，这个无牵无挂的可怜男人。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>”而我的食尸鬼朋友们从不会这样评判我。“他说，”他们只是陪着我，我不再需要金钱，不再需要名望，无论白天和黑夜，我想看书时，我便可以看；我想哀悼玛格丽特时，便可以在她的墓前坐一会儿。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>”或许有时候不小心惊吓到了杰弗逊，我还欠他一个道歉。“道格拉斯微笑了一下。”总之，如今我身处大地之中了，我在地下，在泥土，在她身边陪伴她，我的玛格丽特。“</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>“而如今，我的朋友们即将关闭这处出入口，我们将彻底与这里告别，在地下的城市里共度人生。这时候我这才意识到：上帝，我还有那么多的书在家中！因此我决定回到我的宅子里，最后再拿几本书。“他抱歉地笑笑，”我想，这一定惊吓到了我的侄子。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>“您走之前也没有留封信，这个世界上也有其他的人类关心着你的安危，不然我也不会来到这里，你知道失去玛格丽特的痛苦，这个世界上也许也有其他人不愿意失去您，当然现在的生活也是您的选择，但我也想让您知道您口中的人类也有像玛格丽特女士那样值得你爱的和爱你的人存在。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“噢，孩子，我知道，我当然知道了。”他点点头，眼中笑意不减，“如你所见，我是一名人类学教授。我们的本质便是理解人类的美与恶之处。我从未忽视过他们的美。“他站起身，如同过去那名得体的教授一般，拍拍身上的泥土。”可是他们的美已经与我无关。他们的恶我也已看够了。“他的眼神飘远。”下一场战争已经近了，那时候，哪怕我们身在北美，又能够置身事外多久呢？这些规律我都已经看尽了，我该走了。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我拿出身上带着的纸笔接着说：“如果可以，您还能写出之前的字迹吗，我只是想您临走前也许能留下字条向您的侄子报一个平安，说自己远行了。让他放心一点也好。他也是这个世界上很关心你的人类了。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“噢，托马斯。”道格拉斯的眼神软了下来。“他是个好孩子。我确实对他心怀愧疚——他很爱我与玛格丽特。”他崎岖的手指接过你的纸笔，轻柔的在纸上写下了一串留言。</p>
+<p>“亲爱的托马斯，</p>
+<p>我为我的不辞而别感到抱歉。玛格丽特离世后，我一度觉得我失去了目标；我觉得我应该换一个地方，去看看新的世界与天地。你是个热心而温暖的好孩子，我毫不怀疑你有远大前程；希望你能照顾好这座房子与里面的书籍，也希望你不被它所累。</p>
+<p>爱你的叔叔，<br>道格拉斯”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>他把纸笔轻轻递还给你，朝你颔首：“那么，先生，我要出发了。”他伸出右手，”祝您事业顺利，幸福与健康常在。“</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我接过纸：“既如此我想我需要做的工作也完成了，天色已晚，我也该告辞了，也祝您得偿所愿。”我准备离开墓地。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>“再见，先生。也许许多年后，您会读到一本新书，地心历险记，或者什么名字。“他的眼中充满愉快，”地下有许多新奇有趣的东西，或许我会出版呢。“</p>
+<p>他回到那座墓门前，最后看了眼月光，随后用粗壮的上肢合上墓门，毫不留恋的离去了。</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>那么你回金博尔家？</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>对</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>你历经疲惫，带着一身泥泞回到金博尔家。这时已是午夜，但房子里还灯火通明。</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我出了墓园开车回到委托人的家里，向他转交这张纸：“书我已经找到了，您的叔叔带走了它们，他走的匆忙，这是他给你留下的纸条。”</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯也顾不上问候你的状况，读了那张纸条，久久没有回复。一会儿，他用手擦了擦眼睛，闷声对你说：“谢谢您，琼斯先生。您不知道这对我有多重要。”</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>他从钱包里拿出十美元递给你，又追加了一些零钱。“谢谢您，这是说好的报酬和报销。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">K.265</span><p>没rp我就结尾了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who pc"><span class="name">邓恩·琼斯</span></div>
+  <div class="prose"><p>我接过美元，心中复杂但许多事情也许他不知道更好，我只需要完成我的工作就好了，“不用客气，这是我该做的，以后您身边人有需要也可以委托我来调查，我打算在这休息一晚就驱车回去。”</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>差不多了</p></div>
+</div>
+<div class="entry ooc">
+  <div class="pencil"><span class="pencil-who">邓恩·琼斯</span><p>感觉可以结尾了</p></div>
+</div>
+<div class="entry ic">
+  <div class="who kp"><span class="name">K.265</span></div>
+  <div class="prose"><p>托马斯忙不迭把你迎了进去。你一夜无梦，也没再见到那暖黄的灯光与熟悉的人。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>第二天，你驾车在清晨离开了金博尔家，在事务所楼下缓缓停下。熟悉的楼梯，熟悉的大门...你在收件箱里找到了几封新委托，和一张来自波士顿的贺卡，上面有你弟妹和父母的细密问候。</p></div>
+</div>
+<div class="entry ic cont">
+  
+  <div class="prose"><p>阳光投射在窗外的公园里，照亮城市一隅。你知道在城市的地底，一位教授已经告别人间，开启了他新的旅程。而你，也有新的委托在等着你。下一位委托人的烦恼又是如何？你手中的信件即将倾诉与你。</p></div>
+</div>
+<div class="entry cmd">
+  <div class="cmd-line"><span class="cmd-who">K.265</span><span class="cmd-text">.log off</span></div>
+</div>
+    <div class="finis">
+      <div class="rule-double"></div>
+      <div>FINIS</div>
+    </div>
+  </article>
+
+</main>
+</body>
+</html>
