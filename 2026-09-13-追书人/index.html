@@ -337,9 +337,21 @@
   }
   .plate img{
     display:block;width:100%;height:auto;
-    /* 印成单色棕褐，像旧档案里的剪影贴片 */
-    filter:sepia(1) saturate(.55) brightness(.42) contrast(1.25);
     mix-blend-mode:multiply;
+  }
+  /* 印记：不是相片，去掉相纸托板，当作钤印直接压在纸上 */
+  .plate.sigil{
+    background:none;border:none;box-shadow:none;padding:0;
+    flex-basis:172px;width:172px;margin-top:2px;
+  }
+  .plate.sigil::after{content:none;}
+  .plate.sigil img{
+    opacity:.88;
+    filter:sepia(.35) saturate(.6) brightness(.95);
+  }
+  .plate.sigil .plate-cap{
+    border-top:none;margin-top:10px;padding-top:0;
+    color:var(--ink-soft);letter-spacing:.34em;
   }
   .plate::after{ /* photo corners */
     content:"";position:absolute;inset:0;pointer-events:none;
@@ -2223,9 +2235,9 @@
     </div>
 
     <div class="dossier">
-      <figure class="plate">
-        <img src="assets/silhouette.svg" alt="一名戴帽男子的黑色剪影，无面部细节">
-        <figcaption class="plate-cap">档案无存照</figcaption>
+      <figure class="plate sigil">
+        <img src="assets/sigil.png" alt="邓恩·琼斯的私人印记，由 C 与 T 交缠而成的花体字符">
+        <figcaption class="plate-cap">私人印记</figcaption>
       </figure>
       <div class="ident">
         <p class="nm">邓恩﹒琼斯</p>
@@ -2348,8 +2360,7 @@
     </div>
 
     <p class="app-close">
-      档案至此。<br>
-      剪影取自维基共享资源 <a href="https://commons.wikimedia.org/wiki/File:Mistery_stub.svg">Mistery stub.svg</a>（Rumensz，CC0），非本人肖像。
+      档案至此。
     </p>
   </section>
 
