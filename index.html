@@ -3,78 +3,446 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>跑团记录 · TRPG Logs</title>
+<title>跑团记录 · The Tables of K.265</title>
+<meta name="description" content="K.265 的跑团记录收藏：克苏鲁的呼唤与龙与地下城。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@0;1&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700;900&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
-  :root{--baize:#1d2b22;--baize-deep:#121b15;--leaf:#f1ead9;--leaf-edge:#e4d9bf;--ink:#1b1916;--ink-soft:#4a443b;--oxblood:#6b1d1d;}
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
+  :root{
+    --baize:#1d2b22;
+    --baize-deep:#121b15;
+    --cream:#efe6cf;
+    --cream-dim:#b9b09a;
+
+    /* 克苏鲁：旧卷宗 */
+    --leaf:#f1ead9;
+    --leaf-edge:#e4d9bf;
+    --ink:#1b1916;
+    --ink-soft:#4a443b;
+    --graphite:#6d6a64;
+    --oxblood:#6b1d1d;
+    --prussian:#1f3a5a;
+
+    /* 龙与地下城：羊皮纸与金箔 */
+    --vellum:#eee0c0;
+    --vellum-edge:#d9c69c;
+    --umber:#2a1d14;
+    --umber-soft:#5b4631;
+    --crimson:#7a1f1f;
+    --gold:#a8842c;
+    --gold-soft:#c9a95a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
   body{
     background:radial-gradient(ellipse at 50% -10%,#2a3d30 0%,var(--baize) 45%,var(--baize-deep) 100%);
-    min-height:100vh;padding:64px 16px 120px;
-    font-family:"Libre Caslon Text","Noto Serif SC",serif;color:var(--ink);
+    background-attachment:fixed;
+    min-height:100vh;
+    padding:72px 20px 96px;
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;
+    color:var(--ink);
     -webkit-font-smoothing:antialiased;
   }
-  .book{max-width:700px;margin:0 auto;background:var(--leaf);position:relative;
-    box-shadow:-6px 0 0 -2px var(--leaf-edge),-10px 0 0 -4px #d8cbaa,0 40px 70px rgba(0,0,0,.55);}
-  .book::after{content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(circle at 92% 6%,rgba(140,100,40,.10),transparent 18%),
-               radial-gradient(circle at 6% 97%,rgba(140,100,40,.09),transparent 22%);}
-  .title-page{padding:84px 56px 56px;text-align:center;border-bottom:1px solid var(--ink);
-    outline:1px solid var(--ink);outline-offset:-22px;position:relative;}
-  .title-page::before{content:"";position:absolute;inset:27px;border:.5px solid var(--ink-soft);pointer-events:none;}
-  .imprint-top{font-style:italic;font-size:15px;color:var(--ink-soft);margin-bottom:34px;}
-  h1{font-family:"Noto Serif SC",serif;font-weight:900;font-size:52px;letter-spacing:.32em;margin:0 0 0 .32em;line-height:1.1;}
-  .en-title{font-family:"Libre Caslon Display",serif;font-size:26px;margin:14px 0 26px;}
-  .rule-double{width:120px;height:4px;margin:30px auto;border-top:1.5px solid var(--ink);border-bottom:.5px solid var(--ink);}
-  .being{font-style:italic;font-size:15px;line-height:1.75;color:var(--ink-soft);max-width:420px;margin:0 auto;}
-  .contents{padding:52px 56px 64px;}
-  .contents h2{font-family:"Libre Caslon Display",serif;font-weight:400;font-size:22px;
-    text-align:center;letter-spacing:.14em;text-transform:uppercase;margin:0 0 34px;}
-  .entry{display:block;text-decoration:none;color:inherit;border-top:.5px solid var(--ink-soft);padding:20px 4px;}
+  a{color:inherit;}
+  .shell{max-width:1040px;margin:0 auto;}
+
+  /* ---------- 刊头：烫在绿呢上的字 ---------- */
+  .masthead{text-align:center;color:var(--cream);margin-bottom:54px;}
+  .masthead .imprint{
+    font-family:"Libre Caslon Display",serif;
+    font-size:13px;letter-spacing:.38em;text-transform:uppercase;
+    color:var(--cream-dim);
+  }
+  .masthead h1{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:60px;letter-spacing:.34em;line-height:1.1;
+    margin:20px 0 0 .34em;
+    text-shadow:0 1px 0 rgba(0,0,0,.35);
+  }
+  .masthead .en{
+    font-family:"Libre Caslon Display",serif;
+    font-size:26px;margin-top:12px;letter-spacing:.03em;
+  }
+  .masthead .rule{
+    width:140px;height:5px;margin:28px auto;
+    border-top:1.5px solid var(--cream-dim);border-bottom:.5px solid var(--cream-dim);
+    opacity:.8;
+  }
+  .masthead .motto{
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;font-style:italic;
+    font-size:16px;line-height:1.85;color:var(--cream-dim);
+    max-width:460px;margin:0 auto;
+  }
+  .ledger{
+    display:flex;justify-content:center;flex-wrap:wrap;gap:0;
+    margin:34px auto 0;max-width:620px;
+    border-top:.5px solid rgba(239,230,207,.28);
+    border-bottom:.5px solid rgba(239,230,207,.28);
+  }
+  .ledger div{flex:1 1 0;min-width:110px;padding:14px 8px 12px;}
+  .ledger div + div{border-left:.5px solid rgba(239,230,207,.18);}
+  .ledger b{
+    display:block;font-family:"Libre Caslon Text",serif;font-weight:400;
+    font-size:28px;line-height:1.1;color:var(--cream);
+  }
+  .ledger span{font-size:12px;letter-spacing:.2em;color:var(--cream-dim);}
+
+  /* ---------- 两个分区 ---------- */
+  .wings{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:stretch;}
+
+  .wing{position:relative;box-shadow:0 36px 64px rgba(0,0,0,.5);display:flex;flex-direction:column;}
+  .wing .wing-body{flex:1;}
+  .wing-head{text-align:center;padding:52px 40px 30px;position:relative;}
+  .wing-head .sys{font-size:12.5px;letter-spacing:.34em;text-transform:uppercase;}
+  .wing-head h2{
+    font-family:"Noto Serif SC",serif;font-weight:900;
+    font-size:34px;letter-spacing:.26em;margin:14px 0 0 .26em;line-height:1.2;
+  }
+  .wing-head .sub{font-style:italic;font-size:14.5px;margin-top:10px;}
+  .wing-head .emblem{display:block;margin:0 auto 16px;width:38px;height:38px;}
+  .wing-body{padding:6px 36px 44px;}
+  .wing-foot{
+    padding:0 36px 34px;text-align:center;
+    font-size:12.5px;font-style:italic;letter-spacing:.04em;
+  }
+
+  /* 克苏鲁：与《追书人》同一套书页 */
+  .wing.coc{
+    background:var(--leaf);
+    box-shadow:-6px 0 0 -2px var(--leaf-edge),-10px 0 0 -4px #d8cbaa,0 36px 64px rgba(0,0,0,.5);
+  }
+  .wing.coc::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(circle at 90% 5%,rgba(140,100,40,.10),transparent 20%),
+      radial-gradient(circle at 8% 96%,rgba(140,100,40,.09),transparent 24%);
+  }
+  .wing.coc .wing-head{outline:1px solid var(--ink);outline-offset:-18px;padding-bottom:48px;}
+  .wing.coc .wing-head::before{
+    content:"";position:absolute;inset:23px;border:.5px solid var(--ink-soft);pointer-events:none;
+  }
+  .wing.coc .wing-body{padding-top:30px;}
+  .wing.coc .sys{font-family:"Libre Caslon Display",serif;color:var(--ink-soft);}
+  .wing.coc .sub{font-family:"Libre Caslon Text",serif;color:var(--ink-soft);}
+  .wing.coc .emblem{color:var(--ink);}
+  .wing.coc .wing-foot{color:var(--graphite);font-family:"Libre Caslon Text","Noto Serif SC",serif;}
+
+  /* 龙与地下城：羊皮纸，金线双框，四角缀饰 */
+  .wing.dnd{
+    background:
+      radial-gradient(ellipse at 50% 0%,rgba(255,248,225,.55),transparent 60%),
+      radial-gradient(circle at 12% 88%,rgba(122,80,30,.12),transparent 30%),
+      radial-gradient(circle at 88% 14%,rgba(122,80,30,.10),transparent 26%),
+      var(--vellum);
+    color:var(--umber);
+  }
+  .wing.dnd::before{
+    content:"";position:absolute;inset:12px;pointer-events:none;
+    border:1.5px solid var(--gold);
+    box-shadow:inset 0 0 0 4px var(--vellum),inset 0 0 0 5px var(--gold-soft);
+  }
+  .wing.dnd .corner{
+    position:absolute;width:22px;height:22px;pointer-events:none;color:var(--gold);
+  }
+  .wing.dnd .corner.tl{top:6px;left:6px;}
+  .wing.dnd .corner.tr{top:6px;right:6px;transform:scaleX(-1);}
+  .wing.dnd .corner.bl{bottom:6px;left:6px;transform:scaleY(-1);}
+  .wing.dnd .corner.br{bottom:6px;right:6px;transform:scale(-1,-1);}
+  .wing.dnd .sys{font-family:"Cinzel",serif;font-weight:700;letter-spacing:.3em;color:var(--crimson);}
+  .wing.dnd h2{color:var(--umber);}
+  .wing.dnd .sub{font-family:"IM Fell English","Noto Serif SC",serif;color:var(--umber-soft);font-size:15.5px;}
+  .wing.dnd .emblem{color:var(--crimson);}
+  .wing.dnd .wing-foot{color:var(--umber-soft);font-family:"IM Fell English","Noto Serif SC",serif;font-size:13.5px;}
+  .wing.dnd .wing-body,.wing.dnd .wing-foot{position:relative;}
+
+  .divider{
+    display:flex;align-items:center;gap:14px;margin:0 0 22px;
+    font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;
+  }
+  .divider::before,.divider::after{content:"";flex:1;height:.5px;}
+  .coc .divider{font-family:"Libre Caslon Display",serif;color:var(--ink-soft);}
+  .coc .divider::before,.coc .divider::after{background:var(--ink-soft);opacity:.5;}
+  .dnd .divider{font-family:"Cinzel",serif;color:var(--gold);}
+  .dnd .divider::before,.dnd .divider::after{background:var(--gold);opacity:.6;}
+
+  /* ---------- 条目卡 ---------- */
+  .entry{
+    display:grid;grid-template-columns:74px 1fr;gap:0 20px;
+    text-decoration:none;color:inherit;
+    padding:20px 18px 20px 0;
+    border-top:.5px solid var(--ink-soft);
+    position:relative;
+    transition:background .25s ease;
+  }
   .entry:last-of-type{border-bottom:.5px solid var(--ink-soft);}
-  .entry:hover .entry-title{color:var(--oxblood);}
-  .entry-date{font-family:"Libre Caslon Text",serif;font-style:italic;font-size:13px;color:var(--ink-soft);}
-  .entry-title{font-family:"Noto Serif SC",serif;font-weight:600;font-size:23px;letter-spacing:.1em;margin:4px 0 2px;}
-  .entry-en{font-family:"Libre Caslon Display",serif;font-size:15px;color:var(--ink-soft);}
-  .entry-meta{font-size:13.5px;color:var(--ink-soft);margin-top:9px;line-height:1.7;}
-  .colophon{margin-top:44px;font-style:italic;font-size:13px;line-height:1.8;color:var(--ink-soft);text-align:center;}
-  @media(max-width:560px){
-    body{padding:32px 10px 70px}
-    h1{font-size:34px}.en-title{font-size:19px}
-    .title-page{padding:54px 26px 36px}.contents{padding:36px 26px 44px}
+  .entry:hover{background:rgba(107,29,29,.045);}
+  .entry:hover .e-title{color:var(--oxblood);}
+  .entry:hover .e-go{transform:translateX(4px);opacity:1;}
+  .entry:focus-visible{outline:2px solid var(--prussian);outline-offset:3px;}
+
+  .e-date{text-align:center;padding-top:3px;border-right:.5px solid var(--leaf-edge);}
+  .e-date .d{font-family:"Libre Caslon Text",serif;font-size:36px;line-height:1;}
+  .e-date .m{font-family:"Libre Caslon Display",serif;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;margin-top:6px;color:var(--ink-soft);}
+  .e-date .y{font-family:"Libre Caslon Text",serif;font-style:italic;font-size:12.5px;color:var(--graphite);margin-top:2px;}
+
+  .e-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .e-title{
+    font-family:"Noto Serif SC",serif;font-weight:700;font-size:25px;
+    letter-spacing:.12em;transition:color .2s ease;
+  }
+  .e-en{font-family:"Libre Caslon Display",serif;font-size:15.5px;color:var(--ink-soft);margin-top:1px;}
+  .e-blurb{
+    font-family:"Noto Serif SC",serif;font-size:14.5px;line-height:1.85;
+    color:var(--ink-soft);margin:10px 0 0;
+  }
+  .e-meta{
+    display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:12px;
+    font-size:12.5px;color:var(--graphite);letter-spacing:.04em;
+  }
+  .e-meta span b{font-weight:400;color:var(--ink);}
+  .e-go{
+    position:absolute;right:6px;top:22px;
+    font-family:"Libre Caslon Text",serif;font-size:18px;color:var(--oxblood);
+    opacity:.55;transition:transform .25s ease,opacity .25s ease;
+  }
+
+  /* 身份标签 */
+  .role{
+    display:inline-block;font-family:"Noto Serif SC",serif;
+    font-size:11.5px;letter-spacing:.12em;line-height:1;
+    padding:4px 7px 4px 8px;border:1px solid currentColor;
+    transform:translateY(-3px);
+  }
+  .role.kp{color:var(--prussian);}
+  .role.dm{color:var(--crimson);}
+  .role.pl{color:#3d5a3a;}
+  .status{font-family:"Libre Caslon Text",serif;font-style:italic;font-size:12.5px;color:var(--graphite);}
+
+  /* 龙与地下城：空卷轴 */
+  .vacant{
+    text-align:center;padding:40px 26px 38px;
+    border:1px dashed var(--gold-soft);
+    background:rgba(255,250,235,.35);
+  }
+  .vacant svg{width:46px;height:46px;color:var(--gold);opacity:.7;}
+  .vacant .v-title{
+    font-family:"Noto Serif SC",serif;font-weight:600;font-size:19px;
+    letter-spacing:.2em;margin:14px 0 6px .2em;color:var(--umber);
+  }
+  .vacant .v-en{font-family:"IM Fell English",serif;font-style:italic;font-size:15px;color:var(--umber-soft);}
+  .vacant p{font-family:"Noto Serif SC",serif;font-size:13.5px;line-height:1.85;color:var(--umber-soft);margin:14px auto 0;max-width:260px;}
+
+  /* ---------- 身份图例 ---------- */
+  .key{
+    display:flex;justify-content:center;flex-wrap:wrap;gap:10px 26px;
+    margin:0 0 40px;font-size:13px;color:var(--cream-dim);letter-spacing:.06em;
+  }
+  .key .role{transform:none;margin-right:8px;background:var(--leaf);}
+
+  /* ---------- 页脚 ---------- */
+  .colophon{
+    text-align:center;margin-top:60px;color:var(--cream-dim);
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;font-style:italic;
+    font-size:13px;line-height:2;
+  }
+  .colophon a{color:var(--cream);text-decoration:none;border-bottom:.5px solid var(--cream-dim);}
+  .colophon a:hover{border-bottom-color:var(--cream);}
+  .colophon .fleuron{display:block;font-style:normal;font-size:18px;margin-bottom:10px;color:var(--cream-dim);}
+
+  @media (max-width:880px){
+    .wings{grid-template-columns:1fr;gap:40px;max-width:600px;margin:0 auto;}
+  }
+  @media (max-width:560px){
+    body{padding:44px 12px 64px;}
+    .masthead{margin-bottom:40px;}
+    .masthead .imprint{font-size:10.5px;letter-spacing:.2em;}
+    .masthead h1{font-size:38px;letter-spacing:.26em;margin-left:.26em;}
+    .masthead .en{font-size:19px;}
+    .masthead .motto{font-size:14.5px;}
+    .ledger b{font-size:23px;}
+    .ledger div{min-width:0;padding:12px 4px 10px;}
+    .ledger span{letter-spacing:.1em;font-size:11.5px;}
+    .wing-head{padding:42px 26px 24px;}
+    .wing-head h2{font-size:27px;}
+    .wing-body{padding:4px 20px 34px;}
+    .wing-foot{padding:0 20px 28px;}
+    .entry{grid-template-columns:56px 1fr;gap:0 14px;padding-right:22px;}
+    .e-date .d{font-size:29px;}
+    .e-title{font-size:21px;}
+    .key{gap:8px 16px;font-size:12.5px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .entry,.e-go,.e-title{transition:none;}
   }
 </style>
 </head>
 <body>
-<div class="book">
-  <div class="title-page">
-    <div class="imprint-top">A Shelf of Casebooks</div>
+<div class="shell">
+
+  <header class="masthead">
+    <div class="imprint">A Private Archive of Tabletop Play</div>
     <h1>跑团记录</h1>
-    <div class="en-title">TRPG Logs</div>
-    <div class="rule-double"></div>
-    <p class="being">Being a Collection of Accounts Kept by the Keeper,<br>of Investigations Undertaken and Concluded</p>
-  </div>
-  <div class="contents">
-    <h2>Contents</h2>
+    <div class="en">The Tables of K.265</div>
+    <div class="rule"></div>
+    <p class="motto">有时执掌骰子与秘密，有时只是桌边的一位旅人。<br>每一场都值得被好好地排印、装订、收进书架。</p>
 
-    <a class="entry" href="2026-09-13-%E8%BF%BD%E4%B9%A6%E4%BA%BA/">
-      <div class="entry-date">2026 · September 13</div>
-      <div class="entry-title">追书人</div>
-      <div class="entry-en">The Book-Chaser</div>
-      <div class="entry-meta">
-        克苏鲁的呼唤 · 守秘人 K.265 · 调查员 邓恩·琼斯<br>
-        密歇根州阿诺兹堡市 — 三章，已完结
+    <div class="ledger" aria-label="统计">
+      <div><b data-count="all">1</b><span>场次</span></div>
+      <div><b data-count="coc">1</b><span>克苏鲁</span></div>
+      <div><b data-count="dnd">0</b><span>龙与地下城</span></div>
+      <div><b data-count="gm">1</b><span>担任主持</span></div>
+    </div>
+  </header>
+
+  <div class="key" aria-label="身份图例">
+    <span><span class="role kp">守秘人 KP</span>克苏鲁的主持</span>
+    <span><span class="role dm">地下城主 DM</span>龙与地下城的主持</span>
+    <span><span class="role pl">玩家 PL</span>坐在桌边的那一方</span>
+  </div>
+
+  <main class="wings">
+
+    <!-- ============ 克苏鲁的呼唤 ============ -->
+    <section class="wing coc" aria-labelledby="h-coc">
+      <div class="wing-head">
+        <svg class="emblem" viewBox="0 0 40 40" aria-hidden="true">
+          <!-- 旧印：五芒之内的一只眼 -->
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="20" cy="20" r="17.5" stroke-width="1"/>
+            <path d="M20 4.5 L24.3 33.2 L6.7 12 L33.3 12 L15.7 33.2 Z" stroke-width="1.1"/>
+            <path d="M14.2 20.2 Q20 15.4 25.8 20.2 Q20 25 14.2 20.2 Z" stroke-width="1.1"/>
+          </g>
+          <circle cx="20" cy="20.2" r="1.9" fill="currentColor"/>
+        </svg>
+        <div class="sys">Call of Cthulhu</div>
+        <h2 id="h-coc">克苏鲁的呼唤</h2>
+        <div class="sub">卷宗 · Casebooks of Investigation</div>
       </div>
-    </a>
 
-    <p class="colophon">
-      正文为戏内叙事与对白；页边铅笔批注为场外闲谈，不入正文；<br>
-      电报纸条为骰子判定与属性记录。
-    </p>
-  </div>
+      <div class="wing-body">
+        <div class="divider">Case Files</div>
+
+        <a class="entry" data-system="coc" data-role="kp" href="2026-09-13-%E8%BF%BD%E4%B9%A6%E4%BA%BA/">
+          <div class="e-date">
+            <div class="d">13</div>
+            <div class="m">Sep</div>
+            <div class="y">2026</div>
+          </div>
+          <div class="e-main">
+            <div class="e-top">
+              <span class="e-title">追书人</span>
+              <span class="role kp">守秘人 KP</span>
+            </div>
+            <div class="e-en">The Book-Chaser</div>
+            <p class="e-blurb">一份十美元的寻书委托，一位一年前在自家宅中凭空消失的人类学教授，和一座背靠公墓的老房子。</p>
+            <div class="e-meta">
+              <span>调查员 <b>邓恩·琼斯</b></span>
+              <span>1925 · 密歇根州阿诺兹堡</span>
+              <span>单人团 · 三章</span>
+              <span class="status">已完结</span>
+            </div>
+          </div>
+          <span class="e-go" aria-hidden="true">→</span>
+        </a>
+
+        <a class="entry" data-system="coc" data-role="pl" href="2026-02-09-%E4%B9%8C%E6%B4%9B%E6%B3%A2%E6%B4%9B%E6%96%AF%E7%9A%84%E6%9C%AB%E6%97%A5%E5%B7%A1%E6%BC%94/">
+          <div class="e-date">
+            <div class="d">09</div>
+            <div class="m">Feb</div>
+            <div class="y">2026</div>
+          </div>
+          <div class="e-main">
+            <div class="e-top">
+              <span class="e-title">乌洛波洛斯的末日巡演</span>
+              <span class="role pl">玩家 PL</span>
+            </div>
+            <div class="e-en">Ouroboros: The Doomsday Tour</div>
+            <p class="e-blurb">一段看过就会染上「末日病」的漩涡视频，一张不断更新坐标的论坛帖子。三个人最后站在世界线的分岔口上。</p>
+            <div class="e-meta">
+              <span>调查员 <b>宇见一角</b></span>
+              <span>守秘人 <b>酥皮</b></span>
+              <span>2012 · 重濑市港东区</span>
+              <span>三人团 · 八幕与两条世界线</span>
+              <span class="status">已完结</span>
+            </div>
+          </div>
+          <span class="e-go" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="wing-foot">每一份卷宗都附调查员档案。</div>
+    </section>
+
+    <!-- ============ 龙与地下城 ============ -->
+    <section class="wing dnd" aria-labelledby="h-dnd">
+      <svg class="corner tl" viewBox="0 0 22 22" aria-hidden="true"><path d="M1 21 V6 Q1 1 6 1 H21 M5 21 V9 Q5 5 9 5 H21 M9 9 h3 v3 h-3z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <svg class="corner tr" viewBox="0 0 22 22" aria-hidden="true"><path d="M1 21 V6 Q1 1 6 1 H21 M5 21 V9 Q5 5 9 5 H21 M9 9 h3 v3 h-3z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <svg class="corner bl" viewBox="0 0 22 22" aria-hidden="true"><path d="M1 21 V6 Q1 1 6 1 H21 M5 21 V9 Q5 5 9 5 H21 M9 9 h3 v3 h-3z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <svg class="corner br" viewBox="0 0 22 22" aria-hidden="true"><path d="M1 21 V6 Q1 1 6 1 H21 M5 21 V9 Q5 5 9 5 H21 M9 9 h3 v3 h-3z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+
+      <div class="wing-head">
+        <svg class="emblem" viewBox="0 0 40 40" aria-hidden="true">
+          <!-- 二十面骰 -->
+          <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.1">
+            <path d="M20 2.5 L35.2 11.2 L35.2 28.8 L20 37.5 L4.8 28.8 L4.8 11.2 Z"/>
+            <path d="M20 9.5 L30.2 26.5 L9.8 26.5 Z"/>
+            <path d="M20 2.5 L20 9.5 M35.2 11.2 L20 9.5 M4.8 11.2 L20 9.5 M35.2 11.2 L30.2 26.5 M4.8 11.2 L9.8 26.5 M35.2 28.8 L30.2 26.5 M4.8 28.8 L9.8 26.5 M20 37.5 L30.2 26.5 M20 37.5 L9.8 26.5"/>
+          </g>
+          <text x="20" y="22.6" text-anchor="middle" font-family="Cinzel,serif" font-size="7.5" font-weight="700" fill="currentColor">20</text>
+        </svg>
+        <div class="sys">Dungeons &amp; Dragons</div>
+        <h2 id="h-dnd">龙与地下城</h2>
+        <div class="sub">冒险日志 · Chronicles of the Realms</div>
+      </div>
+
+      <div class="wing-body">
+        <div class="divider">Chronicles</div>
+
+        <div class="vacant">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <!-- 卷起的空卷轴 -->
+            <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 10 H36 Q40 10 40 14 Q40 18 36 18 H34 V38 Q34 42 30 42 H10 Q6 42 6 38 Q6 34 10 34 H12 Z"/>
+              <path d="M36 18 Q32 18 32 14 Q32 10 36 10"/>
+              <path d="M10 34 Q14 34 14 38 Q14 42 10 42"/>
+              <path d="M17 20 H29 M17 25 H29 M17 30 H25" opacity=".55"/>
+            </g>
+          </svg>
+          <div class="v-title">卷轴尚未展开</div>
+          <div class="v-en">No chronicle yet inscribed.</div>
+          <p>第一场冒险开团之后，它会被抄录在这里。</p>
+        </div>
+      </div>
+
+      <div class="wing-foot">Here be dragons.</div>
+    </section>
+
+  </main>
+
+  <footer class="colophon">
+    <span class="fleuron">❦</span>
+    正文为戏内叙事与对白；场外闲谈以页边铅笔批注；骰子判定印于电报纸条。<br>
+    原始记录与角色卡一并存档于 <a href="https://github.com/Ashstar9527/trpg-logs">GitHub</a>。
+  </footer>
+
 </div>
+
+<script>
+  // 按页面上的条目自动更新刊头统计；新增条目时无需手改数字
+  (function(){
+    var entries=[].slice.call(document.querySelectorAll('a.entry[data-system]'));
+    var n={
+      all:entries.length,
+      coc:entries.filter(function(e){return e.dataset.system==='coc';}).length,
+      dnd:entries.filter(function(e){return e.dataset.system==='dnd';}).length,
+      gm:entries.filter(function(e){return e.dataset.role==='kp'||e.dataset.role==='dm';}).length
+    };
+    Object.keys(n).forEach(function(k){
+      var el=document.querySelector('[data-count="'+k+'"]');
+      if(el) el.textContent=n[k];
+    });
+  })();
+</script>
 </body>
 </html>
