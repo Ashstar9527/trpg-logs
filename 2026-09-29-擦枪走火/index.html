@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>擦枪走火 · FD-302 证人陈述</title>
+<meta name="description" content="克苏鲁的呼唤单人团记录《擦枪走火》。1981 年 9 月 28 日，暴风雨之夜，荒原上唯一的一栋木屋。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Homemade+Apple&family=Noto+Serif+SC:wght@400;600;900&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --desk:#2a2420;
+    --paper:#f4efe2;
+    --paper-2:#ebe4d2;
+    --manila:#d9c18f;
+    --manila-2:#c9ac72;
+    --ink:#1f1d1a;          /* 打字机墨 */
+    --ink-2:#4a463f;
+    --ink-3:#6b665c;        /* 辅助文字，在纸色上 ≥ 4.5:1 */
+    --pen:#1d3f7a;          /* 证人笔迹：蓝色钢笔 */
+    --stamp:#b3261e;
+    --rule:rgba(31,29,26,.18);
+    --type:"Special Elite","Courier Prime","Noto Serif SC",monospace;
+    --mono:"Courier Prime","Noto Serif SC",monospace;
+    --serif:"Noto Serif SC",serif;
+    --hand:"Homemade Apple",cursive;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:20px;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(92deg,rgba(255,255,255,.018) 0 2px,transparent 2px 9px),
+      radial-gradient(ellipse at 50% 0%,#3a312b,var(--desk) 60%,#1b1714);
+    color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.6;
+    padding:40px 16px 80px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--pen);text-underline-offset:3px;}
+  :focus-visible{outline:2px solid var(--pen);outline-offset:3px;border-radius:2px;}
+  .skip{position:fixed;left:12px;top:-60px;z-index:50;background:var(--paper);color:var(--ink);padding:10px 14px;border-radius:4px;font-weight:600;text-decoration:none;}
+  .skip:focus{top:12px;}
+
+  .stack{max-width:780px;margin:0 auto;}
+  .top-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;font-family:var(--mono);font-size:14px;}
+  .top-nav a{color:#e6dcc4;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 6px;}
+  .top-nav a:hover{text-decoration:underline;}
+
+  /* ================= 档案夹封面 ================= */
+  .folder{
+    position:relative;background:linear-gradient(180deg,var(--manila),var(--manila-2));
+    border-radius:4px 4px 2px 2px;padding:44px 48px 40px;color:#2b2416;
+    box-shadow:0 20px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .folder::before{
+    content:"CASE FILE";position:absolute;top:-26px;left:36px;height:28px;padding:5px 18px 0;
+    background:var(--manila);border-radius:6px 6px 0 0;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.2em;color:#5a4a28;
+  }
+  .agency{font-family:var(--type);font-size:15px;letter-spacing:.24em;text-transform:uppercase;}
+  .folder h1{margin:22px 0 4px;font-family:var(--serif);font-weight:900;font-size:clamp(40px,8vw,64px);letter-spacing:.14em;line-height:1.1;}
+  .folder .en{font-family:var(--type);font-size:20px;letter-spacing:.3em;}
+  .case-no{margin-top:18px;font-family:var(--mono);font-size:14px;letter-spacing:.08em;}
+  .stamp{
+    position:absolute;right:38px;top:40px;transform:rotate(9deg);
+    border:3px solid var(--stamp);color:var(--stamp);padding:6px 14px 4px;border-radius:4px;
+    font-family:var(--type);font-size:20px;letter-spacing:.18em;opacity:.85;mix-blend-mode:multiply;
+  }
+  .toc{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+  .toc a{
+    display:inline-flex;align-items:baseline;gap:8px;min-height:44px;padding:10px 14px;border-radius:3px;
+    background:rgba(255,255,255,.35);border:1px solid rgba(43,36,22,.25);color:#2b2416;text-decoration:none;font-size:15px;
+  }
+  .toc a span{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:#5a4a28;}
+  .toc a:hover{background:rgba(255,255,255,.55);}
+
+  /* ================= 纸页 ================= */
+  .sheet{
+    position:relative;background:var(--paper);margin-top:22px;padding:44px 56px 46px;
+    box-shadow:0 14px 34px rgba(0,0,0,.42);border-radius:1px;
+    background-image:radial-gradient(circle at 92% 4%,rgba(120,90,40,.08),transparent 22%),radial-gradient(circle at 6% 97%,rgba(120,90,40,.07),transparent 26%);
+  }
+  .sheet::before{ /* 左上角订书钉 */
+    content:"";position:absolute;top:14px;left:22px;width:26px;height:4px;border-radius:2px;
+    background:linear-gradient(#bdbdbd,#7c7c7c);transform:rotate(-38deg);box-shadow:0 1px 1px rgba(0,0,0,.3);
+  }
+  .sheet-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px;
+    font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--ink-2);}
+  .sheet h2{margin:26px 0 22px;font-family:var(--serif);font-weight:900;font-size:28px;letter-spacing:.1em;line-height:1.3;}
+  .h-no{display:block;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.16em;color:var(--ink-3);margin-bottom:4px;}
+  .page-no{margin-top:36px;text-align:center;font-family:var(--mono);font-size:13px;color:var(--ink-3);}
+
+  /* 表格：FD-302 抬头 */
+  table.form{width:100%;border-collapse:collapse;font-size:15px;margin-top:18px;}
+  table.form th,table.form td{border:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top;}
+  table.form th{width:7.5em;background:var(--paper-2);font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.06em;color:var(--ink-2);}
+  .redact{display:inline-block;width:11em;max-width:58%;height:1.05em;vertical-align:-.16em;background:var(--ink);border-radius:1px;}
+  .redact-tag{font-family:var(--mono);font-size:12px;color:var(--stamp);margin-left:8px;letter-spacing:.08em;}
+
+  /* 证人资料 */
+  .id{display:grid;grid-template-columns:150px 1fr;gap:24px;margin-top:18px;}
+  .photo{
+    width:150px;height:190px;border:1px solid var(--rule);background:var(--paper-2);display:grid;place-items:center;text-align:center;
+    font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.08em;position:relative;
+  }
+  .photo::after{content:"";position:absolute;top:-8px;left:50%;width:44px;height:16px;margin-left:-22px;background:rgba(200,180,130,.6);transform:rotate(-3deg);}
+  .id dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0;font-size:15px;}
+  .id dt{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);letter-spacing:.06em;white-space:nowrap;padding-top:2px;}
+  .id dd{margin:0;}
+  .creed{margin:16px 0 0;padding:10px 14px;border-left:3px solid var(--pen);color:var(--pen);font-size:16px;}
+  .sub-h{margin:28px 0 10px;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.16em;color:var(--ink-2);border-bottom:1px solid var(--rule);padding-bottom:4px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);}
+  .stats div{padding:8px 6px;text-align:center;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+  .stats div:nth-child(4n){border-right:0;}
+  .stats b{display:block;font-family:var(--mono);font-size:22px;font-weight:700;}
+  .stats span{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.1em;}
+  .derived{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:10px;font-size:14px;color:var(--ink-2);}
+  .derived b{font-family:var(--mono);color:var(--ink);}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .chips span{font-size:14px;padding:2px 10px;border:1px solid var(--rule);background:var(--paper-2);}
+  .chips b{font-family:var(--mono);margin-left:6px;}
+  table.kit{width:100%;border-collapse:collapse;font-size:14.5px;}
+  table.kit td{border-bottom:1px dashed var(--rule);padding:6px 4px;vertical-align:top;}
+  table.kit td:first-child{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);width:6em;}
+  details.bio summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;color:var(--pen);font-size:15px;list-style:none;}
+  details.bio summary::-webkit-details-marker{display:none;}
+  details.bio summary::before{content:"▸";transition:transform .2s;}
+  details.bio[open] summary::before{transform:rotate(90deg);}
+  .bio p{margin:0 0 1.5em;text-align:justify;}
+
+  /* ================= 陈述正文 ================= */
+  .statement p{margin:0 0 1.5em;text-align:justify;line-break:strict;}
+  .narr p{color:var(--ink);}
+  .kp-em{font-style:normal;font-weight:600;border-bottom:1.5px solid var(--ink-3);}
+  .wit{
+    margin:0 0 1.6em;padding:10px 0 10px 18px;border-left:3px solid var(--pen);
+    background:linear-gradient(90deg,rgba(29,63,122,.06),transparent 70%);
+  }
+  .wit-name{font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.12em;color:var(--pen);margin-bottom:6px;}
+  .wit p{color:var(--pen);margin-bottom:.9em;}
+  .wit p:last-child{margin-bottom:0;}
+
+  .chk{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0 0 1.3em;font-family:var(--mono);font-size:14px;color:var(--ink-2);}
+  .chk-tag{font-size:11.5px;letter-spacing:.14em;border:1px solid var(--ink-3);padding:0 6px;color:var(--ink-3);}
+  .chk-res{font-family:var(--serif);font-weight:600;font-size:13.5px;padding:0 8px;border:1.5px solid currentColor;transform:rotate(-2deg);}
+  .chk.ok .chk-res{color:#2f6b3a;}
+  .chk.fail .chk-res{color:var(--stamp);}
+  .chk.crit .chk-res{color:#2f6b3a;background:rgba(47,107,58,.08);}
+  .chk.fumble .chk-res{color:#fff;background:var(--stamp);border-color:var(--stamp);}
+
+  .exhibit{position:relative;margin:8px auto 2em;max-width:440px;background:#fff;padding:12px 12px 10px;box-shadow:0 8px 20px rgba(0,0,0,.25);transform:rotate(-.7deg);}
+  .exhibit:nth-of-type(even){transform:rotate(.6deg);}
+  .exhibit img{display:block;width:100%;height:auto;}
+  .exhibit.bare{background:none;box-shadow:none;padding:0;max-width:360px;}
+  .exhibit.bare img{filter:drop-shadow(0 8px 14px rgba(0,0,0,.28));}
+  .exhibit.bare figcaption{padding-left:6px;}
+  .clip{position:absolute;top:-14px;right:30px;width:16px;height:46px;border:2.5px solid #8a8f96;border-radius:8px;border-bottom-color:transparent;}
+  .exhibit figcaption{margin-top:8px;font-size:14px;color:var(--ink-2);}
+  .ex-no{font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.1em;color:var(--stamp);margin-right:10px;}
+
+  .clipping{margin:8px auto 2em;max-width:30em;background:#efe9da;padding:16px 22px 14px;box-shadow:0 6px 16px rgba(0,0,0,.22);transform:rotate(.5deg);
+    clip-path:polygon(0 2%,6% 0,14% 1.5%,22% 0,31% 1.2%,40% 0,52% 1.6%,63% 0,74% 1.4%,86% 0,100% 1.8%,100% 98%,91% 100%,80% 98.4%,68% 100%,55% 98.6%,43% 100%,30% 98.2%,18% 100%,7% 98.6%,0 100%);}
+  .np-mast{font-family:"Times New Roman",serif;font-weight:700;font-size:22px;border-bottom:3px double var(--ink);padding-bottom:4px;}
+  .np-head{font-family:var(--serif);font-weight:900;font-size:19px;margin:12px 0 8px;}
+  .np-body p{margin:0;font-size:15px;line-height:1.75;}
+  .clipping figcaption{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink-3);}
+
+  /* ================= 末页 ================= */
+  .closing p{margin:0 0 1.5em;}
+  .sign{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:72px;}
+  .sign div{border-top:1px solid var(--ink);padding-top:6px;font-family:var(--mono);font-size:12.5px;color:var(--ink-3);letter-spacing:.06em;}
+  .sign .sig{display:block;font-family:var(--hand);font-size:22px;color:var(--pen);letter-spacing:0;margin:-44px 0 14px 6px;transform:rotate(-4deg);}
+  .note{margin-top:40px;padding-top:14px;border-top:1px dashed var(--rule);font-size:14px;color:var(--ink-2);}
+  .note dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:8px 0 0;}
+  .note dt{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);}
+  .note dd{margin:0;}
+  .foot{max-width:780px;margin:22px auto 0;text-align:center;font-family:var(--mono);font-size:13px;color:#cfc3a8;}
+  .foot a{color:#e6dcc4;display:inline-flex;min-height:44px;align-items:center;padding:0 8px;}
+
+  @media (max-width:640px){
+    body{padding:24px 8px 60px;}
+    .folder{padding:38px 22px 28px;}
+    .stamp{right:16px;top:20px;font-size:15px;}
+    .sheet{padding:36px 20px 34px;}
+    .id{grid-template-columns:1fr;}
+    .photo{margin:0 auto;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .stats div:nth-child(4n){border-right:1px solid var(--rule);}
+    .stats div:nth-child(2n){border-right:0;}
+    table.form th{width:6em;}
+    .sign{grid-template-columns:1fr;gap:56px;}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;}}
+</style>
+</head>
+<body>
+<a class="skip" href="#part1">跳到陈述正文</a>
+<div class="stack">
+  <nav class="top-nav" aria-label="站点"><a href="../">‹ 跑团书架</a><a href="原始log.txt">原始记录</a></nav>
+
+  <header class="folder" aria-labelledby="title">
+    <div class="stamp" aria-hidden="true">CONFIDENTIAL</div>
+    <div class="agency">Federal Bureau of Investigation</div>
+    <h1 id="title">擦枪走火</h1>
+    <div class="en">GUN SHOT</div>
+    <div class="case-no">FD-302 · 证人陈述 · 1981 年 9 月 29 日</div>
+    <ul class="toc" aria-label="目录">
+      <li><a href="#witness"><span>附件</span>证人资料</a></li>
+      <li><a href="#part1"><span>第 1 部分</span>暴雨</a></li><li><a href="#part2"><span>第 2 部分</span>肉汤</a></li><li><a href="#part3"><span>第 3 部分</span>来客</a></li>
+      <li><a href="#closing"><span>末页</span>陈述结束</a></li>
+    </ul>
+  </header>
+
+  <section class="sheet" aria-labelledby="cover-h">
+    <header class="sheet-head"><div class="form">FD-302　证人陈述</div><div>第 1 页</div></header>
+    <h2 id="cover-h"><span class="h-no">事件摘要</span>暴风雨之夜，公路旁的独栋木屋</h2>
+    <table class="form">
+      <tr><th>事发时间</th><td>1981 年 9 月 28 日夜，暴雨</td></tr>
+      <tr><th>事发地点</th><td>公路旁原野上的独栋木屋，十公里内唯一的建筑</td></tr>
+      <tr><th>证人</th><td>艾迪安·多雷（Étienne Doré），法国籍，31 岁，探险家</td></tr>
+      <tr><th>同行者</th><td>安宁　——　事发时于抛锚车内熟睡，未进入木屋</td></tr>
+      <tr><th>屋主</th><td>伊森·威廉姆斯，自称曾任附近小镇的语文老师</td></tr>
+      <tr><th>身份核实</th><td><span class="redact" aria-hidden="true"></span><span class="redact-tag">[REDACTED]</span><span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">已涂黑</span></td></tr>
+      <tr><th>承办探员</th><td>史密斯·杨，联邦调查局</td></tr>
+    </table>
+    <p style="margin:22px 0 0;">证人因车辆抛锚，于当夜前往上述木屋避雨，后随承办探员离开。以下为证人陈述的完整记录。</p>
+  </section>
+
+  <section class="sheet" id="witness" aria-labelledby="witness-h">
+    <header class="sheet-head"><div class="form">附件 · 证人资料</div><div>第 2 页</div></header>
+    <h2 id="witness-h"><span class="h-no">Witness</span>艾迪安·多雷</h2>
+    <div class="id">
+      <div class="photo" role="img" aria-label="照片缺失">NO PHOTOGRAPH<br>ON FILE</div>
+      <dl>
+        <dt>职业</dt><dd>探险家</dd>
+        <dt>年龄 / 性别</dt><dd>31 · 男</dd>
+        <dt>籍贯</dt><dd>法国格勒诺布尔，现居里昂</dd>
+        <dt>外貌</dt><dd>肩背宽阔的青年，体格健壮，深棕色头发，灰绿色眼睛。乍一看像流连于酒场的生意人，碰巧有些运动爱好——然而他的手积满了厚茧。</dd>
+        <dt>玩家</dt><dd>Kanra</dd>
+      </dl>
+    </div>
+    <p class="creed">「未知并不可怖——无知才是。」</p>
+
+    <div class="sub-h">属性</div>
+    <div class="stats">
+      <div><b>90</b><span>STR</span></div><div><b>50</b><span>CON</span></div><div><b>70</b><span>SIZ</span></div><div><b>40</b><span>DEX</span></div>
+      <div><b>65</b><span>APP</span></div><div><b>80</b><span>INT</span></div><div><b>75</b><span>POW</span></div><div><b>65</b><span>EDU</span></div>
+    </div>
+    <div class="derived"><span>HP <b>12</b></span><span>MP <b>15</b></span><span>SAN <b>75</b> → 事后 <b>74</b></span><span>LUCK <b>70</b></span><span>MOV <b>8</b></span><span>DB <b>+1D4</b></span></div>
+
+    <div class="sub-h">技能</div>
+    <div class="chips">
+      <span>侦查<b>70</b></span><span>手枪<b>70</b></span><span>斗殴<b>65</b></span><span>母语<b>65</b></span><span>潜行<b>60</b></span>
+      <span>信用评级<b>50</b></span><span>博物学<b>50</b></span><span>追踪<b>50</b></span><span>聆听<b>49</b></span><span>取悦<b>49</b></span>
+      <span>说服<b>49</b></span><span>心理学<b>49</b></span><span>闪避<b>44</b></span>
+    </div>
+
+    <div class="sub-h">随身物品</div>
+    <table class="kit">
+      <tr><td>武器</td><td>.357 马格南左轮（手枪 70，1D8+1D4）；小型折叠刀（斗殴 65，1D4+DB）</td></tr>
+      <tr><td>其他</td><td>大衣、银质项链、护照与钱包、公路地图、打火机、车钥匙、烟盒、指南针</td></tr>
+      <tr><td>宝物</td><td>一枚老式机械腕表，父母的礼物，从不跑慢</td></tr>
+    </table>
+
+    <div class="sub-h">背景</div>
+    <table class="kit">
+      <tr><td>重要之人</td><td>父母。一对体面的中产家庭夫妇，对儿子常年探险这件事既骄傲又头疼，仍然一直希望他「能找份真正的工作」。</td></tr>
+      <tr><td>重要之地</td><td>韦科尔山地，少年时代第一次独自探险的地方</td></tr>
+      <tr><td>特质</td><td>好奇心胜过了自保意识</td></tr>
+      <tr><td>伤疤</td><td>左侧肋骨附近有一道不规则旧疤，一次攀岩事故留下的</td></tr>
+      <tr><td>恐惧</td><td>极其不喜欢被困在无法自主离开的地方，却没有发展成幽闭恐惧——他可以进入极狭窄的洞穴，因为他确信自己知道出口在哪里。</td></tr>
+    </table>
+    <details class="bio">
+      <summary>证人自述：韦科尔山</summary>
+      <div class="bio">
+        <p>十四岁那年，艾迪安与朋友在韦科尔山徒步时失足滚下山崖。幸运的是，他最后只摔断了一根肋骨，外加满身擦伤。</p>
+        <p>获救后，父亲问他当时是不是吓坏了。艾迪安想了一会儿，发现自己并没怎么害怕。坠落时，他甚至还有心思判断该用哪里着地，停下来后的第一件事也是检查自己还能不能动。第二件事——噢，他那时候在想：这里的云真好看。</p>
+        <p>这让十四岁的艾迪安第一次意识到，自己似乎没什么恐惧心。后来，他开始主动寻找那些别人避之不及的地方：废弃矿洞、地下河、无人山区，以及地图上只有一片空白的角落。</p>
+        <p>成年后，艾迪安成为了一名探险家。家里对此颇有微词，他则认为这比坐办公室适合自己。</p>
+        <p>如今，他的探索版图从欧洲一路扩展到了另一块大陆。美国的阿巴拉契亚山脉是个不错的开始。</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="sheet" id="part1" aria-labelledby="part1-h"><header class="sheet-head"><div class="form">FD-302　证人陈述　续页 1/3</div><div class="sheet-date">记录日期　2026.09.29</div></header><h2 id="part1-h"><span class="h-no">陈述 · 第 1 部分</span>暴雨</h2><div class="statement"><div class="narr"><p>1981年9月28日，这是一个闷热的夏夜，云层遮挡了月光，漆黑的夜空之中只能看到云层碰撞所发出的闪电。你们此时正驾车行驶在公路上，细密的雨点打在车窗上，汽车上的广播如同这一望无际的公路般无趣，连女主播的声音都提不起劲。</p><p>在这枯燥无味的行车过程中，你们开始有些昏昏欲睡，似乎是因为你们开到了郊外的缘故，广播的信号突然变得很差，女主播的声音在信号干扰下，逐渐变得尖锐而刺耳，最终完全听不清在讲什么了。</p><p>几乎是与此同时，打在车窗上的雨点开始变大，雷声变得频繁，原本的细雨在短短几分钟内变成了暴雨，随着远方传来的一声炸雷，你们听到了“砰”的一声，似乎是汽车的底盘撞到了什么东西，很快，汽车的发动机便停止了工作，而汽车的车灯、广播也通通失灵，你们立刻意识到你们的车抛锚了。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“怎么回事？”天气情况算不得好，但这样困在路中间，不下车也不行了。披上大衣，拿好车钥匙，下车查看车的受损情况，看看底盘磕到了什么东西。</p></div><div class="narr"><p>雨胡乱地拍打在艾迪安的身上。艾迪安发现，车底盘严重受损，而你们缺乏用于更换受损零件的必要材料，根本无法修好这辆车。</p><p>艾迪安在汽车后方找到了一个顶部有些磨损的岩石雕塑，从地面留下的车辙痕迹来看，你们的车刚刚正是撞上了这个雕塑，雕塑的顶端与车的底盘发生了激烈的碰撞，导致车底盘严重受损……</p></div><div class="chk ok"><span class="chk-tag">检定</span><span class="chk-body">侦查　10/70</span><span class="chk-res">极难成功</span></div><figure class="exhibit"><div class="clip" aria-hidden="true"></div><a href="assets/statue.jpg" target="_blank" rel="noopener"><img src="assets/statue.jpg" alt="路边的岩石雕塑" loading="lazy" decoding="async"></a><figcaption><span class="ex-no">证物 A</span>路边的岩石雕塑</figcaption></figure><div class="narr"><p>雕塑高约20厘米，呈球形，看上去像是某种体型肥胖的动物。雕塑的做工十分粗糙，似乎是不专业的人士凭感觉手工雕成的。这个雕塑有一种奇特的不协调感，甚至……还让人感受到轻微的恶心。</p></div><div class="chk "><span class="chk-tag">检定</span><span class="chk-body">理智检定　93/75　失败　SAN 75→74（1=1）</span></div><div class="narr"><p>暴雨不歇，而雨夜寒冷刺骨。你们的身体难以忍受这股寒冷，需要一处干燥温暖的歇息处。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>把雕像收好，回到车上拿上必要物品，环顾四周观察有没有能落脚的避雨处。</p></div><div class="narr"><p>艾迪安环顾四周，突然发现车上的同伴安宁，似乎安静地睡着了。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>难以置信地看了看他。年轻就是好，这情况还能睡得着。在雨幕中寻找能躲雨取暖的地方。</p></div><figure class="exhibit"><div class="clip" aria-hidden="true"></div><a href="assets/road-map.jpg" target="_blank" rel="noopener"><img src="assets/road-map.jpg" alt="公路与木屋" loading="lazy" decoding="async"></a><figcaption><span class="ex-no">证物 B</span>公路与木屋</figcaption></figure><div class="narr"><p>公路的旁边是一片一望无际的原野，云层在原野的上空互相碰撞着，不断发出沉闷的雷声，闪电如同一条条白蛇一般，在云层中不断穿梭，偶尔从云层中钻出，砸在地面上，一瞬间照亮周围的一切，狂风吹拂，无数绿草在风的压迫下不断涌动着，形成一股又一股如同海浪一般的浪潮。这些浪潮连绵不绝，指向了同一个方向……</p><p>艾迪安顺着方向看去，注意到了那屹立在原野上的唯一的一栋小木屋，闪电于木屋的后方落下，在这黑暗的荒野浪潮上留下了巨大的影子。</p><p>安宁恬静地睡着了。尽管车子的暖气坏了，但艾迪安及时关上了车门，兴许安宁还能在车里再睡一会。</p><p>小木屋是十公里内唯一的一栋建筑。再远远望去，甚至看不清木屋的位置。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“唉……”探险多年，这种突发情况也不是第一次了，但有一个睡着的同伴还真是头一次。把车钥匙留在车上，车门仔细关好，将大衣遮在头上匆忙跑向房子：“您好，请问有人么？”</p></div><div class="narr"><p>狂风不歇，骤雨不止，艾迪安决定迎着风雨向那间木屋走去……</p><p>……如果他没能看清前往木屋的路，很可能在荒原上浪费时间。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>运用多年的探险经验，谨慎地在风雨与荒草间行走，尝试分辨出前往木屋的道路。</p></div><div class="chk ok"><span class="chk-tag">检定</span><span class="chk-body">追踪　20/50</span><span class="chk-res">困难成功</span></div><div class="narr"><p>哪怕没有照明，艾迪安准确分辨出了前往木屋的方向。他大步向前，路上似乎隐约察觉了什么……</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">侦查　95/70</span><span class="chk-res">失败</span></div><div class="narr"><p>……有东西从草丛中一闪而过，难以捕捉影子——某种危险的目光在黑暗中窥视着艾迪安。</p><p>艾迪安终于靠近了木屋，木屋的周围有数个相当眼熟的雕塑。</p><p>这栋木屋并没有打开电灯照明，仅有少许昏暗的烛光从玻璃中透出来。破旧的屋子与漆黑的夜幕融为一体，仅当闪电撕破云际之际，才能瞬息间一瞥木屋的轮廓。</p><p>艾迪安清晰的记得，这附近的居民都会给自己的屋子通电。</p><p>艾迪安顺利的站在了木屋的门前。木门看上去相当老旧，甚至有些划痕，门缝有苔藓。</p><p>木门的后面隐约有一个沉重的呼吸声。木屋的玻璃非常脆弱，可屋内实在太昏暗了，几乎什么都看不见。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>看到那一排雕像，衣袋里的那只怪物雕像忽然有了存在感。过去探险时，许多地方也有自己的地方民俗，希望这大概只是美国特色吧。</p></div><div class="narr"><p>难以想象艾迪安携带一只如此沉重的雕像耗了多少力气。说不定，他在路上就感到吃力，而放下了怀里的雕像……</p></div><div class="chk fumble"><span class="chk-tag">检定</span><span class="chk-body">幸运　96/70</span><span class="chk-res">大失败</span></div><div class="narr"><p>……艾迪安有着常人难比的坚韧意志。迎着风和雨，他坚持抓着那一只奇特的雕像。木屋比周围高出几个台阶，上完楼梯的艾迪安一时手滑，竟然让雕像径直砸落在木台阶上。台阶顿时被砸坏了，出现一个巨大的圆坑。现在，要想进出木屋，恐怕得有惊人的弹跳力来越过这个坑。</p><p>这动静引起了某人的注意，木屋的门被从内打开了</p><p>开门的老人约莫70岁，身形消瘦，苍白的额角淌着汗珠，花白的头发，看上去似乎已经很久没有打理过了。</p><p>尽管现在正值盛夏时节，老人却仍然穿着一袭黑色的风衣。在用浑浊的双眼打探艾迪安许久之后，老人那毫无血色的脸部肌肉稍微颤动，从嘴唇里蠕动出几个单词。</p><p>“我是伊森，你是谁？”</p><p>老人的目光直勾勾地盯着艾迪安。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>虽然天气湿冷，但还是感觉冷汗直流。“额，您好……我是艾迪安•多雷，法国人，来美国旅游的，我的车在路上撞到了一个雕像，抛锚了。”</p><p>目光忍不住飘回地上的巨坑。“那个，对不起砸坏了您的地板，等天气好了我会帮您修好的。”撩起袖子展示自己木工本事，尝试说服老人自己真的能行。“现在，请问我能进去避雨一会儿吗？”</p></div><div class="narr"><p>“你撞了什么？！”伊森的脸皱了起来，问完这一句，他忽然沉默了，眼神躲闪，转过头去看了眼屋内，才对艾迪安缓缓说道，“没必要修。进来吧。”</p><p>伊森侧开身子，让出了可以进门的位置。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“感谢！”对他露出一个笑容，暗中记下：他刚才对雕像的反应有些不对劲。走到门口打量屋子里的陈设。</p></div><div class="narr"><p>伊森关上了门，迟缓地挪动着脚步。屋内没有通电，整个屋子主要是由客厅内的壁炉照明的。</p><p>只是炉火的灯光太过昏暗，不足以看清屋内的东西。</p><p>“拿去吧。”伊森从房间里拿出了一张毯子，递向艾迪安。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“嗯……请问您介意我开手电筒么？”想起口袋里的小型手电筒，讪笑两声，在黑暗里询问伊森，“你看我这人大手大脚的，再撞到点东西就不好了。”</p><p>“谢谢！”一面接过毯子。</p></div><div class="narr"><p>伊森皱了下眉头，没有回应。他的影子在灯光下格外瘦长。</p><p>随后，伊森又走向了另一个房间。他似乎要在里面待一会儿。</p><p>虽然光源不太稳定，但艾迪安还是大概看清了这个木屋的情况。（你现在在④客厅）</p></div><figure class="exhibit"><div class="clip" aria-hidden="true"></div><a href="assets/cabin-plan.jpg" target="_blank" rel="noopener"><img src="assets/cabin-plan.jpg" alt="伊森的屋子：①卧室　②厨房　③书房　④客厅" loading="lazy" decoding="async"></a><figcaption><span class="ex-no">证物 C</span>伊森的屋子：①卧室　②厨房　③书房　④客厅</figcaption></figure><div class="narr"><p>客厅的壁炉旁里有一张沙发和一张餐桌，餐桌旁有几把椅子。除此之外，还有通往三个房间的三扇门以及进来的大门。木屋唯一一扇窗户就在客厅。</p><p>---</p></div></div><div class="page-no" aria-hidden="true">— 3 —</div></section>
+<section class="sheet" id="part2" aria-labelledby="part2-h"><header class="sheet-head"><div class="form">FD-302　证人陈述　续页 2/3</div><div class="sheet-date">记录日期　2026.10.01</div></header><h2 id="part2-h"><span class="h-no">陈述 · 第 2 部分</span>肉汤</h2><div class="statement"><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>掏出手电筒打开，小心地查看四周，看看有没有什么值得注意的摆件</p></div><div class="narr"><p>艾迪安找到了可以铺开毯子的地方，是位于客厅的沙发。沙发对于两个想要躺在一起的成年人来说太过狭窄，但足以让两个人坐下来歇会。与此同时，沙发底下一个黑色的把柄吸引了艾迪安的注意……</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>这是什么？尽量安静地握住把柄小心抽出，看看是什么东西。</p></div><div class="narr"><p>艾迪安在沙发下面找到一把手枪，枪身沾染了血污和灰尘。它只剩一发子弹。</p><p>而餐桌上除了油污，什么也没有。附近的墙角有一些不明显的血迹，似乎经历过一场激烈的搏斗，但被刻意打扫过了。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>轻手轻脚地走到厨房门边，尝试探听房主在里面有什么动静……如果他不巧打开门，就说自己饿了吧。</p></div><div class="narr"><p>从伊森所在的房间里传出了香气。厨房内没有太多厨具和餐具，只有一口巨大的锅，此时这口锅正在炖煮着汤。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“您一定是个大厨。”走进厨房，来到伊森身边，一边留意周围刀具的位置，一边和他搭话。“您这是在做什么汤？和我做的闻起来简直是一个天堂一个地狱。”这句是实话，我做的只能说是生命体征维持剂。</p></div><div class="narr"><p>伊森先是拿起了勺子，但又换成了叉子，用蹩脚的手法搅动着锅内的汤。锅内蒸腾的热气扑在他的脸上，他完全没有躲避的意思。</p><p>“再等等。”伊森头也不抬地回道。此时已然是深夜，显然早就过了晚餐的点。</p><p>闻得出来，锅里是肉汤——被宰杀后的牲畜。艾迪安没有携带雨具，在暴雨中还行走了一段路程，当然，会因疲惫而渴望食物。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>好像听见自己的胃发出了一声抱怨。见他没什么聊天的意思，也只能悄悄退出厨房，回到客厅。想到餐桌周围的血迹，还是有点不详的预感……检查外门门锁和窗户，看看是否能正常打开。</p></div><div class="narr"><p>一扇简单的木门，不存在门锁这种东西。</p><p>尽管木屋的玻璃窗非常脆弱，但仍然挡住了风雨。</p><p>那是一扇固定窗，无法被推开。门仍然能运行。</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">灵感　95/80</span><span class="chk-res">失败</span></div><div class="narr"><p>艾迪安盯着这扇固定窗思索……只知道这扇窗质量不错，不会漏水。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>万一有什么事，以自己宽阔的臂膀，说不定可以像电影特工一样一肘子肘碎玻璃跳出去呢……不过心里又松了口气：好歹不会有什么密室谋杀之类的剧情。</p><p>想到伊森还在厨房，轻步走到他的卧室旁边，手扶上门把，看看能不能打开。</p></div><div class="narr"><p>这是一间有些漏风的房间，内部只有一张略显破旧的床和一张木桌，看得出来床上曾摆放着一层薄薄的破旧毯子。</p><p>艾迪安在桌子上找到了手锤、凿子等工具，以及一个已经打磨完毕的雕像——正是先前遇到的那个。这尊雕像看上去和汽车撞上的雕塑几乎一模一样，似乎是最近才刚刚制作完成的。</p><p>桌子上除了这些，还有一盏油灯，在油灯的光照下，艾迪安看不清自己的影子</p><p>突然间，艾迪安隐约又瞥到了什么……</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">侦查　49/70</span><span class="chk-res">失败</span></div><div class="narr"><p>……艾迪安看见了床底那些碎片——原来是一些硬化的鳞片，鳞片后似乎还有一条东西？</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>在床边蹲下伸长手，尝试把那东西拽出来。</p></div><div class="narr"><p>一条霉灰的软布，也许这软布在很久以前曾经是白色的。这条软布细长，上面布满了霉斑，裹足了灰尘。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>实在不想把这东西放进口袋里——要是把整件衣服感染上霉菌就麻烦了。把它踹回床底，回到客厅，尝试打开书房的门。</p></div><div class="narr"><p>艾迪安的考虑不无道理。那么手里的那些鳞片呢？</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>走到门口的脚步停下了。仔细打量手上的鳞片，思考这是哪种动物身上的，鱼类或是爬行类？</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">博物学　66/50</span><span class="chk-res">失败</span></div><div class="narr"><p>这不是件难事，但艾迪安花了点时间分辨——这是蛇的鳞片，一种毒蛇的鳞片。根据鳞片的大小来判断，这些鳞片的原主人应该很消瘦。</p><p>思考过后，艾迪安才进入书房。</p><p>它比起其他的房间要小上不少，内部有一个不算太陈旧的书桌与一排书架，看上去经常使用的样子。桌子上有一盏油灯，艾迪安在书桌上找到一份前几天的报纸，报纸上刊登了亚利桑那博物馆的失窃案。</p></div><figure class="clipping" aria-label="剪报：Arizona Morning News"><div class="np-mast">Arizona Morning News</div><div class="np-head">亚利桑那历史博物馆发生离奇案件！</div><div class="np-body"><p>一具珍贵的木乃伊于昨夜神秘消失。监控显示，凌晨 3 点，木乃伊展室警报骤响，但抵达现场的安保仅见空置的展示柜。警方已介入，初步判断为高技术盗窃。此事件令全球震惊，博物馆承诺加强安保，呼吁公众协助提供线索。案件调查中，敬请关注后续报道！</p></div><figcaption>书房书桌上的报纸</figcaption></figure><div class="narr"><p>书架上的书籍大部分关于大麻、罂粟等植物。这是些内容相当<em class="kp-em">敏感</em>的书籍。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>联想到卧室里的发霉的白布……想什么呢，这又不是印第安纳琼斯。检查一下书桌书架上有哪些属于伊森的个人物件——希望能找到一些他的个人信息。</p></div><div class="narr"><p>伊森没有写日记的习惯。艾迪安经过一番搜寻，发现那些书籍内尽是内容工整的笔记。</p><p>笔记内容围绕书籍补充。</p><p>艾迪安突然闻到一股来自头顶的刺鼻味道……</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">侦查　81/70</span><span class="chk-res">失败</span></div><div class="narr"><p>……那味道盘桓在头顶，久久不去。</p><p>也许艾迪安能找到什么……</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">幸运　86/70</span><span class="chk-res">失败</span></div><div class="narr"><p>……伊森的书房看来收拾得相当干净。艾迪安望着貌似没有缝隙的天花板，似乎得另寻他法</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>盯着天花板，还是没有头绪，又被气味熏的有些头晕。噢，美国人。他最好没在这书房里捣鼓过什么炼金术。</p><p>捂着鼻子把书籍还原回书架上，退回到客厅。看看有没有能用的梯子或者阁楼口。</p></div><div class="narr"><p>客厅并没有梯子。以艾迪安的身高而言，或许只差一根木棍便可以碰到天花板。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>走进厨房，观察一下伊森煮汤的进度，顺便找找有没有趁手的木棍、木铲、长柄汤勺，什么都行，只要伊森没在用。</p></div><div class="narr"><p>伊森还在那里，原地搅着那锅汤，闻起来煮的差不多了。伊森没有管艾迪安的东张西望，手中的叉子在和锅里的肉搏斗。</p><p>艾迪安找到了一柄空闲的铁勺，有些短，但踮起脚来就足够碰到书房的天花板了。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>把铁勺收进衣兜，不动声色地挪出厨房，尝试回到书房把天花板撬开。</p></div><div class="narr"><p>艾迪安在书房的天花板上找到一个隐藏的下拉式楼梯。</p><p>楼梯上方貌似会通向一处相当漆黑的地方</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>将书房门掩好，把楼梯拉下来，打起手电筒，小心地爬上去。</p></div><div class="narr"><p>阁楼内一片狼藉，各种玻璃设备和纸张散落了一地，地面上到处都是各种散发着刺鼻味道的化学试剂，而在这些化学试剂的中央，则有着少许已经开始发臭的生物组织，似乎是内脏和少部分肢体。</p><p>地上有一张纸张，吸引了艾迪安的注意……</p></div><div class="chk fumble"><span class="chk-tag">检定</span><span class="chk-body">教育　97/65</span><span class="chk-res">大失败</span></div><div class="narr"><p>……艾迪安努力辨认着纸张上的符号和文字，但看得实在有些头昏脑胀。兴许是阁楼内部空间过于狭窄，他挪动脚步时不小心把几管化学试剂踢下了楼。</p><p>玻璃管摔裂在地……</p></div><div class="chk ok"><span class="chk-tag">检定</span><span class="chk-body">幸运　24/70</span><span class="chk-res">困难成功</span></div><div class="narr"><p>……伊森在厨房里寻找着碗碟，乒乒乓乓的声音很响。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>强忍住不适，忍着气味把纸张捡起收入口袋，最后调查一下周围还有没有值得注意的物品，或能用上的工具。听伊森的声音，他的肉汤估计快要出锅了。如果待会儿他找不到人就麻烦了。</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">医学　57/1</span><span class="chk-res">失败</span></div><div class="narr"><p>从腐烂程度上来看生物组织，已经死亡了三天。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>盯着生物组织，一时间也看不出所以然，索性把注意力移到周围的器皿和纸张上来，尝试研究它们的作用。这些玻璃仪器的功能一定与处理这些组织有关。</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">博物学　77/50</span><span class="chk-res">失败</span></div><div class="narr"><p>通过比对，可以勉强看出纸张上的符号与试剂有所对应。至于生物组织，它的来源似乎不太妙。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>想起自己看过的无数美国杀人狂电影。要么这伊森是个疯狂人体实验科学家，要么……想起伊森面对汤锅的反应，那人真的是人类么？该不会真正的伊森已经成了这些东西吧。</p><p>但一时间也没办法多调查，只能先爬下楼梯，把楼梯收回去。走到书房门边观察伊森的动静。</p></div><div class="narr"><p>“汤好了。”伊森语气沉重地说。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>走到餐桌边，在他对面坐下，等待食物，一面说：“这汤闻起来真不错，您用哪些食材做的？”</p></div><div class="narr"><p>伊森的额头冒着冷汗，把锅端上了餐桌。他的双手死死地抓在锅的边缘，触碰锅的皮肤可以看见水泡。锅内的热汤蒸气滚滚，直喷他的面门。</p><p>“肉。”伊森回应道。</p><p>伊森拿出了些瓢盆放到餐桌上。一眼便能看出来你们各自的汤量不过一盆，每人各一碟捞出来的肉。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>端起碗闻下汤的味道，轻抿一口，端详里面肉的纹理，尝试分辨这是什么动物的肉。</p></div><div class="narr"><p>汤有些咸，表面飘着些油脂。也许是牛肉。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>用叉子戳戳弄弄，装作很忙的样子，还是没放进口，喝了些汤。一面和伊森说：“您还做了这么多食物，真是麻烦您了！刚才累的要命，都忘了和您聊聊天。看您年纪应该已经退休了。您以前是做什么工作的？”</p></div><div class="narr"><p>“我曾在附近的一座小镇内当语文老师……后来我实在没法理解那些年轻人弄的什么<em class="kp-em">嬉皮士</em>……至今已经几十年了，我一个人住在这里，全靠附近城镇的亲戚朋友救助。”伊森流利地答道。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“噢，您是位值得尊敬的老师。”冲他点点头，大拇指指向自己。“我是做地理考察的，不过我更愿意被叫探险家。这次来美国，也是为了来考察这里的山脉地质和人文风俗。”手里继续拿勺子搅动着汤。“说到这个，您这附近最近有没有什么有趣的新闻？”</p></div><div class="narr"><p>伊森默不作声的喝着汤。他大概难以回答这个问题。</p><p>“我……不懂这些。”老人缓缓摇了摇头。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“哈哈没事，随口问问，我也不怎么看报纸。”他家好像也没看到电视，但刚才那份报纸……干笑两声，一时也不知道说什么。手里有一搭没一搭地搅动着汤，等待他吃完。</p></div><div class="narr"><p>他看样子没什么胃口，有一下没一下的咀嚼着。喝这份汤对他来说未尝不是件消遣事。</p></div><div class="chk ok"><span class="chk-tag">检定</span><span class="chk-body">幸运　26/70</span><span class="chk-res">困难成功</span></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>状作担忧地询问伊森：“我刚在这等您的时候，注意到这墙角似乎有些血迹。这里发生什么了？您没事吧？”</p></div><div class="narr"><p>伊森的神情烦躁起来，“没什么……肉而已，有点血。”</p><p>说伊森看了几眼门和窗，才缓缓地说，“等雨停了，你就赶紧走吧。”</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“您放心，雨停了我一定不多留。您刚说血和肉，是之前磕碰到了吗？有没有做过医疗处理？需要我帮您再看一下吗？”急切地把一连串问题抛给他，试图绕晕他的头脑。“话又说回来，您是语文老师，但是不是对医药也挺有了解的？我刚路过您的书房外边，看到里面书架上好像全是化学和医药的书。”</p></div><div class="narr"><p>“不用你做这些。医药的事我一概不知。”伊森的语气尖锐了点，“你……你是不是上阁楼了？”</p><p>这是个上了年纪的老人，眼珠浑浊，但艾迪安能感受到伊森刺骨的视线。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“什么阁楼？”装作愣了一下，转移话题，作出一副真诚的模样。“不好意思，我只是想万一您受伤了，我能帮您处理一下，刚才问您那些问题也是想多聊聊天。”有些愧赧地挠挠头。“我绝对没有冒犯您隐私的意思……只是您这么好心收留我，我就忍不住想多聊几句。”希望这些足够把他绕晕了。</p></div><div class="narr"><p>伊森的眼皮动也没动，沉默地注视艾迪安</p></div><figure class="exhibit bare"><div class="clip" aria-hidden="true"></div><a href="assets/ethan.jpg" target="_blank" rel="noopener"><img src="assets/ethan.jpg" alt="伊森·威廉姆斯" loading="lazy" decoding="async"></a><figcaption><span class="ex-no">证物 D</span>伊森·威廉姆斯</figcaption></figure><div class="narr"><p>他没有接艾迪安的话，也没有继续喝汤。</p><p>就在这时……</p><p>远方的天边响起滚滚惊雷，刺眼的车灯如同闪电一般，透过窗户从房间的一端照到了另一端，将整个屋子照得宛若白昼。随着一声刺耳的刹车声，一辆小轿车似乎停在了屋子的门口。</p><p>---</p></div></div><div class="page-no" aria-hidden="true">— 4 —</div></section>
+<section class="sheet" id="part3" aria-labelledby="part3-h"><header class="sheet-head"><div class="form">FD-302　证人陈述　续页 3/3</div><div class="sheet-date">记录日期　2026.10.02</div></header><h2 id="part3-h"><span class="h-no">陈述 · 第 3 部分</span>来客</h2><div class="statement"><div class="narr"><p>伊森被这刺眼的光吓到般站了起身。他立即伸手挡住面前的光。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“好像又有人来了。”天赐良机，不过伊森怎么反应这么大？“是您的客人吗？”打量伊森。</p></div><div class="chk ok"><span class="chk-tag">检定</span><span class="chk-body">侦查　64/70</span><span class="chk-res">成功</span></div><div class="narr"><p>透过窗子，艾迪安看见屋子外有个一闪而过的人影，伊森同样也看见了。光消失后，伊森才小声地回答，“我不确定，也许是客人吧。”</p><p>没给你们反应的时间，你们清楚地听见了门外的敲门声。</p><p>“你们好，我本来要去前面的镇上，但我的车没油了，可以在这里借住一晚吗？”门外的声音说。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“来了！”转头问伊森：“那我去开门了？”一面起身走到门边去开门。不能再和伊森独处了，他看起来不太对劲。</p></div><div class="narr"><p>见艾迪安抢先自己一步要去开门，伊森稍显疑虑地站在餐桌旁，对艾迪安点了点头。</p><p>艾迪安主动拉开了木屋的门。</p><p>门外是一名高大壮硕的中年白人男子。他的眼神锐利，肌肉紧紧地撑着衣服，仿佛随时都会爆开来。</p></div><figure class="exhibit bare"><div class="clip" aria-hidden="true"></div><a href="assets/smith-yang.jpg" target="_blank" rel="noopener"><img src="assets/smith-yang.jpg" alt="史密斯·杨" loading="lazy" decoding="async"></a><figcaption><span class="ex-no">证物 E</span>史密斯·杨</figcaption></figure><div class="narr"><p>“你们好。”他显然看见了你们，“我是史密斯。”说话的时候他几乎没有表情，眼神如同猎鹰般锐利。听得出来，他的声音沉稳有力。</p><p>艾迪安还能看见台阶上那个圆形的坑，想必此人一定花了一番功夫跳到木屋门前。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>想到门口的坑有些心虚。“您好，我是艾迪安·多雷。”向他伸出手，“我是法国来的，车抛锚了，也在这歇脚，里面坐着的是房主伊森。”</p></div><div class="narr"><p>“进来吧。”伊森错开了史密斯的视线，有些紧张地说。</p><p>“史密斯·杨。”史密斯步伐有力的走了进来，略过伊森，向艾迪安伸出一只手。</p><p>他自我介绍完，自顾自地点了点头。</p><p>伊森扭头便进了那个漏风的房间，不久，伊森又走了出来，手上空空的看向艾迪安——伊森把毛毯给了艾迪安。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>好问题……刚才的紧张气氛好像被来客打断了，一时间也想不起自己把毛毯放哪了。从不知道哪里翻出毛毯递给史密斯。</p></div><div class="narr"><p>“我不用，先生。”史密斯摆了摆手。他身上的衣服很干燥。</p><p>“老先生，我忘了问您贵姓。”杨和艾迪安握完便抽出了手，转头看向伊森。</p><p>“伊森·威廉姆斯。”伊森的回答像是练习了很多遍。</p><p>杨似乎完全没注意到餐桌上的肉汤，径直走向沙发，自己坐了上去。对此，伊森的呼吸更沉重了些。</p><p>伊森短暂的思索了下，对艾迪安问道:“你……还需要毛毯吗？”</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“噢，不用了，谢谢您。”一时搞不清伊森的态度。“我也吃好了，需要我帮您洗碗么？时间不早了，您可以先去休息。”</p></div><div class="narr"><p>“不需要那些碗了。”他的语气冷淡。伊森的目光在杨和艾迪安之间游移片刻，最后才接过了毯子，走向漏风的房间。</p><p>伊森把房门半掩着，貌似要在里面待一会</p><p>杨背靠在沙发上，看上去闭起了眼睛，没有盖毯子。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>转向杨，语气轻松地说，“那么，您上这来是做什么的？”声音放低。“不得不说，您帮大忙了。”</p></div><div class="narr"><p>“我并没有做什么，你为什么这么说呢？”杨仍然闭着眼睛，回道。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“要我说，您进这就和进自己家一样。普通人随便走进别人家歇脚，怎么也会和主人寒暄一会儿，或者有些手忙脚乱吧。”哂笑两声，“而且，您大衣上一点雨都没有。如果是我车没油了，怎么说也得下车折腾一段时间。”指向自己的大衣。“您看，还没干呢。”</p><p>“如果您问的是后面那句话的话……”压低声音，“我觉得，这位房主有点不太对劲。”</p></div><div class="narr"><p>杨睁开了眼，似笑非笑地转头看向艾迪安的方向，声音压低了点，“你说的很不错。不过，你为什么这么说呢？”</p><p>接连被两次质询，艾迪安或许有所察觉……</p></div><div class="chk ok"><span class="chk-tag">检定</span><span class="chk-body">灵感　75/80</span><span class="chk-res">成功</span></div><div class="narr"><p>……艾迪安看见了，杨腰间那把手枪。</p><p>“那位老人家好心收留你。你这样说，是出于什么考虑呢？”杨轻轻地说，余光似乎一直在注意那扇半掩的房门。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>走到桌边，拿起碗具做出收拾的模样，故意发出一些碰撞声，借着遮掩回复他：“那可多了。第一，我所站着的地方，之前一定发生过搏斗。”指向墙角的血迹，“这看起来可不妙。”</p><p>“第二，您现在坐着的沙发底下，我找到了一把手枪，只剩下一颗子弹。”</p></div><div class="narr"><p>艾迪安能感受到，对话过程中，杨的审视没有消失过。</p><p>“这样一位独居的老人，带有一把……也未尝不可。”杨话是这么说，但艾迪安能从杨的脸上看出一点轻蔑的意味。杨大概很讨厌<em class="kp-em">让老人得到枪的途径</em>。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“我是个野外探险的人，您得理解，这些征兆在我看来，就像熊离开后的泥地一样，职业警觉。”朝他摊手，“如果这还不够的话……第三，”目光移向书房，“那边阁楼里摆着的东西可不太妙，看起来像什么生化实验。然而，这位伊森告诉我，他是一个语文老师。您不觉得奇怪么？”</p></div><div class="narr"><p>杨一时没有回答，视线的中心放到了艾迪安的双手，才继续说:“我的确看到了血迹。关于<em class="kp-em">生化实验</em>……先生，你能证明吗？”</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“我已经指给了您方向，证据嘛……在我拿出证据前，我想，您也得告诉我点东西才公平。”看他一直盯着自己的手，给他比了个大拇指……“您是做什么职业的？拜托，别和那位老先生一样告诉我您是个语文老师。”</p></div><div class="narr"><p>杨极快地伸手挡了下自己的脸，放下手时又恢复了面无表情的状态，“我平时……会把人从这里送到那里。”说话的时候，杨的头小幅度摆动着，模拟车子的行驶方向。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“额……行吧。”发挥了一会儿想象力。从大衣口袋里掏出那张阁楼捡到的纸，打着手电筒举在他面前示意他阅读。“我捡到了这个。如果你还想要生化实验的证据，自己上书房的阁楼去看吧。”</p></div><div class="narr"><p>杨默不作声地看着纸，没有伸手去接。没一会儿，艾迪安听到杨喃喃道:“……就是他。”</p><p>杨看待艾迪安的目光柔和下来，“你找到了有力的证据。干得好，多雷先生。”</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“过奖了。”挠挠头，莫名想起了被爸妈夸奖的感觉。“那么，奖励时间……现在可以告诉我了吧，您到底来做什么的？”</p></div><div class="narr"><p>“我尽力赶到了这里，在<em class="kp-em">他们</em>之前。”杨说起<em class="kp-em">他们</em>时，脸上的轻蔑再次出现了。</p><p>外面的雷声和雨声交加，可以看见劈落在原野上的闪电。</p><p>伊森大概是花时间收拾了下房间，脚步虚浮地走了出来。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>见伊森出来，赶紧发出一连串健康爽朗的笑声。“噢先生，不知道您还遇到过这么好笑的事。如果是我遇到那些鹅，也得被吓惨了的！”装作在聊一些琐碎的笑话。</p><p>朝杨挤挤眼。快点配合一下啊。</p></div><div class="narr"><p>杨矜持了下，而后干笑了几声</p><p>“我看这附近只有老先生，您一个人住，您平时吃点什么应该很不容易吧？”笑完，杨扭头看向伊森。</p><p>“还好……我曾在附近的一座小镇内当语文老师……后来我实在没法理解那些年轻人弄的什么<em class="kp-em">嬉皮士</em>……至今已经几十年了，我一个人住在这里，全靠附近城镇的亲戚朋友救助。”伊森答。</p><p>杨对老人的回答不予置否，毫不觉得自己的语调有什么不对，只是继续说，“威廉姆斯先生，那到底是哪座小镇呢？”</p><p>尽管说话的时候，杨的脸上依旧没有什么表情，但他那如刀锋一样的眼神和魁梧的身材，却像一尊巨人一样，给人极高的压迫感。</p><p>“我老了，记不住事。早就忘掉了。”伊森的态度强硬起来，只是语气虚弱。</p><p>“我向您直说吧。旁边这位——是您的同伴吗？”杨坐在沙发上，看向艾迪安。</p></div><div class="chk fail"><span class="chk-tag">检定</span><span class="chk-body">侦查　95/70</span><span class="chk-res">失败</span></div><div class="narr"><p>在杨看来，艾迪安毋庸置疑只是个毛头小子。杨问出这句话时，他的上身微微前倾，双腿处于适合发力的地方。</p><p>“不是。”伊森果断地答道</p><p>杨没管艾迪安的存在，继续对一旁的伊森说，“伊森·威廉姆斯，我只给你一次选择的机会。我会护送你，你愿不愿意跟我回去？”</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“等等，等等，都冷静。”站到他们两个中间，感觉自己头上冒出一个巨大的问号。“首先，不，我不是谁的同伴。我真的就是个可怜的法国人。你要看我的护照吗？”</p><p>然后看向伊森。“然后呃，您也冷静，我确定这里面有些误会。”最后转回面对杨，“您这话说得像最后通牒似的，能不能先都坐下来，讲清楚前因后果？虽然确实他有点奇怪，但这位老先生到目前为止对我挺好的，能不能都放松一下，坐下来讲？”</p></div><div class="narr"><p>杨冷哼了声。伊森叹了口气，说:“这事与你无关。”</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>上帝。怎么感觉自己站在一个巨大的火药桶里。这地方处处诡异，杨这样强硬没有一点好处。朝杨使个眼色，希望他能明白自己的意思。关于那些鳞片、报道和生物组织的事还没和他说呢</p></div><div class="narr"><p>杨不解地看着艾迪安。当着伊森的面，杨没有轻易开口。</p><p>“我愿意和你回去。”伊森深深地吸了口气，“他们的事，我会交代清楚的。”</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>被面前的发展搞得有些不知所措，但这姑且是达成了一致？看向杨。“所以你们两个认识，而且看起来也达成了一致。现在您是想要我回避，还是告诉我到底是什么情况……?”</p></div><div class="narr"><p>“也许认识吧，我们……聊过电话。”伊森神情紧张地看着门窗，说，“希望赶得上。”</p><p>风雨呼啸着，将屋内外划分为两个世界。屋内的空气凝滞了。屋外，又一辆车正疾速接近木屋……</p></div><div class="chk ok"><span class="chk-tag">检定</span><span class="chk-body">幸运　52/70</span><span class="chk-res">成功</span></div><div class="narr"><p>……猛烈的暴雨阻碍了它——这似乎为艾迪安争取了点时间，可以继续在伊森和杨之间周旋。</p><p>“你这话是什么意思，希望<em class="kp-em">他们</em>来接你吗？”杨皱起眉，沉声道。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“我相信他既然答应你了，应该不是这个意思。不过，我好像听到了什么不太妙的声音。”有点力竭的感觉，朝他们两人说，“我不知道你们要做什么，但好像又有人来了，这次是不是你们的同伴？不是的话，我建议我们找个地方躲一下。”</p></div><div class="narr"><p>“我们走吧。”伊森有些焦急地说，“晚了就走不了。”</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>给杨添柴加火：“这次总不是又抛锚的人了。这轮胎听起来老带劲了。”</p></div><div class="narr"><p>“多雷先生，你愿意和我也走一趟吗？”杨把手按在腰间，神情严肃地问。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“走，当然走！”朝他比个大拇指。“不走留着给他们当房东吗？快带上我。我车还坏了呢。”想起车上的安宁。他自求多福吧……</p></div><div class="narr"><p>杨让艾迪安走在最后面，而伊森跟在自己后面。</p><p>你们没有太多犹豫，跟着杨在路边找到了一辆古董车。</p><p>杨熟练地拉开车门，请伊森坐在后面。然后才拉开了副驾驶门，让艾迪安上车。</p><p>现在，杨转动了车钥匙。打火费了点力气，杨坐在驾驶位上，姿态放松地对艾迪安说:“史密斯·杨，很高兴能带您一程。”</p><p>杨轻松地找出了一本证件，递给艾迪安</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>朝他比了个敬礼的手势。“很高兴做您的乘客咯。”接过证件，看看这位先生到底什么来头。</p></div><div class="narr"><p>证件上记着:史密斯·杨，联邦调查局探员，男，38岁。</p></div><div class="wit"><div class="wit-name">证人　艾迪安·多雷</div><p>“哇哦，FBI，”扬眉道，“探员先生，您应该不用我跟去做什么笔录吧？”</p></div><div class="narr"><p>“哈哈，我说话可不算数。”杨意味深长地瞥了眼后视镜，“不过，多雷先生最近得和我们待一阵子了。”</p><p>杨顺利地启动了车，终点明确而清晰。这一夜过后，你们会迎来什么呢？</p></div></div><div class="page-no" aria-hidden="true">— 5 —</div></section>
+
+  <section class="sheet closing" id="closing" aria-labelledby="closing-h">
+    <header class="sheet-head"><div class="form">FD-302　证人陈述　末页</div><div>第 6 页</div></header>
+    <h2 id="closing-h"><span class="h-no">End of Statement</span>陈述结束</h2>
+    <p>证人随承办探员史密斯·杨驾车离开现场，屋主伊森·威廉姆斯同车。另一辆车当时正驶近木屋。</p>
+    <p>同行者安宁仍在抛锚车内。</p>
+    <p>后续：<span class="redact" aria-hidden="true"></span><span class="redact-tag">[REDACTED]</span></p>
+    <div class="sign">
+      <div><span class="sig" aria-hidden="true">É. Doré</span>证人签名　艾迪安·多雷</div>
+      <div><span class="sig" aria-hidden="true">S. Yang</span>承办探员　史密斯·杨</div>
+    </div>
+    <div class="note">
+      <strong>档案备注</strong>
+      <dl>
+        <dt>规则</dt><dd>克苏鲁的呼唤 第七版 · 单人文字团</dd>
+        <dt>模组</dt><dd>《擦枪走火》，作者 逆光の白羊。文中证物照片为团中展示过的模组图。</dd>
+        <dt>守秘人</dt><dd>qwi</dd>
+        <dt>调查员</dt><dd>艾迪安·多雷（玩家 Kanra）</dd>
+        <dt>开团</dt><dd>2026 年 9 月 29 日、10 月 1 日、10 月 2 日</dd>
+      </dl>
+    </div>
+  </section>
+</div>
+<footer class="foot"><a href="#title">↑ 回到封面</a><a href="../">跑团书架</a><a href="原始log.txt">原始记录</a></footer>
+</body>
+</html>

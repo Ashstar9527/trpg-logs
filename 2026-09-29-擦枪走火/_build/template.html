@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>擦枪走火 · FD-302 证人陈述</title>
+<meta name="description" content="克苏鲁的呼唤单人团记录《擦枪走火》。1981 年 9 月 28 日，暴风雨之夜，荒原上唯一的一栋木屋。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Homemade+Apple&family=Noto+Serif+SC:wght@400;600;900&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --desk:#2a2420;
+    --paper:#f4efe2;
+    --paper-2:#ebe4d2;
+    --manila:#d9c18f;
+    --manila-2:#c9ac72;
+    --ink:#1f1d1a;          /* 打字机墨 */
+    --ink-2:#4a463f;
+    --ink-3:#6b665c;        /* 辅助文字，在纸色上 ≥ 4.5:1 */
+    --pen:#1d3f7a;          /* 证人笔迹：蓝色钢笔 */
+    --stamp:#b3261e;
+    --rule:rgba(31,29,26,.18);
+    --type:"Special Elite","Courier Prime","Noto Serif SC",monospace;
+    --mono:"Courier Prime","Noto Serif SC",monospace;
+    --serif:"Noto Serif SC",serif;
+    --hand:"Homemade Apple",cursive;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:20px;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(92deg,rgba(255,255,255,.018) 0 2px,transparent 2px 9px),
+      radial-gradient(ellipse at 50% 0%,#3a312b,var(--desk) 60%,#1b1714);
+    color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.6;
+    padding:40px 16px 80px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--pen);text-underline-offset:3px;}
+  :focus-visible{outline:2px solid var(--pen);outline-offset:3px;border-radius:2px;}
+  .skip{position:fixed;left:12px;top:-60px;z-index:50;background:var(--paper);color:var(--ink);padding:10px 14px;border-radius:4px;font-weight:600;text-decoration:none;}
+  .skip:focus{top:12px;}
+
+  .stack{max-width:780px;margin:0 auto;}
+  .top-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;font-family:var(--mono);font-size:14px;}
+  .top-nav a{color:#e6dcc4;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 6px;}
+  .top-nav a:hover{text-decoration:underline;}
+
+  /* ================= 档案夹封面 ================= */
+  .folder{
+    position:relative;background:linear-gradient(180deg,var(--manila),var(--manila-2));
+    border-radius:4px 4px 2px 2px;padding:44px 48px 40px;color:#2b2416;
+    box-shadow:0 20px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .folder::before{
+    content:"CASE FILE";position:absolute;top:-26px;left:36px;height:28px;padding:5px 18px 0;
+    background:var(--manila);border-radius:6px 6px 0 0;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.2em;color:#5a4a28;
+  }
+  .agency{font-family:var(--type);font-size:15px;letter-spacing:.24em;text-transform:uppercase;}
+  .folder h1{margin:22px 0 4px;font-family:var(--serif);font-weight:900;font-size:clamp(40px,8vw,64px);letter-spacing:.14em;line-height:1.1;}
+  .folder .en{font-family:var(--type);font-size:20px;letter-spacing:.3em;}
+  .case-no{margin-top:18px;font-family:var(--mono);font-size:14px;letter-spacing:.08em;}
+  .stamp{
+    position:absolute;right:38px;top:40px;transform:rotate(9deg);
+    border:3px solid var(--stamp);color:var(--stamp);padding:6px 14px 4px;border-radius:4px;
+    font-family:var(--type);font-size:20px;letter-spacing:.18em;opacity:.85;mix-blend-mode:multiply;
+  }
+  .toc{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+  .toc a{
+    display:inline-flex;align-items:baseline;gap:8px;min-height:44px;padding:10px 14px;border-radius:3px;
+    background:rgba(255,255,255,.35);border:1px solid rgba(43,36,22,.25);color:#2b2416;text-decoration:none;font-size:15px;
+  }
+  .toc a span{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:#5a4a28;}
+  .toc a:hover{background:rgba(255,255,255,.55);}
+
+  /* ================= 纸页 ================= */
+  .sheet{
+    position:relative;background:var(--paper);margin-top:22px;padding:44px 56px 46px;
+    box-shadow:0 14px 34px rgba(0,0,0,.42);border-radius:1px;
+    background-image:radial-gradient(circle at 92% 4%,rgba(120,90,40,.08),transparent 22%),radial-gradient(circle at 6% 97%,rgba(120,90,40,.07),transparent 26%);
+  }
+  .sheet::before{ /* 左上角订书钉 */
+    content:"";position:absolute;top:14px;left:22px;width:26px;height:4px;border-radius:2px;
+    background:linear-gradient(#bdbdbd,#7c7c7c);transform:rotate(-38deg);box-shadow:0 1px 1px rgba(0,0,0,.3);
+  }
+  .sheet-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px;
+    font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--ink-2);}
+  .sheet h2{margin:26px 0 22px;font-family:var(--serif);font-weight:900;font-size:28px;letter-spacing:.1em;line-height:1.3;}
+  .h-no{display:block;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.16em;color:var(--ink-3);margin-bottom:4px;}
+  .page-no{margin-top:36px;text-align:center;font-family:var(--mono);font-size:13px;color:var(--ink-3);}
+
+  /* 表格：FD-302 抬头 */
+  table.form{width:100%;border-collapse:collapse;font-size:15px;margin-top:18px;}
+  table.form th,table.form td{border:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top;}
+  table.form th{width:7.5em;background:var(--paper-2);font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.06em;color:var(--ink-2);}
+  .redact{display:inline-block;width:11em;max-width:58%;height:1.05em;vertical-align:-.16em;background:var(--ink);border-radius:1px;}
+  .redact-tag{font-family:var(--mono);font-size:12px;color:var(--stamp);margin-left:8px;letter-spacing:.08em;}
+
+  /* 证人资料 */
+  .id{display:grid;grid-template-columns:150px 1fr;gap:24px;margin-top:18px;}
+  .photo{
+    width:150px;height:190px;border:1px solid var(--rule);background:var(--paper-2);display:grid;place-items:center;text-align:center;
+    font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.08em;position:relative;
+  }
+  .photo::after{content:"";position:absolute;top:-8px;left:50%;width:44px;height:16px;margin-left:-22px;background:rgba(200,180,130,.6);transform:rotate(-3deg);}
+  .id dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0;font-size:15px;}
+  .id dt{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);letter-spacing:.06em;white-space:nowrap;padding-top:2px;}
+  .id dd{margin:0;}
+  .creed{margin:16px 0 0;padding:10px 14px;border-left:3px solid var(--pen);color:var(--pen);font-size:16px;}
+  .sub-h{margin:28px 0 10px;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.16em;color:var(--ink-2);border-bottom:1px solid var(--rule);padding-bottom:4px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);}
+  .stats div{padding:8px 6px;text-align:center;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+  .stats div:nth-child(4n){border-right:0;}
+  .stats b{display:block;font-family:var(--mono);font-size:22px;font-weight:700;}
+  .stats span{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.1em;}
+  .derived{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:10px;font-size:14px;color:var(--ink-2);}
+  .derived b{font-family:var(--mono);color:var(--ink);}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .chips span{font-size:14px;padding:2px 10px;border:1px solid var(--rule);background:var(--paper-2);}
+  .chips b{font-family:var(--mono);margin-left:6px;}
+  table.kit{width:100%;border-collapse:collapse;font-size:14.5px;}
+  table.kit td{border-bottom:1px dashed var(--rule);padding:6px 4px;vertical-align:top;}
+  table.kit td:first-child{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);width:6em;}
+  details.bio summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;color:var(--pen);font-size:15px;list-style:none;}
+  details.bio summary::-webkit-details-marker{display:none;}
+  details.bio summary::before{content:"▸";transition:transform .2s;}
+  details.bio[open] summary::before{transform:rotate(90deg);}
+  .bio p{margin:0 0 1.5em;text-align:justify;}
+
+  /* ================= 陈述正文 ================= */
+  .statement p{margin:0 0 1.5em;text-align:justify;line-break:strict;}
+  .narr p{color:var(--ink);}
+  .kp-em{font-style:normal;font-weight:600;border-bottom:1.5px solid var(--ink-3);}
+  .wit{
+    margin:0 0 1.6em;padding:10px 0 10px 18px;border-left:3px solid var(--pen);
+    background:linear-gradient(90deg,rgba(29,63,122,.06),transparent 70%);
+  }
+  .wit-name{font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.12em;color:var(--pen);margin-bottom:6px;}
+  .wit p{color:var(--pen);margin-bottom:.9em;}
+  .wit p:last-child{margin-bottom:0;}
+
+  .chk{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0 0 1.3em;font-family:var(--mono);font-size:14px;color:var(--ink-2);}
+  .chk-tag{font-size:11.5px;letter-spacing:.14em;border:1px solid var(--ink-3);padding:0 6px;color:var(--ink-3);}
+  .chk-res{font-family:var(--serif);font-weight:600;font-size:13.5px;padding:0 8px;border:1.5px solid currentColor;transform:rotate(-2deg);}
+  .chk.ok .chk-res{color:#2f6b3a;}
+  .chk.fail .chk-res{color:var(--stamp);}
+  .chk.crit .chk-res{color:#2f6b3a;background:rgba(47,107,58,.08);}
+  .chk.fumble .chk-res{color:#fff;background:var(--stamp);border-color:var(--stamp);}
+
+  .exhibit{position:relative;margin:8px auto 2em;max-width:440px;background:#fff;padding:12px 12px 10px;box-shadow:0 8px 20px rgba(0,0,0,.25);transform:rotate(-.7deg);}
+  .exhibit:nth-of-type(even){transform:rotate(.6deg);}
+  .exhibit img{display:block;width:100%;height:auto;}
+  .exhibit.bare{background:none;box-shadow:none;padding:0;max-width:360px;}
+  .exhibit.bare img{filter:drop-shadow(0 8px 14px rgba(0,0,0,.28));}
+  .exhibit.bare figcaption{padding-left:6px;}
+  .clip{position:absolute;top:-14px;right:30px;width:16px;height:46px;border:2.5px solid #8a8f96;border-radius:8px;border-bottom-color:transparent;}
+  .exhibit figcaption{margin-top:8px;font-size:14px;color:var(--ink-2);}
+  .ex-no{font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.1em;color:var(--stamp);margin-right:10px;}
+
+  .clipping{margin:8px auto 2em;max-width:30em;background:#efe9da;padding:16px 22px 14px;box-shadow:0 6px 16px rgba(0,0,0,.22);transform:rotate(.5deg);
+    clip-path:polygon(0 2%,6% 0,14% 1.5%,22% 0,31% 1.2%,40% 0,52% 1.6%,63% 0,74% 1.4%,86% 0,100% 1.8%,100% 98%,91% 100%,80% 98.4%,68% 100%,55% 98.6%,43% 100%,30% 98.2%,18% 100%,7% 98.6%,0 100%);}
+  .np-mast{font-family:"Times New Roman",serif;font-weight:700;font-size:22px;border-bottom:3px double var(--ink);padding-bottom:4px;}
+  .np-head{font-family:var(--serif);font-weight:900;font-size:19px;margin:12px 0 8px;}
+  .np-body p{margin:0;font-size:15px;line-height:1.75;}
+  .clipping figcaption{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink-3);}
+
+  /* ================= 末页 ================= */
+  .closing p{margin:0 0 1.5em;}
+  .sign{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:72px;}
+  .sign div{border-top:1px solid var(--ink);padding-top:6px;font-family:var(--mono);font-size:12.5px;color:var(--ink-3);letter-spacing:.06em;}
+  .sign .sig{display:block;font-family:var(--hand);font-size:22px;color:var(--pen);letter-spacing:0;margin:-44px 0 14px 6px;transform:rotate(-4deg);}
+  .note{margin-top:40px;padding-top:14px;border-top:1px dashed var(--rule);font-size:14px;color:var(--ink-2);}
+  .note dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:8px 0 0;}
+  .note dt{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);}
+  .note dd{margin:0;}
+  .foot{max-width:780px;margin:22px auto 0;text-align:center;font-family:var(--mono);font-size:13px;color:#cfc3a8;}
+  .foot a{color:#e6dcc4;display:inline-flex;min-height:44px;align-items:center;padding:0 8px;}
+
+  @media (max-width:640px){
+    body{padding:24px 8px 60px;}
+    .folder{padding:38px 22px 28px;}
+    .stamp{right:16px;top:20px;font-size:15px;}
+    .sheet{padding:36px 20px 34px;}
+    .id{grid-template-columns:1fr;}
+    .photo{margin:0 auto;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .stats div:nth-child(4n){border-right:1px solid var(--rule);}
+    .stats div:nth-child(2n){border-right:0;}
+    table.form th{width:6em;}
+    .sign{grid-template-columns:1fr;gap:56px;}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;}}
+</style>
+</head>
+<body>
+<a class="skip" href="#part1">跳到陈述正文</a>
+<div class="stack">
+  <nav class="top-nav" aria-label="站点"><a href="../">‹ 跑团书架</a><a href="原始log.txt">原始记录</a></nav>
+
+  <header class="folder" aria-labelledby="title">
+    <div class="stamp" aria-hidden="true">CONFIDENTIAL</div>
+    <div class="agency">Federal Bureau of Investigation</div>
+    <h1 id="title">擦枪走火</h1>
+    <div class="en">GUN SHOT</div>
+    <div class="case-no">FD-302 · 证人陈述 · 1981 年 9 月 29 日</div>
+    <ul class="toc" aria-label="目录">
+      <li><a href="#witness"><span>附件</span>证人资料</a></li>
+      {{TOC}}
+      <li><a href="#closing"><span>末页</span>陈述结束</a></li>
+    </ul>
+  </header>
+
+  <section class="sheet" aria-labelledby="cover-h">
+    <header class="sheet-head"><div class="form">FD-302　证人陈述</div><div>第 1 页</div></header>
+    <h2 id="cover-h"><span class="h-no">事件摘要</span>暴风雨之夜，公路旁的独栋木屋</h2>
+    <table class="form">
+      <tr><th>事发时间</th><td>1981 年 9 月 28 日夜，暴雨</td></tr>
+      <tr><th>事发地点</th><td>公路旁原野上的独栋木屋，十公里内唯一的建筑</td></tr>
+      <tr><th>证人</th><td>艾迪安·多雷（Étienne Doré），法国籍，31 岁，探险家</td></tr>
+      <tr><th>同行者</th><td>安宁　——　事发时于抛锚车内熟睡，未进入木屋</td></tr>
+      <tr><th>屋主</th><td>伊森·威廉姆斯，自称曾任附近小镇的语文老师</td></tr>
+      <tr><th>身份核实</th><td><span class="redact" aria-hidden="true"></span><span class="redact-tag">[REDACTED]</span><span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">已涂黑</span></td></tr>
+      <tr><th>承办探员</th><td>史密斯·杨，联邦调查局</td></tr>
+    </table>
+    <p style="margin:22px 0 0;">证人因车辆抛锚，于当夜前往上述木屋避雨，后随承办探员离开。以下为证人陈述的完整记录。</p>
+  </section>
+
+  <section class="sheet" id="witness" aria-labelledby="witness-h">
+    <header class="sheet-head"><div class="form">附件 · 证人资料</div><div>第 2 页</div></header>
+    <h2 id="witness-h"><span class="h-no">Witness</span>艾迪安·多雷</h2>
+    <div class="id">
+      <div class="photo" role="img" aria-label="照片缺失">NO PHOTOGRAPH<br>ON FILE</div>
+      <dl>
+        <dt>职业</dt><dd>探险家</dd>
+        <dt>年龄 / 性别</dt><dd>31 · 男</dd>
+        <dt>籍贯</dt><dd>法国格勒诺布尔，现居里昂</dd>
+        <dt>外貌</dt><dd>肩背宽阔的青年，体格健壮，深棕色头发，灰绿色眼睛。乍一看像流连于酒场的生意人，碰巧有些运动爱好——然而他的手积满了厚茧。</dd>
+        <dt>玩家</dt><dd>Kanra</dd>
+      </dl>
+    </div>
+    <p class="creed">「未知并不可怖——无知才是。」</p>
+
+    <div class="sub-h">属性</div>
+    <div class="stats">
+      <div><b>90</b><span>STR</span></div><div><b>50</b><span>CON</span></div><div><b>70</b><span>SIZ</span></div><div><b>40</b><span>DEX</span></div>
+      <div><b>65</b><span>APP</span></div><div><b>80</b><span>INT</span></div><div><b>75</b><span>POW</span></div><div><b>65</b><span>EDU</span></div>
+    </div>
+    <div class="derived"><span>HP <b>12</b></span><span>MP <b>15</b></span><span>SAN <b>75</b> → 事后 <b>74</b></span><span>LUCK <b>70</b></span><span>MOV <b>8</b></span><span>DB <b>+1D4</b></span></div>
+
+    <div class="sub-h">技能</div>
+    <div class="chips">
+      <span>侦查<b>70</b></span><span>手枪<b>70</b></span><span>斗殴<b>65</b></span><span>母语<b>65</b></span><span>潜行<b>60</b></span>
+      <span>信用评级<b>50</b></span><span>博物学<b>50</b></span><span>追踪<b>50</b></span><span>聆听<b>49</b></span><span>取悦<b>49</b></span>
+      <span>说服<b>49</b></span><span>心理学<b>49</b></span><span>闪避<b>44</b></span>
+    </div>
+
+    <div class="sub-h">随身物品</div>
+    <table class="kit">
+      <tr><td>武器</td><td>.357 马格南左轮（手枪 70，1D8+1D4）；小型折叠刀（斗殴 65，1D4+DB）</td></tr>
+      <tr><td>其他</td><td>大衣、银质项链、护照与钱包、公路地图、打火机、车钥匙、烟盒、指南针</td></tr>
+      <tr><td>宝物</td><td>一枚老式机械腕表，父母的礼物，从不跑慢</td></tr>
+    </table>
+
+    <div class="sub-h">背景</div>
+    <table class="kit">
+      <tr><td>重要之人</td><td>父母。一对体面的中产家庭夫妇，对儿子常年探险这件事既骄傲又头疼，仍然一直希望他「能找份真正的工作」。</td></tr>
+      <tr><td>重要之地</td><td>韦科尔山地，少年时代第一次独自探险的地方</td></tr>
+      <tr><td>特质</td><td>好奇心胜过了自保意识</td></tr>
+      <tr><td>伤疤</td><td>左侧肋骨附近有一道不规则旧疤，一次攀岩事故留下的</td></tr>
+      <tr><td>恐惧</td><td>极其不喜欢被困在无法自主离开的地方，却没有发展成幽闭恐惧——他可以进入极狭窄的洞穴，因为他确信自己知道出口在哪里。</td></tr>
+    </table>
+    <details class="bio">
+      <summary>证人自述：韦科尔山</summary>
+      <div class="bio">
+        <p>十四岁那年，艾迪安与朋友在韦科尔山徒步时失足滚下山崖。幸运的是，他最后只摔断了一根肋骨，外加满身擦伤。</p>
+        <p>获救后，父亲问他当时是不是吓坏了。艾迪安想了一会儿，发现自己并没怎么害怕。坠落时，他甚至还有心思判断该用哪里着地，停下来后的第一件事也是检查自己还能不能动。第二件事——噢，他那时候在想：这里的云真好看。</p>
+        <p>这让十四岁的艾迪安第一次意识到，自己似乎没什么恐惧心。后来，他开始主动寻找那些别人避之不及的地方：废弃矿洞、地下河、无人山区，以及地图上只有一片空白的角落。</p>
+        <p>成年后，艾迪安成为了一名探险家。家里对此颇有微词，他则认为这比坐办公室适合自己。</p>
+        <p>如今，他的探索版图从欧洲一路扩展到了另一块大陆。美国的阿巴拉契亚山脉是个不错的开始。</p>
+      </div>
+    </details>
+  </section>
+
+  {{SHEETS}}
+
+  <section class="sheet closing" id="closing" aria-labelledby="closing-h">
+    <header class="sheet-head"><div class="form">FD-302　证人陈述　末页</div><div>第 6 页</div></header>
+    <h2 id="closing-h"><span class="h-no">End of Statement</span>陈述结束</h2>
+    <p>证人随承办探员史密斯·杨驾车离开现场，屋主伊森·威廉姆斯同车。另一辆车当时正驶近木屋。</p>
+    <p>同行者安宁仍在抛锚车内。</p>
+    <p>后续：<span class="redact" aria-hidden="true"></span><span class="redact-tag">[REDACTED]</span></p>
+    <div class="sign">
+      <div><span class="sig" aria-hidden="true">É. Doré</span>证人签名　艾迪安·多雷</div>
+      <div><span class="sig" aria-hidden="true">S. Yang</span>承办探员　史密斯·杨</div>
+    </div>
+    <div class="note">
+      <strong>档案备注</strong>
+      <dl>
+        <dt>规则</dt><dd>克苏鲁的呼唤 第七版 · 单人文字团</dd>
+        <dt>模组</dt><dd>《擦枪走火》，作者 逆光の白羊。文中证物照片为团中展示过的模组图。</dd>
+        <dt>守秘人</dt><dd>qwi</dd>
+        <dt>调查员</dt><dd>艾迪安·多雷（玩家 Kanra）</dd>
+        <dt>开团</dt><dd>2026 年 9 月 29 日、10 月 1 日、10 月 2 日</dd>
+      </dl>
+    </div>
+  </section>
+</div>
+<footer class="foot"><a href="#title">↑ 回到封面</a><a href="../">跑团书架</a><a href="原始log.txt">原始记录</a></footer>
+</body>
+</html>
