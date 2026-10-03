@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>死者的顿足舞 · Dead Man Stomp</title>
+<meta name="description" content="克苏鲁的呼唤六人团记录《死者的顿足舞》。1920 年代，纽约哈莱姆，斯默的天堂，一把四键小号。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=Poiret+One&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0e0c0a;
+    --panel:#17130f;
+    --panel-2:#1f1a14;
+    --gold:#d8b56a;         /* 主金色，在 panel 上约 9:1 */
+    --gold-2:#a8884a;       /* 细线 */
+    --cream:#efe6d2;        /* 正文 */
+    --cream-2:#c9bda3;      /* 次要文字，≥ 7:1 */
+    --cream-3:#a39780;      /* 辅助文字，≥ 4.5:1 */
+    --red:#e07a6a;
+    --green:#9fcf86;
+    --rule:rgba(216,181,106,.28);
+    --deco:"Limelight","Noto Serif SC",serif;
+    --thin:"Poiret One","Noto Serif SC",sans-serif;
+    --serif:"Noto Serif SC","Songti SC",serif;
+    /* 六位调查员的识别色，在 panel 上都 ≥ 6:1 */
+    --eugene:#8fb4ea; --claude:#e58f9e; --vincent:#e3a66a;
+    --tinos:#c7a8ea;  --julian:#7fcfc4; --theodore:#b8d27f;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:16px;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(90deg,rgba(216,181,106,.035) 0 1px,transparent 1px 64px),
+      radial-gradient(ellipse at 50% -10%,#2a2118,var(--night) 60%);
+    background-color:var(--night);
+    color:var(--cream);font-family:var(--serif);font-size:16px;line-height:1.6;
+    padding:28px 16px 72px;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--gold);text-underline-offset:3px;}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px;}
+  .skip{position:fixed;left:12px;top:-60px;z-index:50;background:var(--gold);color:#1a140b;padding:10px 14px;border-radius:2px;font-weight:600;text-decoration:none;}
+  .skip:focus{top:12px;}
+
+  .stack{max-width:740px;margin:0 auto;}
+  .top-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:14px;font-family:var(--thin);font-weight:700;font-size:15px;letter-spacing:.08em;}
+  .top-nav a{color:var(--cream-2);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 6px;}
+  .top-nav a:hover{color:var(--gold);}
+
+  /* ================= 装饰艺术边框 ================= */
+  .deco{position:relative;background:var(--panel);border:1px solid var(--gold-2);padding:6px;}
+  .deco::before{content:"";position:absolute;inset:6px;border:1px solid var(--rule);pointer-events:none;}
+  .corner{position:absolute;width:26px;height:26px;border-color:var(--gold);border-style:solid;pointer-events:none;}
+  .corner.tl{top:-1px;left:-1px;border-width:3px 0 0 3px;}
+  .corner.tr{top:-1px;right:-1px;border-width:3px 3px 0 0;}
+  .corner.bl{bottom:-1px;left:-1px;border-width:0 0 3px 3px;}
+  .corner.br{bottom:-1px;right:-1px;border-width:0 3px 3px 0;}
+
+  /* ================= 封面 / 节目单 ================= */
+  .bill{text-align:center;padding:0 0 30px;overflow:hidden;}
+  .sunburst{display:block;width:100%;height:auto;max-height:170px;margin:0 auto -6px;}
+  .presents{font-family:var(--thin);font-weight:700;font-size:15px;letter-spacing:.32em;color:var(--gold);text-transform:uppercase;}
+  .presents-cn{font-size:14px;color:var(--cream-2);letter-spacing:.2em;margin-top:4px;}
+  .bill h1{margin:20px 12px 0;font-family:var(--serif);font-weight:900;font-size:clamp(38px,9vw,64px);letter-spacing:.16em;line-height:1.15;color:var(--cream);}
+  .bill .en{font-family:var(--deco);font-size:clamp(22px,5vw,32px);letter-spacing:.14em;color:var(--gold);margin-top:6px;}
+  .rule-orn{display:flex;align-items:center;justify-content:center;gap:12px;margin:20px auto;max-width:360px;color:var(--gold);}
+  .rule-orn::before,.rule-orn::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold));}
+  .rule-orn::after{transform:scaleX(-1);}
+  .bill .meta{font-size:14.5px;color:var(--cream-2);line-height:1.9;padding:0 20px;}
+  .bill .meta b{color:var(--cream);font-weight:600;}
+
+  /* 曲目单 */
+  .setlist{max-width:470px;margin:26px auto 0;padding:0 18px;text-align:left;list-style:none;}
+  .setlist a{display:flex;align-items:baseline;gap:12px;min-height:44px;padding:9px 4px;color:var(--cream);text-decoration:none;border-bottom:1px dotted var(--rule);}
+  .setlist a:hover .t-cn{color:var(--gold);}
+  .setlist .toc-set a{border-bottom:1px solid var(--gold-2);margin-top:14px;font-family:var(--deco);font-size:18px;color:var(--gold);letter-spacing:.08em;justify-content:space-between;}
+  .setlist .toc-set a span{font-family:var(--serif);font-size:13px;color:var(--cream-3);letter-spacing:.04em;}
+  .setlist .t-no{font-family:var(--deco);font-size:14px;color:var(--gold);width:1.8em;flex:none;}
+  .setlist .t-cn{font-weight:600;}
+  .setlist .t-en{margin-left:auto;font-family:var(--thin);font-weight:700;font-size:13.5px;color:var(--cream-3);text-align:right;}
+
+  /* ================= 乐手 / 调查员 ================= */
+  .section-h{text-align:center;margin:54px 0 22px;}
+  .section-h .k{font-family:var(--deco);font-size:15px;letter-spacing:.24em;color:var(--gold);text-transform:uppercase;}
+  .section-h h2{margin:6px 0 0;font-weight:900;font-size:26px;letter-spacing:.14em;}
+  .band{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start;}
+  .card{position:relative;background:var(--panel);border:1px solid var(--rule);border-top:3px solid var(--c);padding:16px 18px 14px;}
+  .card-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--thin);font-weight:700;font-size:12.5px;letter-spacing:.2em;color:var(--cream-3);text-transform:uppercase;}
+  .you{font-family:var(--serif);text-transform:none;letter-spacing:.06em;font-size:12px;color:#1a140b;background:var(--gold);padding:1px 8px;border-radius:2px;}
+  .card h3{margin:6px 0 2px;font-size:22px;font-weight:900;letter-spacing:.06em;color:var(--c);}
+  .occ{font-size:13.5px;color:var(--cream-2);}
+  .occ .pl{float:right;color:var(--cream-3);}
+  .desc{font-size:14.5px;color:var(--cream);margin:10px 0 6px;line-height:1.7;}
+  .card details{margin-top:6px;border-top:1px dotted var(--rule);}
+  .card summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:14px;color:var(--gold);letter-spacing:.1em;list-style:none;}
+  .card summary::-webkit-details-marker{display:none;}
+  .card summary::before{content:"＋";margin-right:8px;font-size:12px;}
+  .card details[open] summary::before{content:"－";}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center;margin:4px 0 10px;}
+  .stats div{background:var(--panel-2);padding:5px 0 3px;}
+  .stats b{display:block;font-size:18px;font-weight:600;color:var(--cream);}
+  .stats span{font-family:var(--thin);font-weight:700;font-size:12px;color:var(--cream-3);letter-spacing:.1em;}
+  .derived{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--cream-3);margin-bottom:10px;}
+  .derived b{color:var(--cream);font-weight:600;}
+  .skills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .skills span{font-size:13px;border:1px solid var(--rule);padding:1px 8px;color:var(--cream-2);}
+  .skills b{margin-left:5px;color:var(--c);font-weight:600;}
+  .weap{font-size:13.5px;color:var(--cream-2);margin:0 0 8px;line-height:1.7;}
+  .weap b{color:var(--gold);font-weight:600;margin-right:8px;}
+  table.kit{border-collapse:collapse;width:100%;font-size:13.5px;margin:4px 0 10px;}
+  table.kit th{text-align:left;vertical-align:top;font-weight:600;color:var(--gold);width:5.5em;padding:5px 8px 5px 0;white-space:nowrap;}
+  table.kit td{color:var(--cream-2);padding:5px 0;border-bottom:1px dotted var(--rule);line-height:1.7;}
+  .story p{font-size:14px;color:var(--cream-2);line-height:1.75;margin:0 0 .9em;}
+
+  /* ================= 正文 ================= */
+  .set{margin-top:54px;}
+  .set-head{text-align:center;margin-bottom:22px;}
+  .set-en{font-family:var(--deco);font-size:clamp(30px,7vw,44px);color:var(--gold);letter-spacing:.08em;line-height:1.1;}
+  .set-head h2{margin:8px 0 0;font-size:22px;font-weight:900;letter-spacing:.3em;}
+  .set-date{font-size:13.5px;color:var(--cream-3);letter-spacing:.08em;}
+  .track{background:var(--panel);border:1px solid var(--rule);padding:30px clamp(18px,5vw,46px) 14px;margin-bottom:18px;}
+  .track h3{margin:0 0 26px;text-align:center;font-size:22px;font-weight:900;letter-spacing:.12em;line-height:1.35;}
+  .track h3 .t-no{display:block;font-family:var(--deco);font-weight:400;font-size:14px;color:var(--gold);letter-spacing:.2em;margin-bottom:4px;}
+  .track h3 .t-en{display:block;font-family:var(--thin);font-weight:700;font-size:15px;color:var(--cream-3);letter-spacing:.1em;margin-top:2px;}
+  .track h3::after{content:"";display:block;width:64px;height:7px;margin:14px auto 0;
+    background:linear-gradient(var(--gold),var(--gold)) center/100% 1px no-repeat,linear-gradient(45deg,transparent 40%,var(--gold) 40% 60%,transparent 60%) center/7px 7px no-repeat;}
+
+  .track p{margin:0 0 1.5em;text-align:justify;line-break:strict;}
+  .narr p{color:var(--cream);}
+  .narr p.end{text-align:center;font-weight:600;color:var(--gold);margin-top:2em;}
+  .line{border-left:2px solid var(--c);padding:2px 0 2px 16px;margin:0 0 1.5em;}
+  .line .who{font-size:13px;font-weight:600;letter-spacing:.14em;color:var(--c);margin-bottom:2px;}
+  .line p{color:var(--cream-2);margin-bottom:.7em;}
+  .line p:last-child{margin-bottom:0;}
+  .line .q{color:var(--cream);}
+
+  .rolls{list-style:none;margin:-.3em 0 1.6em;padding:0;display:flex;flex-wrap:wrap;gap:6px;}
+  .roll{display:inline-flex;align-items:baseline;gap:7px;font-size:13px;line-height:1.5;background:var(--panel-2);border:1px solid var(--rule);padding:3px 9px;color:var(--cream-3);}
+  .r-who{color:var(--c);font-weight:600;}
+  .r-skill{color:var(--cream-2);}
+  .r-num{font-variant-numeric:tabular-nums;}
+  .r-res{font-weight:600;}
+  .roll.ok .r-res{color:var(--green);}
+  .roll.fail .r-res{color:var(--red);}
+  .roll.crit{border-color:var(--gold);} .roll.crit .r-res{color:var(--gold);}
+  .roll.fumble{border-color:var(--red);background:rgba(224,122,106,.12);} .roll.fumble .r-res{color:var(--red);}
+  .r-san{color:var(--cream-2);}
+
+  .photo{margin:6px auto 1.8em;max-width:440px;text-align:center;}
+  .photo img{display:block;width:100%;height:auto;border:1px solid var(--gold-2);padding:6px;background:var(--panel-2);}
+  .photo figcaption{font-size:13px;color:var(--cream-3);margin-top:8px;}
+
+  .pc-eugene{--c:var(--eugene);} .pc-claude{--c:var(--claude);} .pc-vincent{--c:var(--vincent);}
+  .pc-tinos{--c:var(--tinos);} .pc-julian{--c:var(--julian);} .pc-theodore{--c:var(--theodore);} .pc-x{--c:var(--cream-2);}
+
+  .interlude{margin:54px auto 0;text-align:center;font-size:14px;color:var(--cream-3);letter-spacing:.2em;}
+  .interlude span{display:block;font-family:var(--deco);font-size:24px;color:var(--gold);letter-spacing:.14em;margin-bottom:4px;}
+
+  /* ================= 终场 ================= */
+  .closing{margin-top:54px;padding:30px clamp(18px,5vw,44px) 26px;}
+  .closing h2{text-align:center;margin:0 0 18px;font-size:22px;font-weight:900;letter-spacing:.2em;}
+  .closing h2 span{display:block;font-family:var(--deco);font-weight:400;font-size:28px;color:var(--gold);letter-spacing:.1em;}
+  .closing dl{display:grid;grid-template-columns:6em 1fr;gap:8px 14px;margin:0;font-size:14.5px;}
+  .closing dt{color:var(--gold);font-weight:600;}
+  .closing dd{margin:0;color:var(--cream-2);line-height:1.75;}
+  .foot{max-width:740px;margin:24px auto 0;display:flex;justify-content:center;gap:22px;font-family:var(--thin);font-weight:700;font-size:15px;}
+  .foot a{color:var(--cream-2);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;}
+  .foot a:hover{color:var(--gold);}
+
+  @media (max-width:640px){
+    body{padding:18px 10px 60px;}
+    .band{grid-template-columns:1fr;}
+    .track{padding:24px 16px 10px;}
+    .line{padding-left:12px;}
+    .setlist{padding:0 10px;}
+    .setlist .t-en{display:none;}
+    .closing dl{grid-template-columns:1fr;gap:2px;}
+    .closing dd{margin-bottom:8px;}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#set1">跳到正文</a>
+<div class="stack">
+  <nav class="top-nav" aria-label="站点"><a href="../">‹ 跑团书架</a><a href="原始log.txt">原始记录</a></nav>
+
+  <header class="deco bill" aria-labelledby="title">
+    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <svg class="sunburst" viewBox="0 0 600 170" aria-hidden="true">
+      <g stroke="#d8b56a" stroke-width="1" fill="none" opacity=".75">
+        <path d="M300 170 L300 18"/><path d="M300 170 L240 24"/><path d="M300 170 L360 24"/>
+        <path d="M300 170 L184 42"/><path d="M300 170 L416 42"/><path d="M300 170 L134 70"/><path d="M300 170 L466 70"/>
+        <path d="M300 170 L92 106"/><path d="M300 170 L508 106"/><path d="M300 170 L58 148"/><path d="M300 170 L542 148"/>
+      </g>
+      <g fill="none" stroke="#d8b56a">
+        <path d="M200 170 A100 100 0 0 1 400 170" stroke-width="1.5"/>
+        <path d="M228 170 A72 72 0 0 1 372 170" stroke-width="1"/>
+        <path d="M256 170 A44 44 0 0 1 344 170" stroke-width="3"/>
+      </g>
+      <path d="M300 126 l9 22 h-18 z" fill="#d8b56a"/>
+    </svg>
+    <div class="presents">Smalls' Paradise · Harlem</div>
+    <div class="presents-cn">斯默的天堂　荣誉呈献</div>
+    <h1 id="title">死者的顿足舞</h1>
+    <div class="en">Dead Man Stomp</div>
+    <div class="rule-orn" aria-hidden="true">◆</div>
+    <div class="meta">
+      一场两夜的演出　·　1920 年代，纽约<br>
+      指挥　<b>菠萝大王🍍</b>　·　骰子　<b>阿道夫</b><br>
+      乐手　<a href="#band">六位调查员</a>
+    </div>
+    <ol class="setlist" aria-label="曲目单">{{TOC}}</ol>
+  </header>
+
+  <section id="band" aria-labelledby="band-h">
+    <div class="section-h"><div class="k">Tonight's Band</div><h2 id="band-h">今夜乐手</h2></div>
+    <div class="band">
+{{BAND}}
+    </div>
+  </section>
+
+  {{SETS}}
+
+  <section class="deco closing" id="closing" aria-labelledby="closing-h">
+    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <h2 id="closing-h"><span>Last Call</span>终场</h2>
+    <dl>
+      <dt>规则</dt><dd>克苏鲁的呼唤 第七版 · 六人文字团</dd>
+      <dt>模组</dt><dd>《死者的顿足舞》（Dead Man Stomp），Chaosium 出品的克苏鲁的呼唤官方模组。本页只收录团中的游玩记录。</dd>
+      <dt>守秘人</dt><dd>菠萝大王🍍</dd>
+      <dt>调查员</dt><dd>尤金·兰开斯特（文月）、克洛德（朔雪）、文森特（田田）、蒂诺丝（蒂诺丝）、朱利安·韦斯特（苔仁）、西奥多（莫伊拉）</dd>
+      <dt>开团</dt><dd>2026 年 1 月 21 日、1 月 28 日</dd>
+      <dt>整理</dt><dd>正文取自骰娘「阿道夫」的 log，删去了括号里的场外闲聊、指令和暗骰，检定合并成一行。<a href="原始log.txt">原始记录</a>完整保留。</dd>
+    </dl>
+  </section>
+</div>
+<footer class="foot"><a href="#title">↑ 回到节目单</a><a href="../">跑团书架</a><a href="原始log.txt">原始记录</a></footer>
+</body>
+</html>
