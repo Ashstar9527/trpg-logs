@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>资料库 · The Library of K.265</title>
+<meta name="description" content="K.265 跑团用的规则书、模组与查询资料目录。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --baize:#1d2b22;
+    --baize-deep:#121b15;
+    --cream:#efe6cf;
+    --cream-dim:#b9b09a;
+
+    --leaf:#f1ead9;
+    --leaf-edge:#e4d9bf;
+    --ink:#1b1916;
+    --ink-soft:#4a443b;
+    --graphite:#625f59;
+    --oxblood:#6b1d1d;
+    --prussian:#1f3a5a;
+
+    --vellum:#eee0c0;
+    --umber:#2a1d14;
+    --umber-soft:#5b4631;
+    --crimson:#7a1f1f;
+    --gold:#a8842c;
+    --gold-soft:#c9a95a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(ellipse at 50% -10%,#2a3d30 0%,var(--baize) 45%,var(--baize-deep) 100%);
+    background-attachment:fixed;min-height:100vh;
+    padding:40px 20px 96px;
+    font-family:"Libre Caslon Text","Noto Serif SC",serif;color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--gold-soft);outline-offset:3px;}
+  .shell{max-width:1040px;margin:0 auto;}
+
+  .top-nav{display:flex;justify-content:space-between;margin-bottom:26px;font-family:"Libre Caslon Text","Noto Serif SC",serif;font-size:14px;}
+  .top-nav a{color:var(--cream-dim);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 6px;}
+  .top-nav a:hover{color:var(--cream);}
+
+  /* ---------- 刊头 ---------- */
+  .masthead{text-align:center;color:var(--cream);margin-bottom:46px;}
+  .masthead .imprint{font-family:"Libre Caslon Display",serif;font-size:13px;letter-spacing:.38em;text-transform:uppercase;color:var(--cream-dim);}
+  .masthead h1{font-family:"Noto Serif SC",serif;font-weight:900;font-size:56px;letter-spacing:.34em;line-height:1.1;margin:20px 0 0 .34em;text-shadow:0 1px 0 rgba(0,0,0,.35);}
+  .masthead .en{font-family:"Libre Caslon Display",serif;font-size:26px;margin-top:12px;letter-spacing:.03em;}
+  .masthead .rule{width:140px;height:5px;margin:28px auto;border-top:1.5px solid var(--cream-dim);border-bottom:.5px solid var(--cream-dim);opacity:.8;}
+  .masthead .motto{font-style:italic;font-size:16px;line-height:1.85;color:var(--cream-dim);max-width:500px;margin:0 auto;}
+
+  /* 借阅须知 */
+  .notice{max-width:620px;margin:0 auto 44px;padding:14px 20px;border-top:.5px solid rgba(239,230,207,.28);border-bottom:.5px solid rgba(239,230,207,.28);
+    color:var(--cream-dim);font-size:13.5px;line-height:1.9;text-align:center;}
+  .notice b{color:var(--cream);font-weight:600;}
+  .notice .here{display:none;}
+  .is-local .notice .here{display:inline;}
+  .is-local .notice .there{display:none;}
+
+  /* ---------- 两个分区 ---------- */
+  .wings{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start;}
+  .wing{position:relative;box-shadow:0 36px 64px rgba(0,0,0,.5);}
+  .wing-head{text-align:center;padding:48px 40px 28px;position:relative;}
+  .wing-head .sys{font-size:12.5px;letter-spacing:.34em;text-transform:uppercase;}
+  .wing-head h2{font-family:"Noto Serif SC",serif;font-weight:900;font-size:30px;letter-spacing:.26em;margin:12px 0 0 .26em;line-height:1.2;}
+  .wing-head .sub{font-style:italic;font-size:14.5px;margin-top:10px;}
+  .wing-body{padding:6px 36px 40px;}
+
+  .wing.coc{background:var(--leaf);box-shadow:-6px 0 0 -2px var(--leaf-edge),-10px 0 0 -4px #d8cbaa,0 36px 64px rgba(0,0,0,.5);}
+  .wing.coc .wing-head{outline:1px solid var(--ink);outline-offset:-18px;padding-bottom:44px;}
+  .wing.coc .wing-head::before{content:"";position:absolute;inset:23px;border:.5px solid var(--ink-soft);pointer-events:none;}
+  .wing.coc .wing-body{padding-top:28px;}
+  .wing.coc .sys{font-family:"Libre Caslon Display",serif;color:var(--ink-soft);}
+  .wing.coc .sub{color:var(--ink-soft);}
+
+  .wing.dnd{
+    background:
+      radial-gradient(ellipse at 50% 0%,rgba(255,248,225,.55),transparent 60%),
+      radial-gradient(circle at 12% 88%,rgba(122,80,30,.12),transparent 30%),
+      var(--vellum);
+    color:var(--umber);
+  }
+  .wing.dnd::before{content:"";position:absolute;inset:12px;pointer-events:none;border:1.5px solid var(--gold);box-shadow:inset 0 0 0 4px var(--vellum),inset 0 0 0 5px var(--gold-soft);}
+  .wing.dnd .corner{position:absolute;width:22px;height:22px;pointer-events:none;color:var(--gold);}
+  .wing.dnd .corner.tl{top:6px;left:6px;}
+  .wing.dnd .corner.tr{top:6px;right:6px;transform:scaleX(-1);}
+  .wing.dnd .corner.bl{bottom:6px;left:6px;transform:scaleY(-1);}
+  .wing.dnd .corner.br{bottom:6px;right:6px;transform:scale(-1,-1);}
+  .wing.dnd .sys{font-family:"Cinzel",serif;font-weight:700;letter-spacing:.3em;color:var(--crimson);}
+  .wing.dnd .sub{font-family:"IM Fell English","Noto Serif SC",serif;color:var(--umber-soft);font-size:15.5px;}
+  .wing.dnd .wing-body{position:relative;}
+
+  .divider{display:flex;align-items:center;gap:14px;margin:30px 0 4px;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;}
+  .divider:first-child{margin-top:0;}
+  .divider::before,.divider::after{content:"";flex:1;height:.5px;}
+  .coc .divider{font-family:"Libre Caslon Display",serif;color:var(--ink-soft);}
+  .coc .divider::before,.coc .divider::after{background:var(--ink-soft);opacity:.5;}
+  .dnd .divider{font-family:"Cinzel",serif;color:var(--gold);}
+  .dnd .divider::before,.dnd .divider::after{background:var(--gold);opacity:.6;}
+
+  /* ---------- 书目卡 ---------- */
+  .book{display:grid;grid-template-columns:46px 1fr;gap:0 16px;padding:20px 0;border-bottom:.5px solid var(--ink-soft);}
+  .dnd .book{border-bottom-color:rgba(91,70,49,.45);}
+  .spine{width:34px;height:52px;margin-top:4px;border:1px solid currentColor;position:relative;}
+  .spine::before,.spine::after{content:"";position:absolute;left:4px;right:4px;height:.5px;background:currentColor;}
+  .spine::before{top:8px;} .spine::after{bottom:8px;}
+  .spine span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Libre Caslon Display",serif;font-size:10px;letter-spacing:.06em;}
+  .coc .spine{color:var(--oxblood);}
+  .coc .spine.mod{color:var(--prussian);}
+  .coc .spine.ref{color:var(--graphite);}
+  .dnd .spine{color:var(--crimson);}
+  .dnd .spine.ref{color:var(--umber-soft);}
+  .dnd .spine span{font-family:"Cinzel",serif;}
+
+  .b-title{font-family:"Noto Serif SC",serif;font-weight:700;font-size:19px;letter-spacing:.08em;line-height:1.45;margin:0;}
+  .b-en{font-family:"Libre Caslon Display",serif;font-size:14.5px;color:var(--ink-soft);margin-top:1px;}
+  .dnd .b-en{font-family:"IM Fell English",serif;font-style:italic;color:var(--umber-soft);}
+  .b-note{font-family:"Noto Serif SC",serif;font-size:14px;line-height:1.85;color:var(--ink-soft);margin:8px 0 0;}
+  .dnd .b-note{color:var(--umber-soft);}
+  .b-meta{display:flex;flex-wrap:wrap;gap:2px 14px;margin-top:8px;font-size:12.5px;color:var(--graphite);letter-spacing:.03em;}
+  .dnd .b-meta{color:var(--umber-soft);}
+  .b-meta b{font-weight:400;color:var(--ink);}
+  .dnd .b-meta b{color:var(--umber);}
+
+  .b-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .b-acts a,.b-acts .tag{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;font-family:"Noto Serif SC",serif;font-size:13px;letter-spacing:.06em;text-decoration:none;border:1px solid currentColor;}
+  .b-acts a{transition:background .2s ease;}
+  .coc .b-acts a{color:var(--prussian);}
+  .coc .b-acts a:hover{background:rgba(31,58,90,.08);}
+  .dnd .b-acts a{color:var(--crimson);}
+  .dnd .b-acts a:hover{background:rgba(122,31,31,.07);}
+  .b-acts a.local{display:none;}
+  .is-local .b-acts a.local{display:inline-flex;}
+  .b-acts .tag{color:var(--graphite);border-style:dashed;}
+  .dnd .b-acts .tag{color:var(--umber-soft);}
+  .is-local .b-acts .tag{display:none;}
+  .coc .b-acts a.local{color:#fff;background:var(--prussian);border-color:var(--prussian);}
+  .coc .b-acts a.local:hover{background:#2b4f78;}
+  .dnd .b-acts a.local{color:#fff;background:var(--crimson);border-color:var(--crimson);}
+  .dnd .b-acts a.local:hover{background:#932828;}
+
+  .colophon{text-align:center;margin-top:60px;color:var(--cream-dim);font-style:italic;font-size:13px;line-height:2;}
+  .colophon a{color:var(--cream);text-decoration:none;border-bottom:.5px solid var(--cream-dim);}
+  .colophon .fleuron{display:block;font-style:normal;font-size:18px;margin-bottom:10px;}
+
+  @media (max-width:880px){.wings{grid-template-columns:1fr;gap:40px;max-width:600px;margin:0 auto;}}
+  @media (max-width:560px){
+    body{padding:24px 12px 64px;}
+    .masthead h1{font-size:38px;letter-spacing:.26em;margin-left:.26em;}
+    .masthead .imprint{font-size:10.5px;letter-spacing:.2em;}
+    .masthead .en{font-size:19px;}
+    .masthead .motto{font-size:14.5px;}
+    .wing-head{padding:40px 26px 24px;}
+    .wing-head h2{font-size:25px;}
+    .wing-body{padding:4px 20px 32px;}
+    .book{grid-template-columns:36px 1fr;gap:0 12px;}
+    .spine{width:28px;height:44px;}
+  }
+  @media (prefers-reduced-motion:reduce){.b-acts a{transition:none;}}
+</style>
+<script>
+  // 文件只存在本机：在本地预览时显示「打开」，线上显示「仅存本地」
+  if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:')
+    document.documentElement.classList.add('is-local');
+</script>
+</head>
+<body>
+<div class="shell">
+  <nav class="top-nav" aria-label="站点"><a href="../">‹ 跑团书架</a><a href="https://github.com/Ashstar9527/trpg-logs">GitHub</a></nav>
+
+  <header class="masthead">
+    <div class="imprint">Reference Shelf · Not for Circulation</div>
+    <h1>资料库</h1>
+    <div class="en">The Library of K.265</div>
+    <div class="rule"></div>
+    <p class="motto">规则书、模组与查询手册。<br>开团前翻一翻，散团后还回原处。</p>
+  </header>
+
+  <p class="notice">
+    <span class="there">这些书都有版权，文件<b>只存在我自己的电脑上</b>，不随网站公开。<br>每一本都附上了官方出处，想读的话请从那里获取。</span>
+    <span class="here">现在是<b>本地预览</b>，点「打开」直接读取本机文件。<br>上线后这些按钮会换成「仅存本地」，只保留官方出处。</span>
+  </p>
+
+  <main class="wings">
+
+    <!-- ============ 克苏鲁的呼唤 ============ -->
+    <section class="wing coc" aria-labelledby="h-coc">
+      <div class="wing-head">
+        <div class="sys">Call of Cthulhu</div>
+        <h2 id="h-coc">克苏鲁的呼唤</h2>
+        <div class="sub">Keeper's Shelf · 第七版</div>
+      </div>
+      <div class="wing-body">
+
+        <div class="divider">Rulebooks</div>
+        <article class="book">
+          <div class="spine" aria-hidden="true"><span>7th</span></div>
+          <div>
+            <h3 class="b-title">克苏鲁的呼唤第七版 守秘人规则书</h3>
+            <div class="b-en">Call of Cthulhu Keeper Rulebook</div>
+            <p class="b-note">主持一切调查的核心规则：检定、理智、战斗、追逐与神话。中文版 Version 2002c。</p>
+            <div class="b-meta"><span>Chaosium · <b>Sandy Petersen、Paul Fricker、Mike Mason</b></span><span>PDF · 400 页</span></div>
+            <div class="b-acts">
+              <a class="local" href="files/coc/克苏鲁的呼唤第七版守秘人规则书.pdf" target="_blank" rel="noopener">打开 PDF</a>
+              <span class="tag">仅存本地</span>
+              <a href="https://www.chaosium.com/call-of-cthulhu-keeper-rulebook-hardcover/" target="_blank" rel="noopener">官方出处 ↗</a>
+              <a href="https://www.chaosium.com/cthulhu-quickstart/" target="_blank" rel="noopener">免费速成规则 ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <div class="divider">Scenarios</div>
+        <article class="book">
+          <div class="spine mod" aria-hidden="true"><span>KP</span></div>
+          <div>
+            <h3 class="b-title">入门套装：追书人</h3>
+            <div class="b-en">Paper Chase · Call of Cthulhu Starter Set</div>
+            <p class="b-note">单人入门模组。一份十美元的寻书委托，一座背靠公墓的老房子。</p>
+            <div class="b-meta"><span>Chaosium</span><span>PDF · 19 页</span><span>我当守秘人</span></div>
+            <div class="b-acts">
+              <a class="local" href="../2026-09-13-%E8%BF%BD%E4%B9%A6%E4%BA%BA/%E6%A8%A1%E7%BB%84-%E8%BF%BD%E4%B9%A6%E4%BA%BA.pdf" target="_blank" rel="noopener">打开 PDF</a>
+              <span class="tag">仅存本地</span>
+              <a href="../2026-09-13-%E8%BF%BD%E4%B9%A6%E4%BA%BA/">跑团记录 →</a>
+              <a href="https://www.chaosium.com/call-of-cthulhu-starter-set/" target="_blank" rel="noopener">官方出处 ↗</a>
+            </div>
+          </div>
+        </article>
+        <article class="book">
+          <div class="spine mod" aria-hidden="true"><span>PL</span></div>
+          <div>
+            <h3 class="b-title">入门套装：死者的顿足舞</h3>
+            <div class="b-en">Dead Man Stomp · Call of Cthulhu Starter Set</div>
+            <p class="b-note">1920 年代的哈莱姆，一把四键小号让死人站了起来。</p>
+            <div class="b-meta"><span>Chaosium</span><span>PDF · 34 页</span><span>我当玩家</span></div>
+            <div class="b-acts">
+              <a class="local" href="../2026-01-21-%E6%AD%BB%E8%80%85%E7%9A%84%E9%A1%BF%E8%B6%B3%E8%88%9E/%E6%A8%A1%E7%BB%84-%E6%AD%BB%E8%80%85%E7%9A%84%E9%A1%BF%E8%B6%B3%E8%88%9E.pdf" target="_blank" rel="noopener">打开 PDF</a>
+              <span class="tag">仅存本地</span>
+              <a href="../2026-01-21-%E6%AD%BB%E8%80%85%E7%9A%84%E9%A1%BF%E8%B6%B3%E8%88%9E/">跑团记录 →</a>
+              <a href="https://www.chaosium.com/call-of-cthulhu-starter-set/" target="_blank" rel="noopener">官方出处 ↗</a>
+            </div>
+          </div>
+        </article>
+        <article class="book">
+          <div class="spine mod" aria-hidden="true"><span>PL</span></div>
+          <div>
+            <h3 class="b-title">擦枪走火</h3>
+            <div class="b-en">Gun Shot</div>
+            <p class="b-note">1~2 人的现代短模组。暴风雨之夜，荒原上唯一的木屋。作者声明转载需事先授权，所以不附公开链接。</p>
+            <div class="b-meta"><span>作者 <b>逆光の白羊</b></span><span>PDF · 22 页</span><span>我当玩家</span></div>
+            <div class="b-acts">
+              <a class="local" href="../2026-09-29-%E6%93%A6%E6%9E%AA%E8%B5%B0%E7%81%AB/%E6%A8%A1%E7%BB%84-%E6%93%A6%E6%9E%AA%E8%B5%B0%E7%81%AB.pdf" target="_blank" rel="noopener">打开 PDF</a>
+              <span class="tag">仅存本地</span>
+              <a href="../2026-09-29-%E6%93%A6%E6%9E%AA%E8%B5%B0%E7%81%AB/">跑团记录 →</a>
+            </div>
+          </div>
+        </article>
+
+        <div class="divider">Lookups</div>
+        <article class="book">
+          <div class="spine ref" aria-hidden="true"><span>M.M.</span></div>
+          <div>
+            <h3 class="b-title">怪物之锤查询</h3>
+            <div class="b-en">Malleus Monstrorum · 海豹骰帮助文档</div>
+            <p class="b-note">海豹骰预置的怪物查询词条，共 810 条，含六版与七版两卷的数据。</p>
+            <div class="b-meta"><span>怪物之锤翻译组、奈亚猫猫汉化组、稚鸢音 等</span><span>JSON</span></div>
+            <div class="b-acts">
+              <a class="local" href="files/coc/怪物之锤查询.json" target="_blank" rel="noopener">打开 JSON</a>
+              <span class="tag">仅存本地</span>
+              <a href="https://www.chaosium.com/?s=malleus" target="_blank" rel="noopener">官方出处 ↗</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 龙与地下城 ============ -->
+    <section class="wing dnd" aria-labelledby="h-dnd">
+      <svg class="corner tl" viewBox="0 0 22 22" aria-hidden="true"><path d="M1 21 V6 Q1 1 6 1 H21 M5 21 V9 Q5 5 9 5 H21 M9 9 h3 v3 h-3z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <svg class="corner tr" viewBox="0 0 22 22" aria-hidden="true"><path d="M1 21 V6 Q1 1 6 1 H21 M5 21 V9 Q5 5 9 5 H21 M9 9 h3 v3 h-3z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <svg class="corner bl" viewBox="0 0 22 22" aria-hidden="true"><path d="M1 21 V6 Q1 1 6 1 H21 M5 21 V9 Q5 5 9 5 H21 M9 9 h3 v3 h-3z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <svg class="corner br" viewBox="0 0 22 22" aria-hidden="true"><path d="M1 21 V6 Q1 1 6 1 H21 M5 21 V9 Q5 5 9 5 H21 M9 9 h3 v3 h-3z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <div class="wing-head">
+        <div class="sys">Dungeons &amp; Dragons</div>
+        <h2 id="h-dnd">龙与地下城</h2>
+        <div class="sub">The Sage's Shelf · 第五版</div>
+      </div>
+      <div class="wing-body">
+
+        <div class="divider">Rulebooks</div>
+        <article class="book">
+          <div class="spine" aria-hidden="true"><span>PHB</span></div>
+          <div>
+            <h3 class="b-title">玩家手册</h3>
+            <div class="b-en">Player's Handbook (2014)</div>
+            <p class="b-note">海豹骰查询词条：种族、职业、法术、装备。</p>
+            <div class="b-meta"><span>Wizards of the Coast</span><span>XLSX · 海豹骰帮助文档</span></div>
+            <div class="b-acts">
+              <a class="local" href="files/dnd/玩家手册PHB.xlsx">下载 XLSX</a>
+              <span class="tag">仅存本地</span>
+              <a href="https://www.dndbeyond.com/sources/dnd/phb-2014" target="_blank" rel="noopener">官方出处 ↗</a>
+              <a href="https://www.dndbeyond.com/srd" target="_blank" rel="noopener">免费 SRD ↗</a>
+            </div>
+          </div>
+        </article>
+        <article class="book">
+          <div class="spine" aria-hidden="true"><span>BBX</span></div>
+          <div>
+            <h3 class="b-title">BBX D&amp;D 5 版规则说明</h3>
+            <div class="b-en">House Rules · v4.2.2</div>
+            <p class="b-note">一个团的整合房规：32 点购点、加强的技能、取消的专注，面向 5~8 人的线上团。</p>
+            <div class="b-meta"><span>团内整合房规</span><span>PDF · 1455 页</span></div>
+            <div class="b-acts">
+              <a class="local" href="files/dnd/BBX%20D%26D5%E7%89%88%E8%A7%84%E5%88%99%E8%AF%B4%E6%98%8E%204.2.2.pdf" target="_blank" rel="noopener">打开 PDF</a>
+              <span class="tag">仅存本地</span>
+            </div>
+          </div>
+        </article>
+
+        <div class="divider">Supplements</div>
+        <article class="book">
+          <div class="spine ref" aria-hidden="true"><span>VGM</span></div>
+          <div>
+            <h3 class="b-title">瓦罗怪物指南</h3>
+            <div class="b-en">Volo's Guide to Monsters</div>
+            <p class="b-note">海豹骰查询词条：怪物资料与可玩种族。</p>
+            <div class="b-meta"><span>Wizards of the Coast</span><span>XLSX · 海豹骰帮助文档</span></div>
+            <div class="b-acts">
+              <a class="local" href="files/dnd/瓦罗怪物指南VGM.xlsx">下载 XLSX</a>
+              <span class="tag">仅存本地</span>
+              <a href="https://www.dndbeyond.com/sources/dnd/vgtm" target="_blank" rel="noopener">官方出处 ↗</a>
+            </div>
+          </div>
+        </article>
+        <article class="book">
+          <div class="spine ref" aria-hidden="true"><span>BMT</span></div>
+          <div>
+            <h3 class="b-title">万象无常书</h3>
+            <div class="b-en">The Book of Many Things</div>
+            <p class="b-note">海豹骰查询词条：万象卡牌与它带出的种族、怪物和魔法物品。</p>
+            <div class="b-meta"><span>Wizards of the Coast</span><span>XLSX · 海豹骰帮助文档</span></div>
+            <div class="b-acts">
+              <a class="local" href="files/dnd/万象无常书.xlsx">下载 XLSX</a>
+              <span class="tag">仅存本地</span>
+              <a href="https://www.dndbeyond.com/sources/dnd/tbomt" target="_blank" rel="noopener">官方出处 ↗</a>
+            </div>
+          </div>
+        </article>
+        <article class="book">
+          <div class="spine ref" aria-hidden="true"><span>MPP</span></div>
+          <div>
+            <h3 class="b-title">莫提的位面游记</h3>
+            <div class="b-en">Planescape: Morte's Planar Parade</div>
+            <p class="b-note">海豹骰查询词条：印记城与外层位面的居民。</p>
+            <div class="b-meta"><span>Wizards of the Coast</span><span>XLSX · 海豹骰帮助文档</span></div>
+            <div class="b-acts">
+              <a class="local" href="files/dnd/莫提的位面游记.xlsx">下载 XLSX</a>
+              <span class="tag">仅存本地</span>
+              <a href="https://www.dndbeyond.com/marketplace" target="_blank" rel="noopener">官方出处 ↗</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <span class="fleuron">❦</span>
+    书目只记出处，不作转载。规则书与模组的版权归各自的出版方与作者所有。<br>
+    <a href="../">回到跑团书架</a>
+  </footer>
+</div>
+</body>
+</html>

@@ -3,3 +3,5 @@
 _*.md
 _build/state.json
 */_build/state.json
+资料库/files/
+*/模组-*.pdf
